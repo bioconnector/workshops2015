@@ -1,5 +1,6 @@
 ---
 layout: page
+root: .
 ---
 
 ## Link to Course Material
