@@ -483,7 +483,7 @@ dds <- DESeq(dds)
 
 The results are accessed using the function `results`. The `mcols` function gives you more information about what the columns in the results tell you. You can reorder and write the results to a file if you wish. Finally, you can create an MA-plot, showing the log2 fold change over the normalized counts for each gene, colored red if statistically significant (padj<0.1).
 
-```{r results_simpledesign, fig.keep='all', fig.show='asis'}
+```{r results_simpledesign}
 # Extract results
 res <- results(dds)
 
@@ -502,7 +502,7 @@ plotMA(dds, ylim=c(-2,2))
 
 The differential expression analysis above operates on the raw (normalized) count data. But for visualizing or clustering data as you would with a microarray experiment, you ned to work with transformed versions of the data. First, use a *regularlized log* transofmration while re-estimating the dispersion ignoring any information you have about the samples (`blind=TRUE`). Perform a principal components analysis and hierarchical clustering.
 
-```{r viz, fig.keep='all', fig.show='asis'}
+```{r viz}
 # Transform
 rld <- rlogTransformation(dds, blind=TRUE)
 

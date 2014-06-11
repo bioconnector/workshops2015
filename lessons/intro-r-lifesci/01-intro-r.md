@@ -1,5 +1,6 @@
 ---
 layout: page
+root: ../..
 ---
 
 # Introduction to R for Life Scientists
@@ -535,8 +536,6 @@ write.csv(res, file="results/pasilla_results.csv")
 plotMA(dds, ylim=c(-2,2))
 ```
 
-![plot of chunk results_simpledesign](figure/results_simpledesign.png)
-
 #### Data transformation and visualization
 
 The differential expression analysis above operates on the raw (normalized) count data. But for visualizing or clustering data as you would with a microarray experiment, you ned to work with transformed versions of the data. First, use a *regularlized log* transofmration while re-estimating the dispersion ignoring any information you have about the samples (`blind=TRUE`). Perform a principal components analysis and hierarchical clustering.
@@ -548,17 +547,11 @@ rld <- rlogTransformation(dds, blind=TRUE)
 
 # Principal components analysis
 plotPCA(rld, intgroup=c("condition", "type"))
-```
 
-![plot of chunk viz](figure/viz1.png)
-
-```r
 # Hierarchical clustering analysis
 distrl <- dist(t(assay(rld)))
 plot(hclust(distrl))
 ```
-
-![plot of chunk viz](figure/viz2.png)
 
 #### Multifactor design
 
@@ -576,26 +569,26 @@ sessionInfo()
 ```
 ## R version 3.0.2 (2013-09-25)
 ## Platform: x86_64-apple-darwin10.8.0 (64-bit)
-##
+## 
 ## locale:
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
-##
+## 
 ## attached base packages:
-## [1] parallel  methods   stats     graphics  grDevices utils     datasets
-## [8] base
-##
+## [1] parallel  methods   stats     graphics  grDevices utils     datasets 
+## [8] base     
+## 
 ## other attached packages:
 ##  [1] DESeq2_1.2.10           RcppArmadillo_0.4.300.0
-##  [3] Rcpp_0.11.1             GenomicRanges_1.14.4
-##  [5] XVector_0.2.0           IRanges_1.20.7
-##  [7] Biobase_2.22.0          BiocGenerics_0.8.0
-##  [9] knitr_1.6               BiocInstaller_1.12.1
-##
+##  [3] Rcpp_0.11.1             GenomicRanges_1.14.4   
+##  [5] XVector_0.2.0           IRanges_1.20.7         
+##  [7] Biobase_2.22.0          BiocGenerics_0.8.0     
+##  [9] knitr_1.6               BiocInstaller_1.12.1   
+## 
 ## loaded via a namespace (and not attached):
-##  [1] annotate_1.40.1      AnnotationDbi_1.24.0 DBI_0.2-7
-##  [4] evaluate_0.5.5       formatR_0.10         genefilter_1.44.0
-##  [7] grid_3.0.2           lattice_0.20-29      locfit_1.5-9.1
-## [10] RColorBrewer_1.0-5   RSQLite_0.11.4       splines_3.0.2
-## [13] stats4_3.0.2         stringr_0.6.2        survival_2.37-7
+##  [1] annotate_1.40.1      AnnotationDbi_1.24.0 DBI_0.2-7           
+##  [4] evaluate_0.5.5       formatR_0.10         genefilter_1.44.0   
+##  [7] grid_3.0.2           lattice_0.20-29      locfit_1.5-9.1      
+## [10] RColorBrewer_1.0-5   RSQLite_0.11.4       splines_3.0.2       
+## [13] stats4_3.0.2         stringr_0.6.2        survival_2.37-7     
 ## [16] tools_3.0.2          XML_3.95-0.2         xtable_1.7-3
 ```
