@@ -5,6 +5,9 @@ github: stephenturner
 twitter: genetics_blog
 description: "Course materials and announcements for Stephen Turner's bioinformatics workshops."
 url: "http://stephenturner.us"
+
+# See http://jekyllrb.com/docs/github-pages/#project-page-url-structure
+# Use `jekyll serve --baseurl ''` to serve locally.
 baseurl: "/tmp"
 
 # Build settings
