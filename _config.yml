@@ -3,9 +3,9 @@ title: Bioinformatics Workshops
 email: turner@virginia.edu
 github: stephenturner
 twitter: genetics_blog
-description: "Site description."
+description: "Course materials and announcements for Stephen Turner's bioinformatics workshops."
 url: "http://stephenturner.us"
-baseurl: "/tmp"
+baseurl: ""
 
 # Build settings
 markdown: redcarpet
