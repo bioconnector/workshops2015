@@ -10,6 +10,8 @@ clean:
 	Rscript -e 'knitr::knit("$*.Rmd")'
 	# change the syntax highlighting to coffee instead of r
 	# gsed -i 's/```r/```coffee/g' $*.md
+	# Because jekyll creates a new directory with an index.html file
+	gsed -i 's~figure/~../figure/~g' $*.md
 
 # %.R: %.Rmd
 # 	Rscript -e 'knitr::purl("$*.Rmd")'
