@@ -5,7 +5,7 @@ github: stephenturner
 twitter: genetics_blog
 description: "Course materials and announcements for Stephen Turner's bioinformatics workshops."
 url: "http://stephenturner.us"
-baseurl: ""
+baseurl: "/tmp"
 
 # Build settings
 markdown: redcarpet
