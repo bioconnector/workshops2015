@@ -2,9 +2,9 @@
 layout: page
 ---
 
-## Links to course material
+## Link to Course Material
 
-Lorem ipsum.
+[Click here to access all course material](lessons).
 
 ## Updates
 
@@ -13,6 +13,15 @@ Lorem ipsum.
 {% endfor %}
 
 <!--
+
+Old index.html:
+
+---
+layout: default
+---
+
+<div class="home">
+
   <h1>Posts</h1>
 
   <ul class="posts">
@@ -24,4 +33,6 @@ Lorem ipsum.
     {% endfor %}
   </ul>
 
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p> -->
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+
+</div> -->
