@@ -6,11 +6,9 @@ layout: page
 
 
 
-Link to slides: *Please check back after the workshop*
+[Click here for information about this course](../).
 
 ## Before coming
-
-[Click here for setup instructions](../). You'll need to download R, RStudio, and install a few packages.
 
 {% include setup-r.md %}
 

@@ -12,11 +12,9 @@ library(knitr)
 opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none", tidy=TRUE)
 ```
 
-Link to slides: *Please check back after the workshop*
+[Click here for information about this course](../).
 
 ## Before coming
-
-[Click here for setup instructions](../). You'll need to download R, RStudio, and install a few packages.
 
 {% include setup-r.md %}
 
@@ -136,7 +134,7 @@ Certain *functions* operate only on certain *classes* of object. Here, `name` is
 # certain classes.
 toupper(name)
 # can't run a function that expects character on an object of class function
-toupper(log) 
+toupper(log)
 ```
 
 We can combine values into a vector with the built-in `c()` function.
@@ -202,7 +200,7 @@ x[42]
 # Get the 20th through the 25th elements.
 x[20:25]
 
-# If you try to access elements that don't exist, you'll return missing values. 
+# If you try to access elements that don't exist, you'll return missing values.
 # Missing values are represented as NA
 x[45:55] #NA is missing value!
 ```
