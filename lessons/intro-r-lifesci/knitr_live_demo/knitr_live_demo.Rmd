@@ -28,7 +28,6 @@ Create blockquotes with the ">" character:
 This is a "chunk" of R code. The code is actually run, and the results are printed to the output.
 
 ```{r}
-setwd("/Users/sdt5z/Dropbox/code/R/2014-03-18-HSL-R-Intro/hsl-r-repres-demo/")
 chromstats <- read.table("chromstats.txt", header=TRUE)
 chromstats
 summary(chromstats)
