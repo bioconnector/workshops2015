@@ -24,8 +24,8 @@ R can be used as a glorified calculator. Try typing this in directly into the co
 
 
 ```r
-2+2
-5*4
+2 + 2
+5 * 4
 2^3
 ```
 
@@ -33,7 +33,7 @@ R Knows order of operations.
 
 
 ```r
-2+3*4/(5+3)*15/2^2+3*4^2
+2 + 3 * 4/(5 + 3) * 15/2^2 + 3 * 4^2
 ```
 
 ### Functions
@@ -42,8 +42,8 @@ R has built-in functions.
 
 
 ```r
-# Notice that this is a comment.
-# Anything behind a # is "commented out" and is not run.
+# Notice that this is a comment.  Anything behind a # is 'commented out' and
+# is not run.
 sqrt(144)
 log(1000)
 ```
@@ -60,8 +60,8 @@ Note syntax highlighting when typing this into the editor. Also note how we pass
 
 ```r
 log(1000)
-log(1000, base=10)
-sqrt(log(1000, base=10))
+log(1000, base = 10)
+sqrt(log(1000, base = 10))
 ```
 
 ### Vectors
@@ -76,10 +76,11 @@ Let's create some numeric vectors. Vectors (aka "arrays" in Perl, "lists" in Pyt
 1:5 + 6:10
 1:100
 
-# Get some help with the seq() function, then create a vector from 2 to 200 by 2s.
-# Notice how the seq() function works -- the `to` argument will never be exceeded.
+# Get some help with the seq() function, then create a vector from 2 to 200
+# by 2s.  Notice how the seq() function works -- the `to` argument will
+# never be exceeded.
 help(seq)
-seq(from=2, to=200, by=4)
+seq(from = 2, to = 200, by = 4)
 ```
 
 ### Variables / objects
@@ -94,16 +95,16 @@ x
 y <- 42
 y
 
-y-x
-z <- y-x
+y - x
+z <- y - x
 z
 
 x <- 1:5
 y <- 6:10
 x
 y
-x+y
-x*y
+x + y
+x * y
 x^y
 ```
 
@@ -114,7 +115,7 @@ You can see what objects (variables) are stored by viewing the Environment tab i
 ls()
 rm(x)
 ls()
-x # oops! you should get an error because x no longer exists!
+x  # oops! you should get an error because x no longer exists!
 ```
 
 ```
@@ -122,7 +123,7 @@ x # oops! you should get an error because x no longer exists!
 ```
 
 ```r
-rm(y,z)
+rm(y, z)
 ```
 
 ### Classes: everything is an object
@@ -142,8 +143,11 @@ Certain *functions* operate only on certain *classes* of object. Here, `name` is
 
 
 ```r
-toupper(name) # name is an object of class character. methods or functions are associated with certain classes.
-toupper(log) # can't run a function that expects character on an object of class function
+# name is an object of class character. methods or functions are associated
+# with certain classes.
+toupper(name)
+# can't run a function that expects character on an object of class function
+toupper(log)
 ```
 
 ```
@@ -155,7 +159,7 @@ We can combine values into a vector with the built-in `c()` function.
 
 ```r
 # Get some help with ?c
-x <- c(1,3,5)
+x <- c(1, 3, 5)
 x
 class(x)
 length(x)
@@ -186,7 +190,7 @@ Combining characters with numerics results in coercing everything to be a charac
 
 ```r
 y
-z <- c(x,y)
+z <- c(x, y)
 z
 class(z)
 ```
@@ -223,9 +227,9 @@ x[42]
 # Get the 20th through the 25th elements.
 x[20:25]
 
-# If you try to access elements that don't exist, you'll return missing values.
-# Missing values are represented as NA
-x[45:55] #NA is missing value!
+# If you try to access elements that don't exist, you'll return missing
+# values.  Missing values are represented as NA
+x[45:55]  #NA is missing value!
 ```
 
 ### Data Frames
@@ -255,8 +259,8 @@ There are several built-in functions that are useful for working with data frame
 head(mtcars)
 length(mtcars)
 dim(mtcars)
-dim(mtcars)[1] # number of rows (individual cars in the survey)
-dim(mtcars)[2] # number of columns (number of variables measured)
+dim(mtcars)[1]  # number of rows (individual cars in the survey)
+dim(mtcars)[2]  # number of columns (number of variables measured)
 str(mtcars)
 ```
 
@@ -293,11 +297,11 @@ Try some subsetting on your own.
 
 
 ```r
-subset(mtcars, cyl==6)
-subset(mtcars, cyl>6)
-subset(mtcars, mpg>=20 | disp<100)
-subset(mtcars, cyl==6, select=c(mpg, disp))
-subset(mtcars, cyl>=6 & mpg>=15, select=c(mpg, cyl, qsec))
+subset(mtcars, cyl == 6)
+subset(mtcars, cyl > 6)
+subset(mtcars, mpg >= 20 | disp < 100)
+subset(mtcars, cyl == 6, select = c(mpg, disp))
+subset(mtcars, cyl >= 6 & mpg >= 15, select = c(mpg, cyl, qsec))
 ```
 
 The `with()` function is particularly helpful. Let's say you wanted to compute some (senseless) value by computing the MPG times the number of cylinders divided by the car's displacement. You could access the dataset's variables using the `$` notation, or you could use `with()` to temporarily *attach* the data frame, and call the variables directly. The first argument to `with()` is the name of the data frame, and the second argument is all the stuff you'd like to do with the particular features in that data frame.
@@ -311,8 +315,8 @@ mtcars$cyl
 with(mtcars, cyl)
 
 # Compute the senseless value described above. Both return the same results.
-mtcars$mpg * mtcars$cyl / mtcars$disp
-with(mtcars, mpg*cyl/disp)
+mtcars$mpg * mtcars$cyl/mtcars$disp
+with(mtcars, mpg * cyl/disp)
 ```
 
 ### Plotting
@@ -330,16 +334,15 @@ This isn't a very useful figure. More appropriate might be a histogram. We can t
 
 ```r
 hist(mtcars$mpg)
-hist(mtcars$mpg, breaks=10)
-hist(mtcars$mpg, breaks=10, col="black")
+hist(mtcars$mpg, breaks = 10)
+hist(mtcars$mpg, breaks = 10, col = "black")
 ```
 
 We can create a scatterplot between two variables with `plot(varX, varY)`.
 
 
 ```r
-# This would also work, but let's use with().
-# plot(mtcars$disp, mtcars$mpg)
+# This would also work, but let's use with().  plot(mtcars$disp, mtcars$mpg)
 with(mtcars, plot(disp, mpg))
 ```
 
@@ -347,11 +350,11 @@ There are hundreds of plotting parameters you can use to make your plot look exa
 
 
 ```r
-with(mtcars, plot(disp, mpg, pch=16))
-with(mtcars, plot(disp, mpg, pch=16,  col="red"))
-with(mtcars, plot(disp, mpg, pch=16,  col="red", main="MPG vs Displacement"))
-with(mtcars, plot(disp, mpg, pch=16,  col="red", main="MPG vs Displacement",
-                  ylab="Fuel Economy (MPG)", xlab="Displacement (cu. in.)"))
+with(mtcars, plot(disp, mpg, pch = 16))
+with(mtcars, plot(disp, mpg, pch = 16, col = "red"))
+with(mtcars, plot(disp, mpg, pch = 16, col = "red", main = "MPG vs Displacement"))
+with(mtcars, plot(disp, mpg, pch = 16, col = "red", main = "MPG vs Displacement", 
+    ylab = "Fuel Economy (MPG)", xlab = "Displacement (cu. in.)"))
 ```
 
 Notice how on that last line I broke the command up into two lines for better readability. I broke the command at the comma separating arguments, and indented the following line for readability.
@@ -366,7 +369,7 @@ First, lets create a small dataset consisting of only 8 cylinder cars.
 
 
 ```r
-mtcars_8cyl <- subset(mtcars, cyl==8)
+mtcars_8cyl <- subset(mtcars, cyl == 8)
 mtcars_8cyl
 ```
 
@@ -391,7 +394,7 @@ Once you've set your working directory either using RStudio or on the command li
 
 
 ```r
-write.csv(mtcars_8cyl, file="cars8.csv")
+write.csv(mtcars_8cyl, file = "cars8.csv")
 ```
 
 Data can be loaded using the Tools -- Import Dataset -- From text file menu in R studio. Or you can also load a dataset manually using `read.table()` or `read.csv()`. First, read the help on these functions:
@@ -408,10 +411,10 @@ Here let's remove the dataset, and re-import it into an object called cars8 from
 ```r
 rm(mtcars_8cyl)
 mtcars_8cyl
-cars8 <- read.table(file="cars8.csv", header=TRUE, sep=",", row.names=1)
+cars8 <- read.table(file = "cars8.csv", header = TRUE, sep = ",", row.names = 1)
 cars8
 rm(cars8)
-cars8 <- read.csv(file="cars8.csv", header=TRUE, row.names=1)
+cars8 <- read.csv(file = "cars8.csv", header = TRUE, row.names = 1)
 cars8
 ```
 
@@ -441,8 +444,8 @@ Bioconductor packages work a bit different, and are not hosted on CRAN. Go to <h
 # Download the installer script
 source("http://bioconductor.org/biocLite.R")
 
-# biocLite() is the bioconductor installer function.
-# Run it without any arguments to install the core packages or update any installed packages.
+# biocLite() is the bioconductor installer function. Run it without any
+# arguments to install the core packages or update any installed packages.
 # This requires internet connectivity and will take some time!
 biocLite()
 ```
@@ -479,9 +482,9 @@ First, we'll need to load the Bioconductor packages we'll be using:
 
 
 ```r
-# Bioconductor packages.
-# Use the installation instructions at http://www.bioconductor.org/install/
-# if you haven't already installed these (install once, load every time)
+# Bioconductor packages.  Use the installation instructions at
+# http://www.bioconductor.org/install/ If you haven't already installed
+# these (install once, load every time)
 library(Biobase)
 library(DESeq2)
 ```
@@ -493,11 +496,11 @@ Next, load two different datasets: one with the count data, and one with sample 
 
 ```r
 # Load the count data
-pasillacounts <- read.csv("data/pasilla_counts.csv", header=TRUE, row.names=1)
+pasillacounts <- read.csv("data/pasilla_counts.csv", header = TRUE, row.names = 1)
 head(pasillacounts)
 
 # Load the sample metadata
-pasillameta <- read.csv("data/pasilla_metadata.csv", header=TRUE, row.names=1)
+pasillameta <- read.csv("data/pasilla_metadata.csv", header = TRUE, row.names = 1)
 pasillameta
 ```
 
@@ -505,7 +508,8 @@ The class used by the DESeq2 package to store the read counts is the **DESeqData
 
 
 ```r
-dds <- DESeqDataSetFromMatrix(countData=pasillacounts, colData=pasillameta, design = ~condition)
+dds <- DESeqDataSetFromMatrix(countData = pasillacounts, colData = pasillameta, 
+    design = ~condition)
 dds
 ```
 
@@ -531,10 +535,10 @@ head(res)
 mcols(res)
 res <- res[order(res$padj), ]
 head(res)
-write.csv(res, file="results/pasilla_results.csv")
+write.csv(res, file = "results/pasilla_results.csv")
 
 # Create MA Plot
-plotMA(dds, ylim=c(-2,2))
+plotMA(dds, ylim = c(-2, 2))
 ```
 
 #### Data transformation and visualization
@@ -544,10 +548,10 @@ The differential expression analysis above operates on the raw (normalized) coun
 
 ```r
 # Transform
-rld <- rlogTransformation(dds, blind=TRUE)
+rld <- rlogTransformation(dds, blind = TRUE)
 
 # Principal components analysis
-plotPCA(rld, intgroup=c("condition", "type"))
+plotPCA(rld, intgroup = c("condition", "type"))
 
 # Hierarchical clustering analysis
 distrl <- dist(t(assay(rld)))
