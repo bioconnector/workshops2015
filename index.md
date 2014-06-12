@@ -2,12 +2,13 @@
 layout: page
 ---
 
-## Link to Course Material
+# Course Material
 
-[Click here to access all course material](lessons).
+* [Introduction to R for Life Scientists](lessons/intro-r-lifesci/)
+* RNA-seq workshop (*coming soon*)
 
 
-## Updates
+# Updates
 
 {% for post in site.posts %}
   * {{post.date | date: "%b %-d, %Y" }}: [{{post.title}}]({{ post.url | prepend: site.baseurl }})
