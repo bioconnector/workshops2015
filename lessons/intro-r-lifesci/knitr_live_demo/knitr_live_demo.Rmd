@@ -1,8 +1,6 @@
-# HSL R Demo: Reproducible Research with R and Markdown
+# Demo: Reproducible research with knitr
 
 ## This is a major heading
-
-This is some plain text.
 
 ### This is a minor heading
 
@@ -35,10 +33,16 @@ summary(chromstats)
 
 We're back in plain text world here. 
 
-You can also embed plots, for example:
+You can also embed plots, for example, let's make a bar plot of chromosome lengths. Note that chromosome 23 and 24 represent the X and Y chromosomes, respectively:
 
-```{r fig.width=8, fig.height=6}
+```{r barplot, fig.width=8, fig.height=6, fig.cap="Bar plot of Chromosome Lengths"}
 library(ggplot2)
 qplot(chr, length, geom="bar", data=chromstats, stat="identity", main="Chromosome lengths")
-qplot(length, variations, data=chromstats, main="Number of SNPs vs. Chromosome Length") + geom_smooth(method="loess")
+```
+
+Now let's make a scatterplot of the number of SNPs on each chromosome versus the chromosome's length:
+
+```{r scatterplot, fig.width=8, fig.height=6, fig.cap="Scatter plot of SNPs vs Chromosome Length"}
+p <- qplot(length, variations, data=chromstats, main="Number of SNPs vs. Chromosome Length") 
+p + geom_smooth(method="loess")
 ```
