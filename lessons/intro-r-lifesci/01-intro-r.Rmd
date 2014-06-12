@@ -9,7 +9,7 @@ layout: page
 # This sets defaults. Can change this manually in individual chunks.
 # Must load knitr so opts_chunk is in search path.
 library(knitr)
-opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none")
+opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none", tidy=TRUE)
 ```
 
 Link to slides: *Please check back after the workshop*
@@ -132,8 +132,11 @@ class(name)
 Certain *functions* operate only on certain *classes* of object. Here, `name` is a `character` class, assigned to `"Stephen"`. The built-in `toupper()` function will operate on character objects, but not others.
 
 ```{r}
-toupper(name) # name is an object of class character. methods or functions are associated with certain classes.
-toupper(log) # can't run a function that expects character on an object of class function
+# name is an object of class character. methods or functions are associated with
+# certain classes.
+toupper(name)
+# can't run a function that expects character on an object of class function
+toupper(log) 
 ```
 
 We can combine values into a vector with the built-in `c()` function.
@@ -199,7 +202,7 @@ x[42]
 # Get the 20th through the 25th elements.
 x[20:25]
 
-# If you try to access elements that don't exist, you'll return missing values.
+# If you try to access elements that don't exist, you'll return missing values. 
 # Missing values are represented as NA
 x[45:55] #NA is missing value!
 ```
@@ -326,8 +329,8 @@ On your own, try plotting horsepower vs displacement for vehicles with more than
 
 ```{r, echo=FALSE}
 with(subset(mtcars, cyl>4), plot(disp, hp, pch=16, col="blue",
-                                 xlab="Displacement (cu. in.)", ylab="Gross Horsepower",
-                                 main="Horsepower vs Displacement for 6 and 8-cylinder vehicles"))
+    xlab="Displacement (cu. in.)", ylab="Gross Horsepower",
+    main="Horsepower vs Displacement for 6 and 8-cylinder vehicles"))
 ```
 
 ### Reading in / writing out data
@@ -403,9 +406,9 @@ Bioconductor packages work a bit different, and are not hosted on CRAN. Go to <h
 # Download the installer script
 source("http://bioconductor.org/biocLite.R")
 
-# biocLite() is the bioconductor installer function.
-# Run it without any arguments to install the core packages or update any installed packages.
-# This requires internet connectivity and will take some time!
+# biocLite() is the bioconductor installer function. Run it without any
+# arguments to install the core packages or update any installed packages. This
+# requires internet connectivity and will take some time!
 biocLite()
 ```
 
@@ -447,7 +450,7 @@ First, we'll need to load the Bioconductor packages we'll be using:
 ```{r}
 # Bioconductor packages.
 # Use the installation instructions at http://www.bioconductor.org/install/
-# if you haven't already installed these (install once, load every time)
+# If you haven't already installed these (install once, load every time)
 library(Biobase)
 library(DESeq2)
 ```
