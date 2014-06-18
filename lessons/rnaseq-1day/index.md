@@ -4,11 +4,11 @@ layout: page
 
 # RNA-seq data analysis bootcamp
 
-fixme course description here
+Course description coming soon.
 
-**Date**: fixme  
+**Date**: TBA  
 **Time**: 8:00 am - 5:00 pm  
-**Location (tentative)**: Health Sciences Library Carter Classroom (downstairs one floor and to the right).
+**Location**: TBA
 
 **Pre-requisites**: You must bring a laptop to the course with the necessary software installed (see instructions below).
 
@@ -24,16 +24,22 @@ fixme course description here
 0. QC, differential expression, and visualization with R/Bioconductor
 
 
+## Registration
+
+TBA
+
+{% if page.eventbrite %}
+<iframe src="//www.eventbrite.com/tickets-external?eid={{page.eventbrite}}&ref=etckt" frameborder="0" width="100%" height="225px" scrolling="auto"></iframe>
+{% endif %}
+
 ## Before coming
 
 Before coming please install the software as instructed below, and take the pre-workshop survey (this should take ~60 seconds).
 
 ### Software setup
 
-fixme
-
 {% include setup-rnaseq-1day.md %}
 
 ### Take the pre-workshop survey
 
-fixme link to survey
+TBA

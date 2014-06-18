@@ -5,7 +5,7 @@ layout: page
 # Course Material
 
 * [Introduction to R for Life Scientists](lessons/intro-r-lifesci/)
-* RNA-seq workshop (*coming soon*)
+* [RNA-seq workshop (*coming soon*)](lessons/rnaseq-1day/)
 
 
 # Updates
