@@ -8,7 +8,7 @@ This workshop is directed toward life scientists with little to no experience wi
 
 **Date**: June 25, 2014  
 **Time**: 2:00-5:00pm  
-**Location (tentative)**: Health Sciences Library Carter Classroom (downstairs one floor and to the right).
+**Location**: Jordan Hall Conference Center, room 2ABC
 
 **Pre-requisites**: You must bring a laptop to the course with the necessary software installed (see instructions below).
 
