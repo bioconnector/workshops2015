@@ -8,6 +8,5 @@ You must bring a laptop with the necessary software installed to the course. Ple
 ```r
 source("http://bioconductor.org/biocLite.R")
 biocLite()
-biocLite("Biobase")
 biocLite("DESeq2")
 ```
