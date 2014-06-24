@@ -74,6 +74,19 @@ Let's create some numeric vectors. Vectors (aka "arrays" in Perl, "lists" in Pyt
 6:10
 1:5 + 6:10
 1:100
+```
+
+We can also create arbitrary vectors with the `c()` function (short for "combine").
+
+```{r}
+c(1,2,5)
+c(1:5, 11:15)
+```
+
+What if we wanted to create a vector from 2 to 10 by 2's? What about 2 to 200 by 4's? This might be useful for setting up an experiment where every other sample is an experimental group and every other is a control.
+
+```{r, eval=FALSE}
+c(2,4,6,8,10)
 
 # Get some help with the seq() function, then create a vector from 2 to 200 by 2s.
 # Notice how the seq() function works -- the `to` argument will never be exceeded.

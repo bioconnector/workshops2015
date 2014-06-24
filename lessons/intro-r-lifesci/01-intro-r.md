@@ -73,6 +73,21 @@ Let's create some numeric vectors. Vectors (aka "arrays" in Perl, "lists" in Pyt
 6:10
 1:5 + 6:10
 1:100
+```
+
+We can also create arbitrary vectors with the `c()` function (short for "combine").
+
+
+```r
+c(1, 2, 5)
+c(1:5, 11:15)
+```
+
+What if we wanted to create a vector from 2 to 10 by 2's? What about 2 to 200 by 4's? This might be useful for setting up an experiment where every other sample is an experimental group and every other is a control.
+
+
+```r
+c(2, 4, 6, 8, 10)
 
 # Get some help with the seq() function, then create a vector from 2 to 200
 # by 2s.  Notice how the seq() function works -- the `to` argument will
@@ -570,8 +585,8 @@ sessionInfo()
 ```
 
 ```
-## R version 3.0.2 (2013-09-25)
-## Platform: x86_64-apple-darwin10.8.0 (64-bit)
+## R version 3.1.0 (2014-04-10)
+## Platform: x86_64-apple-darwin13.1.0 (64-bit)
 ## 
 ## locale:
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -581,17 +596,18 @@ sessionInfo()
 ## [8] base     
 ## 
 ## other attached packages:
-##  [1] DESeq2_1.2.10             RcppArmadillo_0.4.300.8.0
-##  [3] Rcpp_0.11.2               GenomicRanges_1.14.4     
-##  [5] XVector_0.2.0             IRanges_1.20.7           
-##  [7] Biobase_2.22.0            BiocGenerics_0.8.0       
-##  [9] knitr_1.6                 BiocInstaller_1.12.1     
+##  [1] DESeq2_1.4.5              RcppArmadillo_0.4.300.8.0
+##  [3] Rcpp_0.11.2               GenomicRanges_1.16.3     
+##  [5] GenomeInfoDb_1.0.2        IRanges_1.22.9           
+##  [7] Biobase_2.24.0            BiocGenerics_0.10.0      
+##  [9] knitr_1.6                 BiocInstaller_1.14.2     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] annotate_1.40.1      AnnotationDbi_1.24.0 DBI_0.2-7           
-##  [4] evaluate_0.5.5       formatR_0.10         genefilter_1.44.0   
-##  [7] grid_3.0.2           lattice_0.20-29      locfit_1.5-9.1      
-## [10] RColorBrewer_1.0-5   RSQLite_0.11.4       splines_3.0.2       
-## [13] stats4_3.0.2         stringr_0.6.2        survival_2.37-7     
-## [16] tools_3.0.2          XML_3.95-0.2         xtable_1.7-3
+##  [1] annotate_1.42.0      AnnotationDbi_1.26.0 DBI_0.2-7           
+##  [4] evaluate_0.5.5       formatR_0.10         genefilter_1.46.1   
+##  [7] geneplotter_1.42.0   grid_3.1.0           lattice_0.20-29     
+## [10] locfit_1.5-9.1       RColorBrewer_1.0-5   RSQLite_0.11.4      
+## [13] splines_3.1.0        stats4_3.1.0         stringr_0.6.2       
+## [16] survival_2.37-7      tools_3.1.0          XML_3.98-1.1        
+## [19] xtable_1.7-3         XVector_0.4.0
 ```
