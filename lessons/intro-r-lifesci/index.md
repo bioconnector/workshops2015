@@ -14,6 +14,8 @@ This workshop is directed toward life scientists with little to no experience wi
 
 **Link to slides (*check back after course*)**
 
+**[Link to R Cheat Sheet](http://dx.doi.org/10.6084/m9.figshare.1080756)**
+
 **[Link to course material](01-intro-r/)**
 
 ## Before coming
