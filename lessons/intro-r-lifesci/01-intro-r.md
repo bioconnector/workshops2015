@@ -489,7 +489,7 @@ You can go to the [GEO accession page](http://www.ncbi.nlm.nih.gov/geo/query/acc
 
 Note: much of this was adapted from the [DESeq2 package vignette](http://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf).
 
-#### Load packages
+#### Load packages and set working directory
 
 First, we'll need to load the Bioconductor packages we'll be using:
 
@@ -500,6 +500,13 @@ First, we'll need to load the Bioconductor packages we'll be using:
 # these (install once, load every time)
 library(Biobase)
 library(DESeq2)
+```
+
+Next, you'll need to set your working directory (folder) to the `lessons/intro-r-lifesci` subdirectory wherever you saved and extracted the [code repository for this lesson](https://github.com/bioconnector/workshops/archive/master.zip). This way, you can reference the data using a *relative path* (e.g. `data/pasilla_counts.csv`) instead of an *absolute path* (e.g. `C:/Users/name/downloads/workshops/lessons/data/pasilla_counts.csv`). You can do this either through the RStudio graphical menu (Session, Set Working Directory, Choose...), or through the `setwd()` function. You can check where you are with `getwd()`.
+
+
+```r
+getwd()
 ```
 
 #### Load the data
