@@ -26,8 +26,8 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 Formatting is easy. This is **bold text**, this is *italic text*, and this is `fixed-width text`. 
 
 * This is a bulleted list.
-  * This is a sub-bullet
-  * Another sub-bullet
+    * This is a sub-bullet
+    * Another sub-bullet
 * This is another bullet.
 
 Create blockquotes with the ">" character: 
@@ -44,18 +44,25 @@ chromstats
 summary(chromstats)
 ```
 
+Let's use the knitr package to make a nicely formatted table:
+
+```{r, results='asis'}
+library(knitr)
+kable(chromstats)
+```
+
 We're back in plain text world here. 
 
 You can also embed plots, for example, let's make a bar plot of chromosome lengths. Note that chromosome 23 and 24 represent the X and Y chromosomes, respectively:
 
 ```{r barplot, fig.width=8, fig.height=6, fig.cap="Bar plot of Chromosome Lengths"}
 library(ggplot2)
-qplot(chr, length, geom="bar", data=chromstats, stat="identity", main="Chromosome lengths")
+qplot(chr, length, geom="bar", data=chromstats, stat="identity")
 ```
 
 Now let's make a scatterplot of the number of SNPs on each chromosome versus the chromosome's length:
 
-```{r scatterplot, fig.width=8, fig.height=6, fig.cap="Scatter plot of SNPs vs Chromosome Length"}
-p <- qplot(length, variations, data=chromstats, main="Number of SNPs vs. Chromosome Length") 
+```{r scatterplot, fig.width=8, fig.height=6, fig.cap="Scatter plot of Number of SNPs vs Chromosome Length"}
+p <- qplot(length, variations, data=chromstats) 
 p + geom_smooth(method="loess")
 ```
