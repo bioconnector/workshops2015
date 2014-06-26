@@ -6,7 +6,12 @@ layout: page
 
 
 
-[Click here for information about this course](../).
+**[Click here for information about this course](../).**
+
+[Link to slides](https://speakerdeck.com/stephenturner/introduction-to-r-for-life-scientists).
+
+[Link to R Cheat Sheet](http://dx.doi.org/10.6084/m9.figshare.1080756).
+
 
 ## Before coming
 
