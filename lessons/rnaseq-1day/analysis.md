@@ -230,7 +230,7 @@ head(countdata)
 ## OR4G11P       0    0    0    0    0    0
 ```
 
-## Exercise 1
+### Exercise 1
 Find the gene with the highest expression in any sample. Extract  the expression data for this gene for all samples. In which sample does it have the highest expression? What is the function of the gene? Can you suggest why this is the top expressed gene?
 
 
@@ -264,14 +264,14 @@ countdata[13514, ] #get other sample data - max is in uvb1
 #this is a pseudogene - maybe an artefact of only aligning reads to a single chromosome?
 ```
 
+## Data investigation using base R
 
 We can investigate this data a bit more using some of the basic R functions before going on to use more sophisticated analysis tools.
 
-Calculate the mean for each gene for each condition.
+Calculate the mean for each gene for each condition. First make a copy of the data, because we'll need it later. We will work on the copy.
 
 
 ```r
-# Make a copy first so don't screw up DESeq stuff below. Fixme - need more commentary
 countdata2 <- countdata
 
 #get Control columns
@@ -291,15 +291,7 @@ grep("ctl", colnames(countdata2))
 ```
 
 ```r
-colnames(countdata2)[grep("ctl", colnames(countdata2))]
-```
-
-```
-## [1] "ctl1" "ctl2" "ctl3"
-```
-
-```r
-ctlCols <- colnames(countdata2)[grep("ctl", colnames(countdata2))]
+ctlCols <- grep("ctl", colnames(countdata2))
 head(countdata2[,ctlCols])
 ```
 
@@ -317,7 +309,7 @@ head(countdata2[,ctlCols])
 countdata2$ctlMean <- apply(countdata2[, ctlCols], 1, mean)
 
 #same for uvb
-uvbCols <- colnames(countdata2)[grep("uvb", colnames(countdata2))]
+uvbCols <- grep("uvb", colnames(countdata2))
 countdata2$uvbMean <- apply(countdata2[, uvbCols], 1, mean)
 ```
 
@@ -338,7 +330,10 @@ ggplot(countdata2, aes(x=ctlMean, y=uvbMean)) + geom_point()
 
 ![plot of chunk ggplot_means](./analysis_files/figure-html/ggplot_means.png) 
 
-How could you make this plot more informative and nicer to look at? Hint: try using a log scale
+### Exercise 2
+How could you make this plot more informative and look more professional? Hint: try using a log scale. Try changing colours, transparencies, sizes, or shapes of points. 
+
+`help(par)` will give you information on lots of graphical parameters that can be set. Help for ggplot2 can be found [here](http://docs.ggplot2.org/current/).
 
 
 ```r
@@ -350,16 +345,19 @@ plot(countdata2$ctlMean, countdata2$uvbMean, log="xy")
 ## Warning: 56110 y values <= 0 omitted from logarithmic plot
 ```
 
-![plot of chunk plot_means2](./analysis_files/figure-html/plot_means2.png) 
+![plot of chunk exercise2_1](./analysis_files/figure-html/exercise2_1.png) 
 
 
 ```r
-ggplot(countdata2, aes(x=ctlMean, y=uvbMean)) + geom_point() + scale_x_log10() + scale_y_log10()
+ggplot(countdata2, aes(x=ctlMean, y=uvbMean)) + geom_point() + scale_x_log10() + scale_y_log10() + theme_bw()
 ```
 
-![plot of chunk ggplot_means2](./analysis_files/figure-html/ggplot_means2.png) 
+![plot of chunk exercise2_2](./analysis_files/figure-html/exercise2_2.png) 
+There are lots more options you can use to alter the appearance of these plots.
 
-We can find candidate differentially expressed genes by finding those with a large change between control and UVB samples. A common threshold used is log2 fold change more than 2 fold. We will calculate log2 fold change for all the genes and colour the genes with log2 fold change more than 2 fold on the plot.
+##Find candidate differentially expressed genes
+
+We can find candidate differentially expressed genes by looking for genes with a large change between control and UVB samples. A common threshold used is log2 fold change more than 2 fold. We will calculate log2 fold change for all the genes and colour the genes with log2 fold change more than 2 fold on the plot.
 
 
 ```r
