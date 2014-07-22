@@ -2,6 +2,7 @@
 title: "RNAseq Analysis Example"
 output: html_document
 ---
+
 This is an introduction to RNAseq analysis for use at Software Carpentry bootcamps that have covered novice R. It involves reading in some count data from an RNAseq experiment, exploring the data and then analysis with the package DESeq2.
 
 ```{r data_input}
