@@ -4,8 +4,18 @@ output:
   html_document:
     keep_md: yes
 ---
-
 This is an introduction to RNAseq analysis for use at Software Carpentry bootcamps that have covered novice R. It involves reading in some count data from an RNAseq experiment, exploring the data and then analysis with the package DESeq2.
+
+## Install required CRAN packages
+
+First, install some packages that you'll use.
+
+```{r install_packages, eval=FALSE}
+install.packages("gplots")
+install.packages("ggplot2")
+install.packages("calibrate")
+```
+
 
 ```{r data_input}
 ## Filename with output from featureCounts
@@ -16,6 +26,7 @@ head(countdata)
 colnames(countdata)
 class(countdata)
 ```
+
 Have a look at the data. It contains information about genes (one gene per row) with the gene positions in the first five columns and then information about the number of reads aligning to the gene in each experimental sample. We don't need the information on gene position, so we can remove it from the data frame.
 
 ```{r}
@@ -28,6 +39,7 @@ colnames(countdata)
 ```
 
 We can rename the columns to something a bit more readable.
+
 ```{r eval=FALSE}
 ## Manually
 c("ctl1", "ctl2", "ctl3", "uvb1", "uvb2", "uvb3")
@@ -50,7 +62,8 @@ head(countdata)
 
 We can investigate this data a bit more using some of the basic R functions before going on to use more sophisticated analysis tools.
 
-calculate the mean for each gene for each condition.
+Calculate the mean for each gene for each condition.
+
 ```{r}
 
 # Make a copy first so don't screw up DESeq stuff below. Fixme - need more commentary
@@ -70,8 +83,8 @@ countdata2$ctlMean <- apply(countdata2[, ctlCols], 1, mean)
 #same for uvb
 uvbCols <- colnames(countdata2)[grep("uvb", colnames(countdata2))]
 countdata2$uvbMean <- apply(countdata2[, uvbCols], 1, mean)
-
 ```
+
 Plot the mean expression of each gene in control against the UVB sample mean. Look for outliers.
 
 ```{r}
@@ -121,17 +134,21 @@ ggplot(countdata2, aes(x=ctlMean, y=uvbMean, colour=outlier)) + geom_point() + s
 DESeq2 analysis
 ---------
 
+
 DESeq2 is an R package for analysis of RNAseq data. It is available from [Bioconductor](http://www.bioconductor.org/). [Explain packages and Bioconductor?]
 
-```{r}
+```{r install_deseq2, eval=FALSE}
 #install and have a break to check everyone is up to date?
-#source("http://bioconductor.org/biocLite.R")
-#biocLite("DESeq2")
 #explain bioconductor?
-library(DESeq2)
-
+source("http://bioconductor.org/biocLite.R")
+biocLite("DESeq2")
 ```
- It requires the count data to be in matrix form, and an additional dataframe describing the structure of the experiment.
+
+```{r load_deseq2}
+library(DESeq2)
+```
+
+It requires the count data to be in matrix form, and an additional dataframe describing the structure of the experiment.
 
 ```{r}
 # Convert to matrix
@@ -156,6 +173,7 @@ dds
 
 Run the DESeq pipeline on this object. [Describe pipeline steps?]
 Get results and have a look at them
+
 ```{r}
 dds <- DESeq(dds)
 
@@ -203,7 +221,6 @@ as.matrix(dist(t(assay(rld))))
 sampleDists <- as.matrix(dist(t(assay(rld))))
 heatmap(sampleDists)
 ## better heatmap with gplots
-#install.packages("gplots")
 library(gplots)
 heatmap.2(sampleDists)
 heatmap.2(sampleDists, col=colorpanel(64, "steelblue", "white"), key=FALSE, trace="none")
@@ -222,8 +239,6 @@ hist(res$pvalue, breaks=50, col="grey")
 par(pch=16)
 with(res, plot(baseMean, log2FoldChange, pch=20, cex=.5, log="x"))
 with(subset(res, padj<.05), points(baseMean, log2FoldChange, col="red", pch=16))
-## add points
-#install.packages("calibrate")
 library(calibrate)
 ?textxy
 res$Gene <- rownames(res)
