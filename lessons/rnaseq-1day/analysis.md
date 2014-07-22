@@ -1,7 +1,8 @@
 # RNAseq Analysis Example
 This is an introduction to RNAseq analysis for use at Software Carpentry bootcamps that have covered novice R. It involves reading in some count data from an RNAseq experiment, exploring the data and then analysis with the package DESeq2.
 
-## Install required CRAN packages
+Install required CRAN packages
+-----------------------------
 
 First, install some packages that you'll use.
 
@@ -128,7 +129,6 @@ Have a look at the data. It contains information about genes (one gene per row) 
 # Remove first five columns (chr, start, end, strand, length)
 
 countdata <- countdata[ ,-(1:5)]
-
 head(countdata)
 ```
 
@@ -240,7 +240,6 @@ Calculate the mean for each gene for each condition.
 # Make a copy first so don't screw up DESeq stuff below. Fixme - need more commentary
 countdata2 <- countdata
 
-
 #get Control columns
 colnames(countdata2)
 ```
@@ -293,17 +292,17 @@ Plot the mean expression of each gene in control against the UVB sample mean. Lo
 
 ```r
 plot(countdata2$ctlMean, countdata2$uvbMean)
-
-library(ggplot2)
 ```
 
-![plot of chunk unnamed-chunk-5](./analysis_files/figure-html/unnamed-chunk-51.png) 
+![plot of chunk plot_means](./analysis_files/figure-html/plot_means.png) 
+
 
 ```r
+library(ggplot2)
 ggplot(countdata2, aes(x=ctlMean, y=uvbMean)) + geom_point()
 ```
 
-![plot of chunk unnamed-chunk-5](./analysis_files/figure-html/unnamed-chunk-52.png) 
+![plot of chunk ggplot_means](./analysis_files/figure-html/ggplot_means.png) 
 
 How could you make this plot more informative and nicer to look at? Hint: try using a log scale
 
@@ -317,13 +316,14 @@ plot(countdata2$ctlMean, countdata2$uvbMean, log="xy")
 ## Warning: 56110 y values <= 0 omitted from logarithmic plot
 ```
 
-![plot of chunk unnamed-chunk-6](./analysis_files/figure-html/unnamed-chunk-61.png) 
+![plot of chunk plot_means2](./analysis_files/figure-html/plot_means2.png) 
+
 
 ```r
 ggplot(countdata2, aes(x=ctlMean, y=uvbMean)) + geom_point() + scale_x_log10() + scale_y_log10()
 ```
 
-![plot of chunk unnamed-chunk-6](./analysis_files/figure-html/unnamed-chunk-62.png) 
+![plot of chunk ggplot_means2](./analysis_files/figure-html/ggplot_means2.png) 
 
 We can find candidate differentially expressed genes by finding those with a large change between control and UVB samples. A common threshold used is log2 fold change more than 2 fold. We will calculate log2 fold change for all the genes and colour the genes with log2 fold change more than 2 fold on the plot.
 
@@ -386,7 +386,10 @@ Make a new column to store this information in.
 countdata2$outlier <- FALSE
 countdata2$outlier[countdata2$log2FC > 2] <- TRUE
 countdata2$outlier[countdata2$log2FC < -2] <- TRUE
+```
 
+
+```r
 plot(countdata2$ctlMean, countdata2$uvbMean, log="xy")
 ```
 
@@ -399,13 +402,14 @@ plot(countdata2$ctlMean, countdata2$uvbMean, log="xy")
 points(countdata2$ctlMean[countdata2$outlier==TRUE], countdata2$uvbMean[countdata2$outlier==TRUE], col="red")
 ```
 
-![plot of chunk unnamed-chunk-9](./analysis_files/figure-html/unnamed-chunk-91.png) 
+![plot of chunk plot_outliers](./analysis_files/figure-html/plot_outliers.png) 
+
 
 ```r
 ggplot(countdata2, aes(x=ctlMean, y=uvbMean, colour=outlier)) + geom_point() + scale_x_log10() + scale_y_log10() 
 ```
 
-![plot of chunk unnamed-chunk-9](./analysis_files/figure-html/unnamed-chunk-92.png) 
+![plot of chunk ggplot_outliers](./analysis_files/figure-html/ggplot_outliers.png) 
 
 DESeq2 analysis
 ---------
@@ -661,7 +665,7 @@ We can also do some exploratory plotting of the data.
 plotDispEsts(dds, main="Dispersion plot")
 ```
 
-![plot of chunk unnamed-chunk-14](./analysis_files/figure-html/unnamed-chunk-14.png) 
+![plot of chunk plot_dispersion](./analysis_files/figure-html/plot_dispersion.png) 
 
 
 ```r
@@ -670,7 +674,7 @@ rld <- rlogTransformation(dds)
 plotPCA(rld)
 ```
 
-![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-151.png) 
+![plot of chunk plot_heatmaps](./analysis_files/figure-html/plot_heatmaps1.png) 
 
 ```r
 # Sample distance heatmap
@@ -745,7 +749,7 @@ sampleDists <- as.matrix(dist(t(assay(rld))))
 heatmap(sampleDists)
 ```
 
-![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-152.png) 
+![plot of chunk plot_heatmaps](./analysis_files/figure-html/plot_heatmaps2.png) 
 
 ```r
 ## better heatmap with gplots
@@ -775,38 +779,39 @@ library(gplots)
 heatmap.2(sampleDists)
 ```
 
-![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-153.png) 
+![plot of chunk plot_heatmaps](./analysis_files/figure-html/plot_heatmaps3.png) 
 
 ```r
 heatmap.2(sampleDists, col=colorpanel(64, "steelblue", "white"), key=FALSE, trace="none")
 ```
 
-![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-154.png) 
+![plot of chunk plot_heatmaps](./analysis_files/figure-html/plot_heatmaps4.png) 
 
 ```r
 heatmap.2(sampleDists, col=colorpanel(64, "black", "white"), key=FALSE, trace="none")
 ```
 
-![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-155.png) 
+![plot of chunk plot_heatmaps](./analysis_files/figure-html/plot_heatmaps5.png) 
 
 ```r
 heatmap.2(sampleDists, col=colorpanel(64, "red", "black", "green"), key=FALSE, trace="none")
 ```
 
-![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-156.png) 
+![plot of chunk plot_heatmaps](./analysis_files/figure-html/plot_heatmaps6.png) 
 
 ```r
 heatmap.2(sampleDists, col=colorpanel(64, "red", "white", "blue"), key=FALSE, trace="none")
 ```
 
-![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-157.png) 
+![plot of chunk plot_heatmaps](./analysis_files/figure-html/plot_heatmaps7.png) 
+
 
 ```r
 ## Examine plot of p-values
 hist(res$pvalue, breaks=50, col="grey")
 ```
 
-![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-158.png) 
+![plot of chunk plot_pval_hist](./analysis_files/figure-html/plot_pval_hist.png) 
 
 
 
@@ -836,7 +841,8 @@ res$Gene <- rownames(res)
 with(subset(res, padj<.05), textxy(baseMean, log2FoldChange, labs=Gene, cex=1, col=2))
 ```
 
-![plot of chunk unnamed-chunk-16](./analysis_files/figure-html/unnamed-chunk-161.png) 
+![plot of chunk MA_plot](./analysis_files/figure-html/MA_plot.png) 
+
 
 ```r
 # Volcano plot
@@ -852,4 +858,4 @@ legend("topleft", legend=c("FDR<0.05", "|LFC|>1", "both"), pch=16, col=c("red","
 with(subset(res, padj<.05 & abs(log2FoldChange)>1), textxy(log2FoldChange, -log10(pvalue), labs=Gene, cex=1))
 ```
 
-![plot of chunk unnamed-chunk-16](./analysis_files/figure-html/unnamed-chunk-162.png) 
+![plot of chunk volcano_plot](./analysis_files/figure-html/volcano_plot.png) 
