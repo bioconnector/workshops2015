@@ -1,8 +1,8 @@
 # RNAseq Analysis Example
 This is an introduction to RNAseq analysis for use at Software Carpentry bootcamps that have covered novice R. It involves reading in some count data from an RNAseq experiment, exploring the data and then analysis with the package DESeq2.
 
-Install required CRAN packages
------------------------------
+## Install required CRAN packages
+
 
 First, install some packages that you'll use.
 
@@ -411,9 +411,7 @@ ggplot(countdata2, aes(x=ctlMean, y=uvbMean, colour=outlier)) + geom_point() + s
 
 ![plot of chunk ggplot_outliers](./analysis_files/figure-html/ggplot_outliers.png) 
 
-DESeq2 analysis
----------
-
+## DESeq2 analysis
 
 DESeq2 is an R package for analysis of RNAseq data. It is available from [Bioconductor](http://www.bioconductor.org/). [Explain packages and Bioconductor?]
 
@@ -655,8 +653,7 @@ sig <- subset(resdata, padj<0.05)
 write.table(sig, file="results/sig.txt", sep="\t") #tab delim data
 ```
 
-Data Visualization
-------------------
+## Data Visualization
 
 We can also do some exploratory plotting of the data.
 
