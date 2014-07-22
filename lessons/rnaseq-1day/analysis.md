@@ -1,6 +1,17 @@
 # RNAseq Analysis Example
-
 This is an introduction to RNAseq analysis for use at Software Carpentry bootcamps that have covered novice R. It involves reading in some count data from an RNAseq experiment, exploring the data and then analysis with the package DESeq2.
+
+## Install required CRAN packages
+
+First, install some packages that you'll use.
+
+
+```r
+install.packages("gplots")
+install.packages("ggplot2")
+install.packages("calibrate")
+```
+
 
 
 ```r
@@ -109,6 +120,7 @@ class(countdata)
 ```
 ## [1] "data.frame"
 ```
+
 Have a look at the data. It contains information about genes (one gene per row) with the gene positions in the first five columns and then information about the number of reads aligning to the gene in each experimental sample. We don't need the information on gene position, so we can remove it from the data frame.
 
 
@@ -180,6 +192,7 @@ colnames(countdata)
 
 We can rename the columns to something a bit more readable.
 
+
 ```r
 ## Manually
 c("ctl1", "ctl2", "ctl3", "uvb1", "uvb2", "uvb3")
@@ -220,7 +233,8 @@ head(countdata)
 
 We can investigate this data a bit more using some of the basic R functions before going on to use more sophisticated analysis tools.
 
-calculate the mean for each gene for each condition.
+Calculate the mean for each gene for each condition.
+
 
 ```r
 # Make a copy first so don't screw up DESeq stuff below. Fixme - need more commentary
@@ -273,6 +287,7 @@ countdata2$ctlMean <- apply(countdata2[, ctlCols], 1, mean)
 uvbCols <- colnames(countdata2)[grep("uvb", colnames(countdata2))]
 countdata2$uvbMean <- apply(countdata2[, uvbCols], 1, mean)
 ```
+
 Plot the mean expression of each gene in control against the UVB sample mean. Look for outliers.
 
 
@@ -395,14 +410,19 @@ ggplot(countdata2, aes(x=ctlMean, y=uvbMean, colour=outlier)) + geom_point() + s
 DESeq2 analysis
 ---------
 
+
 DESeq2 is an R package for analysis of RNAseq data. It is available from [Bioconductor](http://www.bioconductor.org/). [Explain packages and Bioconductor?]
 
 
 ```r
 #install and have a break to check everyone is up to date?
-#source("http://bioconductor.org/biocLite.R")
-#biocLite("DESeq2")
 #explain bioconductor?
+source("http://bioconductor.org/biocLite.R")
+biocLite("DESeq2")
+```
+
+
+```r
 library(DESeq2)
 ```
 
@@ -441,7 +461,8 @@ library(DESeq2)
 ```
 ## Warning: package 'RcppArmadillo' was built under R version 3.1.1
 ```
- It requires the count data to be in matrix form, and an additional dataframe describing the structure of the experiment.
+
+It requires the count data to be in matrix form, and an additional dataframe describing the structure of the experiment.
 
 
 ```r
@@ -505,6 +526,7 @@ dds
 
 Run the DESeq pipeline on this object. [Describe pipeline steps?]
 Get results and have a look at them
+
 
 ```r
 dds <- DESeq(dds)
@@ -639,7 +661,7 @@ We can also do some exploratory plotting of the data.
 plotDispEsts(dds, main="Dispersion plot")
 ```
 
-![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-15.png) 
+![plot of chunk unnamed-chunk-14](./analysis_files/figure-html/unnamed-chunk-14.png) 
 
 
 ```r
@@ -648,7 +670,7 @@ rld <- rlogTransformation(dds)
 plotPCA(rld)
 ```
 
-![plot of chunk unnamed-chunk-16](./analysis_files/figure-html/unnamed-chunk-161.png) 
+![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-151.png) 
 
 ```r
 # Sample distance heatmap
@@ -723,11 +745,10 @@ sampleDists <- as.matrix(dist(t(assay(rld))))
 heatmap(sampleDists)
 ```
 
-![plot of chunk unnamed-chunk-16](./analysis_files/figure-html/unnamed-chunk-162.png) 
+![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-152.png) 
 
 ```r
 ## better heatmap with gplots
-#install.packages("gplots")
 library(gplots)
 ```
 
@@ -754,38 +775,38 @@ library(gplots)
 heatmap.2(sampleDists)
 ```
 
-![plot of chunk unnamed-chunk-16](./analysis_files/figure-html/unnamed-chunk-163.png) 
+![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-153.png) 
 
 ```r
 heatmap.2(sampleDists, col=colorpanel(64, "steelblue", "white"), key=FALSE, trace="none")
 ```
 
-![plot of chunk unnamed-chunk-16](./analysis_files/figure-html/unnamed-chunk-164.png) 
+![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-154.png) 
 
 ```r
 heatmap.2(sampleDists, col=colorpanel(64, "black", "white"), key=FALSE, trace="none")
 ```
 
-![plot of chunk unnamed-chunk-16](./analysis_files/figure-html/unnamed-chunk-165.png) 
+![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-155.png) 
 
 ```r
 heatmap.2(sampleDists, col=colorpanel(64, "red", "black", "green"), key=FALSE, trace="none")
 ```
 
-![plot of chunk unnamed-chunk-16](./analysis_files/figure-html/unnamed-chunk-166.png) 
+![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-156.png) 
 
 ```r
 heatmap.2(sampleDists, col=colorpanel(64, "red", "white", "blue"), key=FALSE, trace="none")
 ```
 
-![plot of chunk unnamed-chunk-16](./analysis_files/figure-html/unnamed-chunk-167.png) 
+![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-157.png) 
 
 ```r
 ## Examine plot of p-values
 hist(res$pvalue, breaks=50, col="grey")
 ```
 
-![plot of chunk unnamed-chunk-16](./analysis_files/figure-html/unnamed-chunk-168.png) 
+![plot of chunk unnamed-chunk-15](./analysis_files/figure-html/unnamed-chunk-158.png) 
 
 
 
@@ -802,8 +823,6 @@ with(res, plot(baseMean, log2FoldChange, pch=20, cex=.5, log="x"))
 
 ```r
 with(subset(res, padj<.05), points(baseMean, log2FoldChange, col="red", pch=16))
-## add points
-#install.packages("calibrate")
 library(calibrate)
 ```
 
@@ -817,7 +836,7 @@ res$Gene <- rownames(res)
 with(subset(res, padj<.05), textxy(baseMean, log2FoldChange, labs=Gene, cex=1, col=2))
 ```
 
-![plot of chunk unnamed-chunk-17](./analysis_files/figure-html/unnamed-chunk-171.png) 
+![plot of chunk unnamed-chunk-16](./analysis_files/figure-html/unnamed-chunk-161.png) 
 
 ```r
 # Volcano plot
@@ -833,4 +852,4 @@ legend("topleft", legend=c("FDR<0.05", "|LFC|>1", "both"), pch=16, col=c("red","
 with(subset(res, padj<.05 & abs(log2FoldChange)>1), textxy(log2FoldChange, -log10(pvalue), labs=Gene, cex=1))
 ```
 
-![plot of chunk unnamed-chunk-17](./analysis_files/figure-html/unnamed-chunk-172.png) 
+![plot of chunk unnamed-chunk-16](./analysis_files/figure-html/unnamed-chunk-162.png) 
