@@ -3,7 +3,6 @@ This is an introduction to RNAseq analysis for use at Software Carpentry bootcam
 
 ## Install required CRAN packages
 
-
 First, install some packages that you'll use.
 
 
@@ -230,6 +229,41 @@ head(countdata)
 ## OR4G4P        0    0    0    0    0    0
 ## OR4G11P       0    0    0    0    0    0
 ```
+
+## Exercise 1
+Find the gene with the highest expression in any sample. Extract  the expression data for this gene for all samples. In which sample does it have the highest expression? What is the function of the gene? Can you suggest why this is the top expressed gene?
+
+
+```r
+max(apply(countdata, 1, max)) #max expression is 7013
+```
+
+```
+## [1] 7013
+```
+
+```r
+which.max(apply(countdata, 1, max)) #gene is EEF1A1P9
+```
+
+```
+## EEF1A1P9 
+##    13514
+```
+
+```r
+countdata[13514, ] #get other sample data - max is in uvb1
+```
+
+```
+##          ctl1 ctl2 ctl3 uvb1 uvb2 uvb3
+## EEF1A1P9 3570 3788 4345 7013 4217 3630
+```
+
+```r
+#this is a pseudogene - maybe an artefact of only aligning reads to a single chromosome?
+```
+
 
 We can investigate this data a bit more using some of the basic R functions before going on to use more sophisticated analysis tools.
 
