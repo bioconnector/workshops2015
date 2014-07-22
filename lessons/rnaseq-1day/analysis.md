@@ -1,5 +1,6 @@
 # RNAseq Analysis Example
-This is an introduction to RNAseq analysis for use at Software Carpentry bootcamps that have covered novice R. It involves reading in some count data from an RNAseq experiment, exploring the data and then analysis with the package DESeq2.
+
+This is an introduction to RNAseq analysis for use at Software Carpentry bootcamps that have covered novice R. It involves reading in some count data from an RNAseq experiment, exploring the data using base R functions and then analysis with the package DESeq2.
 
 ## Install required CRAN packages
 
@@ -12,6 +13,7 @@ install.packages("ggplot2")
 install.packages("calibrate")
 ```
 
+Import the data as a `data.frame` and examine it. The data is stored in a text file with the first line being a header giving the column names, and the row names in the first column. 
 
 
 ```r
@@ -120,13 +122,11 @@ class(countdata)
 ```
 ## [1] "data.frame"
 ```
-
-Have a look at the data. It contains information about genes (one gene per row) with the gene positions in the first five columns and then information about the number of reads aligning to the gene in each experimental sample. We don't need the information on gene position, so we can remove it from the data frame.
+It contains information about genes (one gene per row) with the gene positions in the first five columns and then information about the number of reads aligning to the gene in each experimental sample. We don't need the information on gene position, so we can remove it from the data frame.
 
 
 ```r
 # Remove first five columns (chr, start, end, strand, length)
-
 countdata <- countdata[ ,-(1:5)]
 head(countdata)
 ```
@@ -191,11 +191,10 @@ colnames(countdata)
 
 We can rename the columns to something a bit more readable.
 
-
 ```r
 ## Manually
 c("ctl1", "ctl2", "ctl3", "uvb1", "uvb2", "uvb3")
-## Using paste and rep
+## Using paste
 ?paste
 paste("ctl", 1:3)
 paste("ctl", 1:3, sep="")
@@ -204,6 +203,7 @@ paste0("ctl", 1:3)
 c(paste0("ctl", 1:4), paste0("uvb", 1:5))
 ```
 
+Using `gsub` is a more reproducible way to do this.
 
 ```r
 ## Using gsub -- reproducible
@@ -268,7 +268,7 @@ countdata[13514, ] #get other sample data - max is in uvb1
 
 We can investigate this data a bit more using some of the basic R functions before going on to use more sophisticated analysis tools.
 
-Calculate the mean for each gene for each condition. First make a copy of the data, because we'll need it later. We will work on the copy.
+We will calculate the mean for each gene for each condition. First make a copy of the data, because we'll need it later. We will work on the copy.
 
 
 ```r
@@ -445,7 +445,7 @@ ggplot(countdata2, aes(x=ctlMean, y=uvbMean, colour=outlier)) + geom_point() + s
 
 ## DESeq2 analysis
 
-DESeq2 is an R package for analysis of RNAseq data. It is available from [Bioconductor](http://www.bioconductor.org/). [Explain packages and Bioconductor?]
+DESeq2 is an R package for analysis of RNAseq data. It is available from [Bioconductor](http://www.bioconductor.org/). Bioconductor is a project to provide tools for analysing high-throughput genomic data including RNA-seq, ChIP-seq and arrays. You can explore Bioconductor packages [here](http://www.bioconductor.org/packages/release/BiocViews.html#___Software). 
 
 
 ```r
@@ -494,6 +494,28 @@ library(DESeq2)
 
 ```
 ## Warning: package 'RcppArmadillo' was built under R version 3.1.1
+```
+
+```r
+citation("DESeq2")
+```
+
+```
+## 
+##   Michael I Love, Wolfgang Huber and Simon Anders (2014):
+##   Moderated estimation of fold change and dispersion for RNA-Seq
+##   data with DESeq2. bioRxiv preprint
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Article{,
+##     title = {Moderated estimation of fold change and dispersion for RNA-Seq data with DESeq2},
+##     author = {Michael I Love and Wolfgang Huber and Simon Anders},
+##     year = {2014},
+##     journal = {bioRxiv},
+##     doi = {10.1101/002832},
+##     url = {http://dx.doi.org/10.1101/002832},
+##   }
 ```
 
 It requires the count data to be in matrix form, and an additional dataframe describing the structure of the experiment.
