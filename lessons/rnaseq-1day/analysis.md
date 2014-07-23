@@ -1,8 +1,8 @@
 # RNAseq Analysis Example
-This is an introduction to RNAseq analysis for use at Software Carpentry bootcamps that have covered novice R. It involves reading in some count data from an RNAseq experiment, exploring the data and then analysis with the package DESeq2.
+
+This is an introduction to RNAseq analysis for use at Software Carpentry bootcamps that have covered novice R. It involves reading in some count data from an RNAseq experiment, exploring the data using base R functions and then analysis with the package DESeq2.
 
 ## Install required CRAN packages
-
 
 First, install some packages that you'll use.
 
@@ -13,6 +13,7 @@ install.packages("ggplot2")
 install.packages("calibrate")
 ```
 
+Import the data as a `data.frame` and examine it. The data is stored in a text file with the first line being a header giving the column names, and the row names in the first column. 
 
 
 ```r
@@ -121,13 +122,11 @@ class(countdata)
 ```
 ## [1] "data.frame"
 ```
-
-Have a look at the data. It contains information about genes (one gene per row) with the gene positions in the first five columns and then information about the number of reads aligning to the gene in each experimental sample. We don't need the information on gene position, so we can remove it from the data frame.
+It contains information about genes (one gene per row) with the gene positions in the first five columns and then information about the number of reads aligning to the gene in each experimental sample. We don't need the information on gene position, so we can remove it from the data frame.
 
 
 ```r
 # Remove first five columns (chr, start, end, strand, length)
-
 countdata <- countdata[ ,-(1:5)]
 head(countdata)
 ```
@@ -192,11 +191,10 @@ colnames(countdata)
 
 We can rename the columns to something a bit more readable.
 
-
 ```r
 ## Manually
 c("ctl1", "ctl2", "ctl3", "uvb1", "uvb2", "uvb3")
-## Using paste and rep
+## Using paste
 ?paste
 paste("ctl", 1:3)
 paste("ctl", 1:3, sep="")
@@ -205,6 +203,7 @@ paste0("ctl", 1:3)
 c(paste0("ctl", 1:4), paste0("uvb", 1:5))
 ```
 
+Using `gsub` is a more reproducible way to do this.
 
 ```r
 ## Using gsub -- reproducible
@@ -231,13 +230,48 @@ head(countdata)
 ## OR4G11P       0    0    0    0    0    0
 ```
 
-We can investigate this data a bit more using some of the basic R functions before going on to use more sophisticated analysis tools.
-
-Calculate the mean for each gene for each condition.
+### Exercise 1
+Find the gene with the highest expression in any sample. Extract  the expression data for this gene for all samples. In which sample does it have the highest expression? What is the function of the gene? Can you suggest why this is the top expressed gene?
 
 
 ```r
-# Make a copy first so don't screw up DESeq stuff below. Fixme - need more commentary
+max(apply(countdata, 1, max)) #max expression is 7013
+```
+
+```
+## [1] 7013
+```
+
+```r
+which.max(apply(countdata, 1, max)) #gene is EEF1A1P9
+```
+
+```
+## EEF1A1P9 
+##    13514
+```
+
+```r
+countdata[13514, ] #get other sample data - max is in uvb1
+```
+
+```
+##          ctl1 ctl2 ctl3 uvb1 uvb2 uvb3
+## EEF1A1P9 3570 3788 4345 7013 4217 3630
+```
+
+```r
+#this is a pseudogene - maybe an artefact of only aligning reads to a single chromosome?
+```
+
+## Data investigation using base R
+
+We can investigate this data a bit more using some of the basic R functions before going on to use more sophisticated analysis tools.
+
+We will calculate the mean for each gene for each condition. First make a copy of the data, because we'll need it later. We will work on the copy.
+
+
+```r
 countdata2 <- countdata
 
 #get Control columns
@@ -257,15 +291,7 @@ grep("ctl", colnames(countdata2))
 ```
 
 ```r
-colnames(countdata2)[grep("ctl", colnames(countdata2))]
-```
-
-```
-## [1] "ctl1" "ctl2" "ctl3"
-```
-
-```r
-ctlCols <- colnames(countdata2)[grep("ctl", colnames(countdata2))]
+ctlCols <- grep("ctl", colnames(countdata2))
 head(countdata2[,ctlCols])
 ```
 
@@ -283,7 +309,7 @@ head(countdata2[,ctlCols])
 countdata2$ctlMean <- apply(countdata2[, ctlCols], 1, mean)
 
 #same for uvb
-uvbCols <- colnames(countdata2)[grep("uvb", colnames(countdata2))]
+uvbCols <- grep("uvb", colnames(countdata2))
 countdata2$uvbMean <- apply(countdata2[, uvbCols], 1, mean)
 ```
 
@@ -304,7 +330,10 @@ ggplot(countdata2, aes(x=ctlMean, y=uvbMean)) + geom_point()
 
 ![plot of chunk ggplot_means](./analysis_files/figure-html/ggplot_means.png) 
 
-How could you make this plot more informative and nicer to look at? Hint: try using a log scale
+### Exercise 2
+How could you make this plot more informative and look more professional? Hint: try using a log scale. Try changing colours, transparencies, sizes, or shapes of points. 
+
+`help(par)` will give you information on lots of graphical parameters that can be set. Help for ggplot2 can be found [here](http://docs.ggplot2.org/current/).
 
 
 ```r
@@ -316,16 +345,19 @@ plot(countdata2$ctlMean, countdata2$uvbMean, log="xy")
 ## Warning: 56110 y values <= 0 omitted from logarithmic plot
 ```
 
-![plot of chunk plot_means2](./analysis_files/figure-html/plot_means2.png) 
+![plot of chunk exercise2_1](./analysis_files/figure-html/exercise2_1.png) 
 
 
 ```r
-ggplot(countdata2, aes(x=ctlMean, y=uvbMean)) + geom_point() + scale_x_log10() + scale_y_log10()
+ggplot(countdata2, aes(x=ctlMean, y=uvbMean)) + geom_point() + scale_x_log10() + scale_y_log10() + theme_bw()
 ```
 
-![plot of chunk ggplot_means2](./analysis_files/figure-html/ggplot_means2.png) 
+![plot of chunk exercise2_2](./analysis_files/figure-html/exercise2_2.png) 
+There are lots more options you can use to alter the appearance of these plots.
 
-We can find candidate differentially expressed genes by finding those with a large change between control and UVB samples. A common threshold used is log2 fold change more than 2 fold. We will calculate log2 fold change for all the genes and colour the genes with log2 fold change more than 2 fold on the plot.
+##Find candidate differentially expressed genes
+
+We can find candidate differentially expressed genes by looking for genes with a large change between control and UVB samples. A common threshold used is log2 fold change more than 2 fold. We will calculate log2 fold change for all the genes and colour the genes with log2 fold change more than 2 fold on the plot.
 
 
 ```r
@@ -413,7 +445,7 @@ ggplot(countdata2, aes(x=ctlMean, y=uvbMean, colour=outlier)) + geom_point() + s
 
 ## DESeq2 analysis
 
-DESeq2 is an R package for analysis of RNAseq data. It is available from [Bioconductor](http://www.bioconductor.org/). [Explain packages and Bioconductor?]
+DESeq2 is an R package for analysis of RNAseq data. It is available from [Bioconductor](http://www.bioconductor.org/). Bioconductor is a project to provide tools for analysing high-throughput genomic data including RNA-seq, ChIP-seq and arrays. You can explore Bioconductor packages [here](http://www.bioconductor.org/packages/release/BiocViews.html#___Software). 
 
 
 ```r
@@ -462,6 +494,28 @@ library(DESeq2)
 
 ```
 ## Warning: package 'RcppArmadillo' was built under R version 3.1.1
+```
+
+```r
+citation("DESeq2")
+```
+
+```
+## 
+##   Michael I Love, Wolfgang Huber and Simon Anders (2014):
+##   Moderated estimation of fold change and dispersion for RNA-Seq
+##   data with DESeq2. bioRxiv preprint
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Article{,
+##     title = {Moderated estimation of fold change and dispersion for RNA-Seq data with DESeq2},
+##     author = {Michael I Love and Wolfgang Huber and Simon Anders},
+##     year = {2014},
+##     journal = {bioRxiv},
+##     doi = {10.1101/002832},
+##     url = {http://dx.doi.org/10.1101/002832},
+##   }
 ```
 
 It requires the count data to be in matrix form, and an additional dataframe describing the structure of the experiment.
