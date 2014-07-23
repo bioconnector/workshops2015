@@ -41,8 +41,20 @@ Participants will also be exposed to operating in a virtual environment and/or p
 
 TBA-eventbrite
 
+<!--
+    This block includes the Eventbrite registration widget if 'eventbrite' has been set in the header.
+
+    Maybe you need to change height value:
+
+    - for one room use 206px,
+    - for one waitlist room use 152px,
+    - for two room use 254px,
+    - for one waitlist room and one room use 253px,
+    - for two waitlist room use 197px.
+-->
+
 {% if page.eventbrite %}
-<iframe src="//www.eventbrite.com/tickets-external?eid={{page.eventbrite}}&ref=etckt" frameborder="0" width="100%" height="225px" scrolling="auto"></iframe>
+<iframe src="//www.eventbrite.com/tickets-external?eid={{page.eventbrite}}&ref=etckt" frameborder="0" width="100%" height="253px" scrolling="auto"></iframe>
 {% endif %}
 
 ## Before coming
