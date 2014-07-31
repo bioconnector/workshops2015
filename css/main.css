@@ -248,7 +248,10 @@ a:visited { color: #205caa; }
 .post ul,
 .post ol { margin-left: 1.35em; }
 
-.post pre code { border: none; }
+.post pre code {
+  border: none;
+  padding-left: 0;
+}
 
 /* terminal */
 .post pre.terminal {
