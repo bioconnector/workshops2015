@@ -13,9 +13,9 @@ This workshop is directed toward life scientists with little to no experience wi
 
 Participants will also be exposed to operating in a virtual environment and/or provisioning their own cloud computing resources. This course is sponsored by the Claude Moore Health Sciences Library.
 
-**Date**: TBA  
-**Time**: 8:00 am - 5:00 pm  
-**Location**: TBA
+**Date**: Monday, November 10, 2014  
+**Time**: 8:00 am (sharp!) - 5:00 pm  
+**Location**: Carter classroom, first floor Health Sciences Library
 
 **Pre-requisites**: You must bring a laptop to the course with the necessary software installed (see instructions below).
 
@@ -39,7 +39,9 @@ Participants will also be exposed to operating in a virtual environment and/or p
 
 ## Registration
 
-TBA-eventbrite
+Registration is $20 (includes lunch). Click the link below and scroll down to find the "Register" button, or use `Ctrl-F` in your browser and search for `RNA-seq Data Analysis Bootcamp`.
+
+<http://www.medicine.virginia.edu/education/more/cme/all-cme-prog-folder/FLP-page>
 
 <!--
     This block includes the Eventbrite registration widget if 'eventbrite' has been set in the header.
