@@ -5,7 +5,7 @@ layout: page
 # Course Material
 
 * [Introduction to R for Life Scientists](lessons/intro-r-lifesci/)
-* [RNA-seq workshop (*coming soon*)](lessons/rnaseq-1day/)
+* [RNA-seq workshop (*coming soon*)]()
 * Advanced data manipulation with R and dplyr (*coming soon*)
 * Advanced R graphics with R and ggplot2 (*coming soon*)
 
