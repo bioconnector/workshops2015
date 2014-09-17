@@ -5,7 +5,7 @@ title: "RNA-seq Bootcamp November 10, 2014: Registration open"
 
 Registration is open for the RNA-seq data analysis bootcamp. Click the link below and scroll down to find the "Register" button, or use `Ctrl-F` in your browser and search for `RNA-seq Data Analysis Bootcamp`.
 
-**Registration**: <http://www.medicine.virginia.edu/education/more/cme/all-cme-prog-folder/FLP-page>
+**Registration**: <https://cmetracker.net/UVACME/Catalog>
 
 **Date**: Monday, November 10, 2014  
 **Time**: 8:00 am (sharp!) - 5:00 pm  
