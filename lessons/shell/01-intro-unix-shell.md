@@ -86,7 +86,7 @@ git clone https://github.com/bioconnector/workshops.git
 
 This command will grab all of the data needed for this workshop. It's using something called git that's used for version control, but we won't talk about that here.
 
-## Moving around and listing files
+### Moving around and listing files
 
 We'll start out by moving around the file system and listing files. Today we're going to go through using the command line. These commands are in the README.md file and on your handout (fixme).
 
@@ -96,262 +96,237 @@ Let's go in to that directory we just downloaded:
 cd workshops
 ```
 
-`cd` stands for 'change directory'
-
+`cd` stands for 'change directory'. A *directory* is the same thing as a *folder*. We just call folders *directories* in the Linux/UNIX world. Here we just entered the workshops directory. If we were doing this on a graphical shell we would have double-clicked on a little folder icon. It's the same idea.
 
 In this directory, there should be some things we just downloaded. Let's check. Type:
 
 ```
-    ls
-
-`ls` stands for 'list' and it lists the contents of a directory.
+ls
 ```
 
-There's a few directories there, but not too many.
+`ls` stands for 'list' and it lists the contents of a directory. This woudld be what you would see in the folder if you were doing this graphically on a desktop.
+
+Blue things are directories, white things are files.
+
+Now, let's go look in the 'data' directory in the 'shell' lesson. It's nested a few directories deep. To get to it, let's enter and list each directory like so:
 
 ```
-Let's go look in the 'data' directory.
-
-    cd data
-    ls
+cd lessons
+ls
+cd shell
+ls
+cd data
+ls
 ```
 
-In there, all mixed up together are files and directories/folders. If we want to know which is which, we can type:
+In there, all mixed up together are regular files, directories, and an executable program. If we want to know which is which, we can type:
 
 ```
-    ls -F
-
-Anything with a "/" after it is a directory.  
-Things with a "*" after them are programs.  
-It there's nothing there it's a file.
-
+ls -F
 ```
 
-You can also use the command
+Things with a `/` after it is a directory.  
+Things with a `*` after them are programs.  
+It there's nothing there it's a regular file.
+
+You can also use the command:
 
 ```
 ls -l
 ```
 
-to see whether items in a directory are files or directories. It gives a lot more information too, such as the size of the file
+to see whether items in a directory are files or directories. It gives a lot more information too, such as the size of the file, who owns the file, etc.
 
 So, we can see that we have several files, directories and a program. Great!
 
-## Arguments
+### Options
 
-Most programs take additional arguments that control their exact behavior. For example, `-F` and `-l` are arguments to `ls`. The `ls` program, like many programs, take a lot of arguments. But how do we know what the options are to particular commands?
+Most programs take additional options that control their exact behavior. For example, `-F` and `-l` are options for `ls`. The `ls` program, like many programs, take a lot of options. But how do we know what the options are to particular commands?
 
 Most commonly used shell programs have a manual. Let's open the manual page for `ls`.
 
-```
 You can access the manual using the `man` program.
 
-    man ls
+```
+man ls
+```
 
 Space key goes forward  
 Or use the arrow keys to scroll up and down.  
 When you are done reading, just hit `q` to quit.
 
-```
-
 Programs that are run from the shell can get extremely complicated. To see an example, open up the manual page for the `find` program. No one can possibly learn all of these arguments, of course. So you will probably find yourself referring back to the manual page frequently.
 
-## The Unix directory file structure (a.k.a. where am I?)
+### The Unix directory file structure (a.k.a. where am I?)
 
-As you've already just seen, you can move around in different directories or folders at the command line. Why would you want to do this, rather than just navigating around the normal way.
+As you've already just seen, you can move around in different directories or folders at the command line.
 
 When you're working with bioinformatics programs, you're working with your data and it's key to be able to have that data in the right place and make sure the program has access to the data. Many of the problems people run in to with command line bioinformatics programs is not having the data in the place the program expects it to be.
 
-## Moving around the file system
-
-Let's practice moving around a bit.
-
-We're going to work in that `shell-genomics` directory we just downloaded.
-
-First let's navigate there using the regular way by clicking on the different folders.
-
-First we did something like go to the folder of our username. Then we opened 'shell-genomics'
-
-Let's draw out how that went.
-
-Now let's draw some of the other files and folders we could have clicked on.
+Let's draw out what we just did, and some of the other files and folders we could have clicked on.
 
 This is called a hierarchical file system structure, like an upside down tree with root (/) at the base that looks like this.
 
-![Unix](img/Slide1.jpg)
+![Unix](img/unix_filesystem.png)
 
 That (/) at the base is often also called the 'top' level.
 
-When you are working at your computer or log in to a remote computer, you are on one of the branches of that tree, your home directory (/home/username)
+When you are working at your computer or log in to a remote computer, you are on one of the branches of that tree, your home directory: **/home/username**.
 
-Now let's go do that same navigation at the command line.
-
-Type
+If we type `cd` by itself:
 
 ```
 cd
 ```
 
-This puts you in your home directory. That's /home/username
+This puts you in your home directory. That's **/home/username**
 
-## EXERCISE
+---
 
--	Using `cd` and `ls`, go in to the 'shell-genomics/data' directory and list its contents.
+** EXERCISE **
+
+-	Using `cd` and `ls`, go in to the 'workshops/shell/data' directory and list its contents.
 -	How many files, how many directories and how many programs are there?
 
+---
 
-## Where am I?
+### Where am I?
 
 Let's also check to see where we are. Sometimes when we're wandering around in the file system, it's easy to lose track of where we are and get lost.
 
-If you want to know what directory you're currently in, type
+If you want to know what directory you're currently in, type:
 
 ```
-    pwd
-
-This stands for 'print working directory'. The directory you're currently
-working in.
-
+pwd
 ```
 
-What if we want to move back up and out of the 'data' directory? Can we just type 'shell'? Try it and see what happens.
+This stands for 'print working directory'. That's the directory you're currently working in, and it's "printed" to the screen.
 
-To go 'back up a level' we need to use `..`
-
-Type
+What if we want to move back up and out of the `data` directory? To go 'back up a level' we need to use `..`
 
 ```
 cd ..
 ```
 
-Now do `ls` and `pwd`. See now that we went back up in to the 'shell' directory. `..` just means go back up a level.
+Now do `ls` and `pwd`. See now that we went back up in to the 'shell' directory. `..` means "the directory above," or "the parent directory."
 
+---
 
-## EXERCISE
+**EXERCISE**
 
-Now, we're going on a file hunt. - Move around in the 'hidden' directory and try to find the file 'youfoundit.txt'
+Let's go on a file hunt. Move around in the "shell/data/hidden" directory and try to find the file "youfoundit.txt."
 
+---
 
-## Examining the contents of other directories
+### Examining the contents of other directories
 
-By default, the `ls` commands lists the contents of the working directory (i.e. the directory you are in). You can always find the directory you are in using the `pwd` command. However, you can also give `ls` the names of other directories to view. Navigate to the home directory if you are not already there.
-
-```
-Examining contents of directories
-Type:
-
-    cd
-
-Then enter the command:
-
-    ls shell-genomics
-
-This will list the contents of the `shell-genomics` directory without
-you having to navigate there.
+By default, the `ls` commands lists the contents of the working directory (i.e. the directory you are in). You can always find the directory you are in using the `pwd` command. However, you can also give `ls` the names of other directories to view. Navigate to the home directory if you are not already there using `cd` by itself, then `ls` the contents of the "workshops/lessons/shell" directory:
 
 ```
-
-The `cd` command works in a similar way. Try entering:
-
-```
-    cd
-    cd shell-genomics/data/hidden
-
-and you will jump directly to `hidden` without having to go through
-the intermediate directory.
-
+cd
+ls workshops/lessons/shell
 ```
 
+This listed the contents of workshops/lessons/shell without navigating there.
 
-## EXERCISE
+The `cd` command works the same way. Try entering:
 
--	Try finding the 'anotherfile.txt' file without changing directories.
-
-
-## Shortcut: Tab Completion
-
-Navigate to the home directory. Typing out directory names can waste a lot of time. When you start typing out the name of a directory, then hit the tab key, the shell will try to fill in the rest of the directory name. For example, enter:
 
 ```
-cd s<tab>
+cd
+ls workshops/lessons/shell/data/hidden
 ```
 
-The shell will fill in the rest of the directory name for`shell`. Now go to shell-genomics/data/MiSeq
+and you will jump directly to `hidden` without having to go through the intermediate directories.
+
+---
+
+**EXERCISE**
+
+Try finding the 'anotherfile.txt' file without changing directories.
+
+---
+
+
+### HUGE Shortcut: Tab Completion
+
+Navigate to the home directory. Typing out directory names can waste a lot of time. When you start typing out the name of a file or directory, then hit the tab key, the UNIX shell will try to fill in the rest of the directory name. For example, enter:
 
 ```
-ls F3D<tab><tab>
+cd
+cd w<tab>
 ```
 
-When you hit the first tab, nothing happens. The reason is that there are multiple directories in the home directory which start with`F3D`. Thus, the shell does not know which one to fill in. When you hit tab again, the shell will list the possible choices.
+The shell will fill in the rest of the directory name for "workshops". Now go to `workshops/lessons/rnaseq-1day/data`
+
+```
+cd
+cd wo<tab>le<tab>rna<tab>da<tab>
+```
+
+Now type `ls F3D` and hit tab twice.
+
+```
+ls uvb<tab><tab>
+```
+
+When you hit the first tab, nothing happens. The reason is that there are multiple directories in the home directory which start with `uvb`. Thus, the shell does not know which one to fill in. When you hit tab again, the shell will list the possible choices.
 
 Tab completion can also fill in the names of programs. For example, enter `e<tab><tab>`. You will see the name of every program that starts with an `e`. One of those is `echo`. If you enter `ec<tab>` you will see that tab completion works.
 
-```
-Tab completion is awesome.
+### Full vs. Relative Paths
 
-```
-
-## Full vs. Relative Paths
-
-The `cd` command takes an argument which is the directory name. Directories can be specified using either a *relative* path or a full *path*. The directories on the computer are arranged into a hierarchy. The full path tells you where a directory is in that hierarchy. Navigate to the home directory. Now, enter the `pwd` command and you should see:
+The `cd` command takes an argument which is the directory name. Directories can be specified using either a *relative path* or a *full path*. The directories on the computer are arranged into a hierarchy. The full path tells you where a directory is in that hierarchy. Navigate to the home directory. Now, enter the `pwd` command and you should see:
 
 ```
 /home/username
 ```
 
-which is the full name of your home directory. This tells you that you are in a directory called `username`, which sits inside a directory called`home` which sits inside the very top directory in the hierarchy. The very top of the hierarchy is a directory called `/` which is usually referred to as the *root directory*. So, to summarize: `username` is a directory in `home` which is a directory in `/`.
+which is the full name of your home directory. This tells you that you are in a directory called `username`, which sits inside a directory called `home` which sits inside the very top directory in the hierarchy. The very top of the hierarchy is a directory called `/` which is usually referred to as the *root directory*. So, to summarize: `username` is a directory in `home` which is a directory in `/`.
 
 Now enter the following command:
 
 ```
-Full path
-
-    cd /home/username/shell-genomics/data/hidden
-
+cd /home/ubuntu/workshops/lessons/shell/data/hidden
 ```
 
-This jumps to `hidden`. Now go back to the home directory (cd). We saw earlier that the command:
+This jumps to `hidden`. Now go back to the home directory (`cd`). We saw earlier that the command:
 
 ```
-Relative path
-
-    cd shell-genomics/data/hidden
-
+cd workshops/lessons/shell/data/hidden
 ```
 
-had the same effect - it took us to the `hidden` directory. But, instead of specifying the full path (`/home/username/shell-genomics/data`), we specified a *relative path*. In other words, we specified the path relative to our current directory. A full path always starts with a `/`. A relative path does not.
+had the same effect - it took us to the `hidden` directory. But, instead of specifying the full path, we specified a *relative path*. In other words, we specified the path relative to our current directory. A full path always starts with a `/`. A relative path does not.
 
 A relative path is like getting directions from someone on the street. They tell you to "go right at the Stop sign, and then turn left on Main Street". That works great if you're standing there together, but not so well if you're trying to tell someone how to get there from another country. A full path is like GPS coordinates. It tells you exactly where something is no matter where you are right now.
 
 You can usually use either a full path or a relative path depending on what is most convenient. If we are in the home directory, it is more convenient to just enter the relative path since it involves less typing.
 
-Over time, it will become easier for you to keep a mental note of the structure of the directories that you are using and how to quickly navigate amongst them.
+Over time, it will become easier for you to keep a mental note of the structure of the directories that you are using and how to quickly navigate them.
 
+---
 
-## EXERCISE
+**EXERCISE**
 
 -	List the contents of the /bin directory. Do you see anything familiar in there?
 
+---
 
-## Saving time with shortcuts and wild cards
+### Saving time with shortcuts and wild cards
 
-### Shortcuts
+#### Shortcuts
 
-There are some shortcuts which you should know about. Dealing with the home directory is very common.
-
-```
-In the shell the tilde character, ~, is a shortcut
-for your home directory.
-
-    ls ~
+There are some shortcuts which you should know about. Dealing with the home directory is very common. In the shell the tilde character, `~`, is a shortcut for your home directory.
 
 ```
+ls ~
+```
 
-Try it even when you're in the shell-genomics directory:
+Try it even when you're not in your home directory:
 
 ```
 cd
-cd shell-genomics
+cd workshops
 ```
 
 Then enter the command:
@@ -360,17 +335,10 @@ Then enter the command:
 ls ~
 ```
 
-This prints the contents of your home directory, without you having to type the full path.
+This prints the contents of your home directory, without you having to type the full path. The shortcut `..` always refers to the directory above your current directory.
 
 ```
-The shortcut `..` always refers to the directory
-above your current directory.
-
-    ls ..
-
-prints the contents of the directory one up from
-where you are.
-
+ls ..
 ```
 
 prints the contents of the `/home/username/`. You can chain these together, so:
@@ -381,27 +349,22 @@ ls ../../
 
 prints the contents of `/home/`. Finally, the special directory `.` always refers to your current directory. So, `ls`, `ls .`, and `ls ././././.` all do the same thing, they print the contents of the current directory. This may seem like a useless shortcut right now, but we'll see when it is needed in a little while.
 
-To summarize, while you are in the `shell` directory, the commands`ls ~`, `ls ~/.`, `ls ../`, and `ls /home/username` all do exactly the same thing. These shortcuts are not necessary, they are provided for your convenience.
+To summarize, while you are in the `workshops` directory, the commands `ls ~`, `ls ../`, and `ls /home/ubuntu` all do exactly the same thing.
 
-### Our data set: FASTQ files
+#### Our data set: FASTQ files
 
-We did an experiment and want to look at the bacterial communities of mice in two treatments using 16S sequencing. We have 10 mice in one treatment and 9 in another.each treatment. We also sequenced a Mock community, so we can check the quality of our data. So, we have 20 samples all together and we've done paired-end MiSeq sequencing.
+In this example we're going to use some RNA-seq data that we'll actually analyze later on. The data come from RNA-seq done on skin cells treated with ultraviolet light versus controls ([paper](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0093338); [data](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE54413)).
 
-We get our data back from the sequencing center as FASTQ files, and we stick them all in a folder called MiSeq. This data is actually the data we're going to use for several sections of the course, and it's data generated by Pat Schloss.
+We did sequencing, and what we have here are just reads that came from a 100 MB region on chromosome 4. We want to be able to look at these files and do some things with them.
 
-We want to be able to look at these files and do some things with them.
+#### Wild cards
 
-### Wild cards
+Navigate to the `workshops/lessons/rnaseq-1day/data` directory from your home. This directory contains our FASTQ files and some other ones we'll need for analyses. If we type `ls`, we will see that there are several files in there. Some of the end with .fastq.
 
-Navigate to the `~/shell-genomics/data/MiSeq` directory. This directory contains our FASTQ files and some other ones we'll need for analyses. If we type `ls`, we will see that there are a bunch of files with long file names. Some of the end with .fastq
+The `*` character is a shortcut for "everything". Thus, if you enter `ls *`, you will see all of the contents of a given directory.
 
 ```
-The `*` character is a shortcut for "everything". Thus, if
-you enter `ls *`, you will see all of the contents of a given
-directory.
-
-    ls *fastq
-
+ls *fastq
 ```
 
 This lists every file that ends with a `fastq`. This command:
@@ -412,111 +375,100 @@ ls /usr/bin/*.sh
 
 Lists every file in `/usr/bin` that ends in the characters `.sh`.
 
-We have paired end sequencing, so for every sample we have two files. If we want to just see the list of the files for the forward direction sequencing we can use:
+If we wanted to list just the controls or just the uvb-treated samples, we could do this:
 
 ```
-ls *R1*fastq
+ls ctl*
+ls uvb*.fastq
 ```
 
-lists every file in the current directory whose name contains the number `R1`, and ends with `fastq`. There are twenty such files which we would expect because we have 20 samples.
+So how does this actually work? Well...when the shell sees a word that contains the `*` character, it automatically looks for filenames that match the given pattern. In this case, it identified 3 such files. Then, it replaced the `ctl*fastq` with the list of files, separated by spaces.
 
-So how does this actually work? Well...when the shell (bash) sees a word that contains the `*` character, it automatically looks for filenames that match the given pattern. In this case, it identified four such files. Then, it replaced the `*R1*fastq` with the list of files, separated by spaces.
+---
 
+**EXERCISE**
 
-## EXERCISE
+Do each of the following using a single `ls` command without navigating to a different directory.
+  -	List all of the files in `/bin` that start with the letter 'c
+  -	List all of the files in `/bin` that contain the letter 'a'
+  -	List all of the files in `/bin` that end with the letter 'o'
 
--	What happens if you do `R1*fastq`?
--	Do each of the following using a single `ls` command without navigating to a different directory.
+---
 
--	List all of the files in `/bin` that start with the letter 'c
-
--	List all of the files in `/bin` that contain the letter 'a'
-
--	List all of the files in `/bin` that end with the letter 'o'
-
-BONUS: List all of the files in '/bin' that contain the letter 'a' or 'c'
-
-
-## Command History
+### Command History
 
 You can easily access previous commands. Hit the up arrow. Hit it again. You can step backwards through your command history. The down arrow takes your forwards in the command history.
 
-^-C will cancel the command you are writing, and give you a fresh prompt.
+Control-C will cancel the command you are writing, and give you a fresh prompt.
 
-^-R will do a reverse-search through your command history. This is very useful.
-
-```
-You can also review your recent commands with the `history` command.  
-
-    history
-
-to see a numbered list of recent commands
+You can also review your recent commands with the `history` command to see a numbered list of commands you've run.
 
 ```
+history
+```
 
-You can reuse one of these commands directly by referring to the number of that command.
+You can reuse one of these commands directly by referring to the number of that command. If your history looked like this:
 
 ```
-If your history looked like this:
-
-    259  ls *
-    260  ls /usr/bin/*.sh
-    261  ls *R1*fastq
-
-then you could repeat command #260 by simply entering:
-
-    !260
-
-(that's an exclamation mark).
-
+259  ls *
+260  ls /usr/bin/*.sh
+261  ls ctl*
 ```
 
 
-## EXERCISE
+then you could repeat command `#260` by simply entering:
 
--	Find the line number in your history for the last exercise (listing files in /bin) and reissue that command.
+```
+!260
+```
 
+---
+
+**EXERCISE**
+
+Find the line number in your history for the last exercise (listing files in /bin) and reissue that command.
+
+---
 
 ## Examining Files
 
 We now know how to switch directories, run programs, and look at the contents of directories, but how do we look at the contents of files?
 
-```
-The easiest way to examine a file is to print out all of the
-contents using the program `cat`. Enter the following command:
-
-    cat F3D0_S188_L001_R1_001.fastq
-
-This prints out the contents of the `F3D0_S188_L001_R1_001.fastq` file.
+The easiest way to examine a file is to print out all of the contents using the program `cat`. Enter the following command:
 
 ```
+cat ctl1.fastq
+```
+
+This prints out the contents of the `ctl1.fastq` file.
 
 
-## EXERCISE
+---
 
--	Print out the contents of the `~/shell-genomics/data/MiSeq/stability.files` file. What does this file contain?
+**EXERCISE**
 
--	Without changing directories, (you should still be in `edamame-data`), use one short command to print the contents of all of the files in the `/home/username/shell-genomics/data/MiSeq` directory.
+-	Print out the contents of the `workshops/lessons/rnaseq-1day/data/coldata.csv` file. What does this file contain?
+-	Without changing directories, use one short command to print the contents of all of the files in the `~/workshops/lessons/shell/` directory.
 
+---
 
-Make sure we're in the right place for the next set of the lessons. We want to be in the `shell` directory. Check if you're there with `pwd` and if not navigate there. One way to do that would be
+Make sure we're in the right place for the next set of the lessons. We want to be in the rnaseq data directory. Check if you're there with `pwd` and if not navigate there. One way to do that would be
 
 ```
-cd ~/shell-genomics/data/MiSeq
+cd ~/workshops/lessons/rnaseq-1day/data
 ```
 
 `cat` is a terrific program, but when the file is really big, it can be annoying to use.
 
-```
-The program, `less`, is useful when files are big and
-you want to be able to scroll through them.
+The program, `less`, is useful when files are big and you want to be able to scroll through them.
 
-    less F3D0_S188_L001_R1_001.fastq
+```
+less F3D0_S188_L001_R1_001.fastq
+```
 
 `less` opens the file, and lets you navigate through it. The commands
 are identical to the `man` program.
 
-```
 
 **Some commands in `less`**
 
@@ -528,63 +480,58 @@ are identical to the `man` program.
 | G     | go to the end       |
 | q     | quit                |
 
-`less` also gives you a way of searching through files. Just hit the "/" key to begin a search. Enter the name of the word you would like to search for and hit enter. It will jump to the next location where that word is found. Try searching the `dictionary.txt` file for the word "cat". If you hit "/" then "enter", `less` will just repeat the previous search. `less` searches from the current location and works its way forward. If you are at the end of the file and search for the word "cat", `less` will not find it. You need to go to the beginning of the file and search.
-
-For instance, let's search for the sequence `1101:14341` in our file. You can see that we go right to that sequence and can see what it looks like.
+`less` also gives you a way of searching through files. Just hit the "/" key to begin a search. Enter the name of the word you would like to search for and hit enter. It will jump to the next location where that word is found. Try searching `ctl1.fasta` for the the sequence "GATTACA". If you hit "/" then "enter", `less` will just repeat the previous search. `less` searches from the current location and works its way forward. If you are at the end of the file and search for "GATTACA", `less` will not find it. You need to go to the beginning of the file with the `g` key in less, and start the search from there.
 
 Remember, the `man` program actually uses `less` internally and therefore uses the same commands, so you can search documentation using "/" as well!
 
 There's another way that we can look at files, and in this case, just look at part of them. This can be particularly useful if we just want to see the beginning or end of the file, or see how it's formatted.
 
+The commands `head` and `tail` let you look at the beginning and end of a file respectively.
+
 ```
-The commands `head` and `tail` let you look at
-the beginning and end of a file respectively.
+head ctl1.fastq
+tail ctl1.fastq
+```
 
-    head F3D0_S188_L001_R1_001.fastq
-    tail F3D0_S188_L001_R1_001.fastq
+The `-n` option to either of these commands can be used to print the first or last `n` lines of a file. If we want to see the first read in the file, try this:
 
-The `-n` option to either of these commands can be used to print the
-first or last `n` lines of a file. To print the first/last line of the
-file use:
-
-    head -n 1 F3D0_S188_L001_R1_001.fastq
-    tail -n 1 F3D0_S188_L001_R1_001.fastq
-
+```
+head -n 4 ctl1.fastq
+tail -n 4 ctl1.fastq
 ```
 
 ## Searching files
 
 We showed a little how to search within a file using `less`.
 
-```
-We can search within files without even opening them,
-using `grep`. Grep is a command-line utility for searching
-plain-text data sets for lines matching a string or
-regular expression.
+We can search within files without even opening them, using `grep`. Grep is a command-line utility for searching plain-text data sets for lines matching a string or regular expression.
 
-Search for that sequence 1101:14341 in the F3D0_S188_L001_R1_001.fastq file.
-
-    grep 1101:14341 F3D0_S188_L001_R1_001.fastq
-
-We get back the whole line that had '1101:14341' in it. What if we wanted all
-four lines, the whole part of that FASTQ sequence, back instead.
-
-    grep -A 3 1101:14341 F3D0_S188_L001_R1_001.fastq
-
-The `-A` flag stands for "after match" so it's returning the line that
-matches plus the three after it. The `-B` flag returns that number of lines
-before the match.
+Let's find all the lines in ctl1.fastq that contain the sequence motif "GATTACA."
 
 ```
+grep GATTACA ctl1.fastq
+```
 
+We get back just the sequence line, but what if we wanted all four lines, the whole part of that FASTQ sequence, back instead.
 
-## EXERCISE
+```
+grep -B 1 -A 2 GATTACA ctl1.fastq
+```
 
--	Search for the sequence 'TTATCCGGATTTATTGGGTTTAAAGGGT' in the F3D0_S188_L001_R1_001.fastq file and in the output have the sequence name and the sequence. e.g.  
-	@M00967:43:000000000-A3JHG:1:2114:11799:28499 1:N:0:188  
-	TACGGAGGATGCGAGCGTTATCCGGATTTATTGGGTTTAAAGGGTGCGTAGGCGGGATGCAG
+The `-A` flag stands for "after match" so it's returning the line that matches plus the two after it. The `-B` flag returns that number of lines before the match, so that's returning the fastq header.
 
--	Search for that sequence in all the FASTQ files.
+---
+
+**EXERCISE**
+
+Search for the sequence 'GATTTTTACA' (GATTACA with 5 T's instead of 2) in ctl1.fastq file and in the output have the sequence name, e.g.:
+
+```
+@SRR1145047.5880759
+AAGCTAAAAAAAAAATGGATGTTTCAGTTAAATGTTTTAAAGAGGTACAGATTTTTACAAGGACATAATATAAG
+```
+
+Next, search for that sequence in all the FASTQ files.
 
 
 ## Redirection
@@ -690,7 +637,8 @@ just nicely put the files in the Trash. They're really gone.
 ```
 
 
-## EXERCISE
+---
+**EXERCISE**
 
 Do the following:
 
@@ -736,7 +684,8 @@ Then it asks if you want that file name. Hit 'Enter'.
 Now you've written a file. You can take a look at it with less or cat, or open it up again and edit it.
 
 
-## Exercise
+---
+**EXERCISE**
 
 Open 'awesome.sh' and add "echo AWESOME!" after the grep command and save the file.
 
