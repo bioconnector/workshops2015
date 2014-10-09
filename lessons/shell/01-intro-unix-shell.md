@@ -2,13 +2,14 @@
 layout: page
 ---
 
-# Introduction to the UNIX shell (i.e., the command line)
+# Introduction to the UNIX shell
 
-Modified from Tracy Teal's [lessons](https://github.com/tracykteal/datacarpentry/commit/8524889a761a74dbad8086767208939ed5274e40) for Data Carpentry with original contributions from Paul Wilson, Milad Fatenejad, Sasha Wood and Radhika Khetani for Software Carpentry.
+Modified from Tracy Teal's lessons for Data Carpentry with original contributions from Paul Wilson, Milad Fatenejad, Sasha Wood and Radhika Khetani for Software Carpentry.
 
 Learn more:
-* http://datacarpentry.org/
-* http://software-carpentry.org/
+
+- <http://datacarpentry.org/>
+- <http://software-carpentry.org/>
 
 ## Objectives
 
@@ -37,7 +38,7 @@ The *shell* is a program that presents a command line interface which allows you
 
 Have 10,000,000 files to rename, read in, analyze, and visualize? It's easy to automate things with the shell.
 
-![Automation](img/geek_vs_nongeek.png)
+![Automation](../img/geek_vs_nongeek.png)
 
 
 ### How to access the shell
@@ -60,9 +61,11 @@ On Windows machines we'll be using a terminal emulator called [PuTTY](http://the
 ### More resources on the shell
 
 Cheat sheets:
-- http://fosswire.com/post/2007/08/unixlinux-command-cheat-sheet/
+
+- <http://fosswire.com/post/2007/08/unixlinux-command-cheat-sheet/>
 
 Web sites where you can see what the different components of a shell command are doing:
+
 - [explainshell.com](http://explainshell.com)
 - [commandlinefu.com](http://www.commandlinefu.com)
 
@@ -172,7 +175,7 @@ Let's draw out what we just did, and some of the other files and folders we coul
 
 This is called a hierarchical file system structure, like an upside down tree with root (/) at the base that looks like this.
 
-![Unix](img/unix_filesystem.png)
+![Unix](../img/unix_filesystem.png)
 
 That (/) at the base is often also called the 'top' level.
 
@@ -188,7 +191,7 @@ This puts you in your home directory. That's **/home/username**
 
 ---
 
-** EXERCISE **
+**EXERCISE
 
 -	Using `cd` and `ls`, go in to the 'workshops/shell/data' directory and list its contents.
 -	How many files, how many directories and how many programs are there?
@@ -771,9 +774,9 @@ chmod +x awesome.sh
 ```
 
 Now we can run the program
+
 ```
 ./awesome.sh
-
 ```
 
 Now you should have seen some output, and of course, it's AWESOME! Congratulations, you just created your first shell script! You're set to rule the world.
