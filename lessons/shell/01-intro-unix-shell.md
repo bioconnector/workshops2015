@@ -39,6 +39,24 @@ Have 10,000,000 files to rename, read in, analyze, and visualize? It's easy to a
 
 ![Automation](img/geek_vs_nongeek.png)
 
+
+### How to access the shell
+
+You access the shell through a program called a Terminal. We're going to use a terminal to connect to the shell of a remote computer. The terminal program is built-in on Mac and Linux. For Windows, you'll have to download a separate program called a terminal emulator that will allow you to connect to remote computers.
+
+#### Mac
+
+On Mac the shell is available through Terminal:
+
+**Applications -> Utilities -> Terminal**
+
+Go ahead and drag the Terminal application to your Dock for easy access.
+
+#### Windows
+
+On Windows machines we'll be using a terminal emulator called [PuTTY](http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe).
+
+
 ### More resources on the shell
 
 Cheat sheets:
@@ -48,21 +66,6 @@ Web sites where you can see what the different components of a shell command are
 - [explainshell.com](http://explainshell.com)
 - [commandlinefu.com](http://www.commandlinefu.com)
 
-## How to access the shell
-
-You access the shell through a program called a Terminal. We're going to use a terminal to connect to the shell of a remote computer. The terminal program is built-in on Mac and Linux. For Windows, you'll have to download a separate program called a terminal emulator that will allow you to connect to remote computers.
-
-### Mac
-
-On Mac the shell is available through Terminal:
-
-**Applications -> Utilities -> Terminal**
-
-Go ahead and drag the Terminal application to your Dock for easy access.
-
-### Windows
-
-On Windows machines we'll be using a terminal emulator called [PuTTY](http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe).
 
 ## Connecting to cloud computing resources
 
@@ -74,7 +77,9 @@ fixme:
 - fixme: connecting to instance w/ username/password (terminal on mac, putty on windows)
 - fixme: file transfer on mac/windows with cyberduck
 
-## Starting with the shell
+## Shell basics
+
+### Get some data files to work with
 
 We will spend most of our time learning about the basics of the shell by manipulating some experimental data. Now we're going to download the data for the tutorial. For this you'll need internet access, because you're going to get it off the web.
 
@@ -430,7 +435,7 @@ Find the line number in your history for the last exercise (listing files in /bi
 
 ---
 
-## Examining Files
+### Examining Files
 
 We now know how to switch directories, run programs, and look at the contents of directories, but how do we look at the contents of files?
 
@@ -500,7 +505,7 @@ head -n 4 ctl1.fastq
 tail -n 4 ctl1.fastq
 ```
 
-## Searching files
+### Searching files
 
 We showed a little how to search within a file using `less`.
 
@@ -533,166 +538,195 @@ AAGCTAAAAAAAAAATGGATGTTTCAGTTAAATGTTTTAAAGAGGTACAGATTTTTACAAGGACATAATATAAG
 
 Next, search for that sequence in all the FASTQ files.
 
+---
 
-## Redirection
+### Redirection & Pipes
 
-We're excited we have all these sequences that we care about that we just got from the FASTQ files. That is a really important motif that is going to help us answer our important question. But all those sequences just went whizzing by with grep. How can we capture them?
+We're excited we have all these sequences that we care about that we just got from the FASTQ files. Perhaps that was some really important motif that is going to help us answer some important question. But all those sequences just went whizzing by with grep. How can we capture them?
 
-We can do that with something called "redirection". The idea is that we're redirecting the output to the terminal (all the stuff that went whizzing by) to something else. In this case, we want to print it to a file, so that we can look at it later.
+We can do that with something called "redirection". The idea is that we're redirecting the output to the terminal (all the stuff that went whizzing by) to something else. In this case, we want to write it to a file, so that we can look at it later.
 
-```
-The redirection command for putting something in a file is `>`
+We do this with: `>`.
 
-Let's try it out and put all the sequences that contain 'TTATCCGGATTTATTGGGTTTAAAGGGT'
-from all the files in to another file called 'good-data.txt'
-
-    grep -B 2 TTATCCGGATTTATTGGGTTTAAAGGGT * > good-data.txt
-
-The prompt should sit there a little bit, and then it should look like nothing
-happened. But type `ls`. You should have a new file called good-data.txt. Take
-a look at it and see if it has what you think it should.
+Let's try it out and put all the sequences that contain 'GATTACA' from all the files in to another file called "gattaca-reads.txt".
 
 ```
+grep GATTACA *.fastq > gattaca-reads.txt
+```
 
-There's one more useful redirection command that we're going to show, and that's called the pipe command, and it is `|`. It's probably not a key on your keyboard you use very much. What `|` does is take the output that scrolling by on the terminal and then can run it through another command. When it was all whizzing by before, we wished we could just slow it down and look at it, like we can with `less`. Well it turns out that we can! We pipe the `grep` command through `less`
+The prompt should sit there a little bit, and then it should look like nothing happened. But type `ls`. You should have a new file called "gattaca-reads.txt". Take a look at it and see if it has what you think it should.
 
 ```
-The pipe command '|' takes the output of the first
-thing and then puts it in to the second part
+ls
+less gattaca-reads.txt
+```
 
-    grep TTATCCGGATTTATTGGGTTTAAAGGGT * | less
+There's another useful redirection command that we're going to show, and that's called the pipe: `|`. It's probably not a key on your keyboard you use very much. What `|` does is take the output that scrolling by on the terminal and then can run it through another command. When it was all whizzing by before, we wished we could just slow it down and look at it, like we can with `less`. Well it turns out that we can! We pipe the `grep` command through `less`
 
+The pipe '|' takes the output of the first thing and then puts it in to the second part
+
+```
+grep GATTACA *.fastq | less
 ```
 
 Now we can use the arrows to scroll up and down and use `q` to get out.
 
-We can also do something tricky and use the command `wc`. `wc` stands for`word count`. It counts the number of lines or characters. So, we can use it to count the number of lines we're getting back from our `grep` command. And that will magically tell us how many sequences we're finding. We're
+There's another command called `wc`. `wc` stands for`word count`. It counts the number of lines or characters. So, we can use it to count the number of lines we're getting back from our `grep` command. And that will tell us how many sequences we're finding with that motif across all the files.
 
 ```
-grep TTATCCGGATTTATTGGGTTTAAAGGGT * | wc
+grep GATTACA *.fastq | wc
 ```
 
 That tells us the number of lines, words and characters in the file. If we just want the number of lines, we can use the `-l` flag for `lines`.
 
 ```
-grep TTATCCGGATTTATTGGGTTTAAAGGGT * | wc -l
+grep GATTACA *.fastq | wc -l
 ```
 
-Redirecting is not super intuitive, but it's really powerful for stringing together these different commands, so you can do whatever you need to do.
-
-The philosophy behind these command line programs is that none of them really do anything all that impressive. BUT when you start chaining them together, you can do some really powerful things really efficiently. If you want to be proficient at using the shell, you must learn to become proficient with the pipe and redirection operators:`|`, `>`, `>>`.
-
-## Creating, moving, copying, and removing
-
-Now we can move around in the file structure, look at files, search files, redirect. But what if we want to do normal things like copy files or move them around or get rid of them. Sure we could do most of these things without the command line, but what fun would that be?! Besides it's often faster to do it at the command line, or you'll be on a remote server like Amazon where you won't have another option.
-
-The stability.files file is one that tells us what sample name goes with what sequences. This is a really important file, so we want to make a copy so we don't lose it.
-
-Lets copy the file using the `cp` command. The `cp` command backs up the file. Navigate to the `data` directory and enter:
+You could have piped the output to a file like you did the first time and ran `wc` on that file:
 
 ```
-The copy command 'cp' let's you copy files
-
-    cp stability.files stability.files_backup
-
+wc gattaca-reads.txt
 ```
 
-Now `stability.files_backup` has been created as a copy of `stability.files`.
+But using the pipe you didn't need to create the intermediate file. Pipes are really powerful for stringing together these different commands, so you can do whatever you need to do.
+
+The philosophy behind these command line programs is that none of them really do anything all that impressive. BUT when you start chaining them together, you can do some really powerful things really efficiently. If you want to be proficient at using the shell, you must learn to become proficient with the pipe and redirection operators.
+
+For example, draw a cow saying the largest word in the english language that contains the word "purple":
+
+```bash
+# Read in the system's dictionary.
+cat /usr/share/dict/words
+# grep for "purple"
+cat /usr/share/dict/words | grep purple
+# count letters in each word
+cat /usr/share/dict/words | grep purple | awk '{print length($1), $1}'
+# numeric sort
+cat /usr/share/dict/words | grep purple | awk '{print length($1), $1}' | sort -n
+# take the last line
+cat /usr/share/dict/words | grep purple | awk '{print length($1), $1}' | sort -n | tail -n 1
+# cut out the second field (-f 2) if the file were delimited by a space (-d " ")
+cat /usr/share/dict/words | grep purple | awk '{print length($1), $1}' | sort -n | tail -n 1 | cut -d " " -f 2
+# make the cow say it
+cat /usr/share/dict/words | grep purple | awk '{print length($1), $1}' | sort -n | tail -n 1 | cut -d " " -f 2 | cowsay
+```
+
+This program piped together 7 UNIX programs (`cat`, `grep`, `awk`, `sort`, `tail`, `cut`, `cowsay`), each of which does a very small job on its own, and strung them together to do something pretty powerful (as silly as it may be).
+
+```
+ _____________
+< unimpurpled >
+ -------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+```
+
+### Creating, moving, copying, and removing
+
+Now we can move around in the file structure, look at files, search files, redirect. But what if we want to do normal things like copy files or move them around or get rid of them. Sure, if we had a desktop, we could do most of these things without the command line, but what fun would that be?! Besides it's usually faster to do it at the command line, or you'll be on a remote server like Amazon where you won't have another option.
+
+The `coldata.csv` file tells us which sample names are which treatment (in this example the filenames are pretty informative, but when they come off the sequencer usually they won't be). This is a really important file, so we want to make a copy so we don't lose it.
+
+Lets copy the file using the `cp` command. The `cp` command backs up the file. Navigate to the `rnaseq-1day/data` directory and enter:
+
+```
+cp coldata.csv coldata.csv-backup
+```
+
+Now `coldata.csv-backup` has been created as a copy of `coldata.csv`.
 
 Let's make a `backup` directory where we can put this file.
 
-```
-The `mkdir` command is used to make a directory. Just enter `mkdir`
-followed by a space, then the directory name.
-
-    mkdir backup
+The `mkdir` command is used to make a directory. Just enter `mkdir` followed by a space, then the directory name.
 
 ```
-
-We can now move our backed up file in to this directory.
-
-```
-We can move files around using the command `mv`. Enter this command:
-
-    mv stability.files_backup backup/
-
+mkdir backup
 ```
 
-This moves `stability.files_backup` into the directory `backup/` or the full path would be `~/shell-genomics/data/MiSeq/backup`
-
-The `mv` command is also how you rename files. Since this file is so important, let's rename it:
+We can now move our backed up file in to this directory. We can move files around using the command `mv`. Enter this command:
 
 ```
-mv stability.files stability.files_IMPORTANT
+mv coldata.csv-backup backup
 ```
 
-Now the file name has been changed to stability.files_IMPORTANT. Let's delete the backup file now:
+This moves `coldata.csv-backup` into the directory `backup/` or the full path would be `~/workshops/lessons/rnaseq-1day/data/backup/coldata.csv-backup`
+
+The `mv` command is also how you rename files. Since this file is important, let's rename it:
 
 ```
-    rm backup/stability.files_backup
-
-The `rm` file removes the file. Be careful with this command. It doesn't
-just nicely put the files in the Trash. They're really gone.
-
+ls
+mv coldata.csv coldata-IMPORTANT.csv
+ls
 ```
 
+Now let's delete the backup copy:
+
+```
+ls
+ls backup
+rm backup/coldata.csv-backup
+ls
+ls backup
+```
+
+The `rm` file removes the file. Be careful with this command. It doesn't just nicely put the files in the Trash. They're really gone.
 
 ---
+
 **EXERCISE**
 
 Do the following:
 
-1.	Rename the `stability.files_IMPORTANT` file to `stability.files`.
-2.	Create a directory in the `MiSeq` directory called `new`
-3.	Then, copy the `stability.files` file into `new`
+1.	Rename the `coldata-IMPORTANT.csv` file back to `coldata.csv`.
+2.	Create a new directory in the rnaseq-1day directory called `new`.
+3.	Then, copy the `coldata.csv` file into `new`
 
+---
 
-By default, `rm`, will NOT delete directories. You can tell `rm` to delete a directory using the `-r` option. Let's delete that `new` directory we just made. Enter the following command:
+By default, `rm`, will NOT delete directories. You can tell `rm` to delete a directory and everything in it *recursively* using the `-r` option. Let's delete that `new` directory we just made. Enter the following command:
 
 ```
 rm -r new
 ```
 
+Be careful with this.
+
 ## Writing files
 
-We've been able to do a lot of work with files that already exist, but what if we want to write our own files. Obviously, we're not going to type in a FASTA file, but you'll see as we go through other tutorials, there are a lot of reasons we'll want to write a file, or edit an existing file.
+We've been able to do a lot of work with files that already exist, but what if we want to write our own files. Obviously, we're not going to type in a FASTA file, but there are a lot of reasons we'll want to edit a file.
 
 To write in files, we're going to use the program `nano`. We're going to create a file that contains the favorite grep command so you can remember it for later. We'll name this file 'awesome.sh'.
 
 ```
-The program 'nano' can be used to write files
-
-    nano awesome.sh
-
+nano awesome.sh
 ```
 
-Now you have something that looks like
-
-![nano1.png](img/nano1.png)
-
-Type in your command, so it looks like
-
-![nano2.png](img/nano2.png)
+Enter the following into the file:
 
 ```
-To save the file and exit. At the bottom of nano, you see the "^X Exit". That
-means that we use Ctrl-X to exit. Type `Ctrl-X`. It will ask if you want to save it. Type `y` for yes.
-Then it asks if you want that file name. Hit 'Enter'.
-
+grep -B 1 -A 2 GATTACA *.fastq
 ```
+
+At the bottom of nano, you see the "^X Exit". That means that we use Ctrl-X to exit. Type `Ctrl-X`. It will ask if you want to save it. Type `y` for yes. Then it asks if you want that file name. Hit 'Enter'.
+
 
 Now you've written a file. You can take a look at it with less or cat, or open it up again and edit it.
 
-
 ---
+
 **EXERCISE**
 
-Open 'awesome.sh' and add "echo AWESOME!" after the grep command and save the file.
+Open 'awesome.sh' and add "echo AWESOME!" (no quotes) after the grep command and save the file.
 
 We're going to come back and use this file in just a bit.
 
+---
 
-## Running programs
+### Running programs
 
 Commands like `ls`, `rm`, `echo`, and `cd` are just ordinary programs on the computer. A program is just a file that you can *execute*. The program `which` tells you the location of a particular program. For example:
 
@@ -714,53 +748,15 @@ So ... when we enter a program name, like `ls`, and hit enter, how does the shel
 echo $PATH
 ```
 
-This will print out the value of the `PATH` environment variable. More on environment variables later. Notice that a list of directories, separated by colon characters, is listed. These are the places the shell looks for programs to run. If your program is not in this list, then an error is printed. The shell ONLY checks in the places listed in the `PATH` environment variable.
+This will print out the value of the `PATH` environment variable. Notice that a list of directories, separated by colon characters, is listed. These are the places the shell looks for programs to run. If your program is not in this list, then an error is printed. The shell ONLY checks in the places listed in the `PATH` environment variable.
 
-Navigate to the `shell-genomics/data` directory and list the contents. You will notice that there is a program (executable file) called `hello.sh` in this directory. Now, try to run the program by entering:
-
-```
-Running programs
-
-    cd shell-genomics/data
-    hello.sh
-
-This won't work because the shell isn't looking
-in the right place for it.
+Remember that file where we wrote our favorite grep command in there? Since we like it so much, we might want to run it again, or even all the time. Instead of writing it out every time, we can just run it as a script. Let's try to run that script:
 
 ```
-
-You should get an error saying that hello.sh cannot be found. That is because the directory `/home/username/edamame-data/shell` is not in the`PATH`. You can run the `hello.sh` program by entering:
-
-```
-    ./hello.sh
-
-This will work, becuase we told it to look in this
-directory '.' for the program.
-
+awesome.sh
 ```
 
-Remember that `.` is a shortcut for the current working directory. This tells the shell to run the `hello.sh` program which is located right here. So, you can run any program by entering the path to that program. You can run `hello.sh` equally well by specifying:
-
-```
-The program can also be run by using the full path
-
-    /home/username/shell-genomics/data/hello.sh
-
-Or by entering:
-
-    ~/shell-genomics/data/hello.sh
-
-```
-
-When there are no `/` characters, the shell assumes you want to look in one of the default places for the program.
-
-## Writing scripts
-
-We know how to write files and run scripts, so I bet you can guess where this is headed. We're going to run our own script!
-
-Go in to the 'MiSeq' directory where we created 'awesome.sh' before. Remember we wrote our favorite grep command in there. Since we like it so much, we might want to run it again, or even all the time. Instead of writing it out every time, we can just run it as a script.
-
-It's a command, so we should just be able to run it. Give it try.
+You should get an error saying that hello.sh cannot be found. That is because the directory `~/workshops/lessons/rnaseq-1day/data` is not in the`PATH`. You can try again to run the `awesome.sh` program by entering:
 
 ```
 ./awesome.sh
@@ -768,24 +764,20 @@ It's a command, so we should just be able to run it. Give it try.
 
 Alas, we get `-bash: ./awesome.sh: Permission denied`. This is because we haven't told the computer that it's a program. To do that we have to make it 'executable'. We do this by changing its mode. The command for that is `chmod` - change mode. We're going to change the mode of this file, so that it's executable and the computer knows it's OK to run it as a program.
 
-```
-To run a program, you have to set the right permissions, make it
-executable rather than just a text file.
+To run a program, you have to set the right permissions, make it executable rather than just a text file.
 
-    chmod +x awesome.sh
+```
+chmod +x awesome.sh
+```
 
 Now we can run the program
-
-    ./awesome.sh
+```
+./awesome.sh
 
 ```
 
-Now you should have seen some output, and of course, it's AWESOME!
+Now you should have seen some output, and of course, it's AWESOME! Congratulations, you just created your first shell script! You're set to rule the world.
 
-```
-Congratulations, you just created your first shell script! You're set to rule the world.
-
-```
 
 ## Where can I learn more about the shell?
 
