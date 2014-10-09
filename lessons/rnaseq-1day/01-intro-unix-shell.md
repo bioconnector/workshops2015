@@ -10,100 +10,94 @@ Learn more:
 * http://datacarpentry.org/
 * http://software-carpentry.org/
 
-## What is the shell?
-
-The *shell* is a program that presents a command line interface which allows you to control your computer using commands entered with a keyboard instead of controlling graphical user interfaces (GUIs) with a mouse/keyboard combination.
-
-There are many reasons to learn about the shell.
-
--	For most bioinformatics tools, you have to use the shell. There is no graphical interface. If you want to work in metagenomics or genomics you're going to need to use the shell.
--	The shell gives you *power*. The command line gives you the power to do your work more efficiently and more quickly. When you need to do things tens to hundreds of times, knowing how to use the shell is transformative.
--	To use remote computers or cloud computing, you need to use the shell.
-
-## Automation
-
-![Automation](img/gvng.jpg)
-
-Unix is user-friendly. It's just very selective about who its friends are.
-
-## Information on the shell
-
-Shell cheat sheets:
-* [http://fosswire.com/post/2007/08/unixlinux-command-cheat-sheet/](http://fosswire.com/post/2007/08/unixlinux-command-cheat-sheet/)
-* [https://github.com/swcarpentry/boot-camps/blob/master/shell-genomics/shell_cheatsheet.md](https://github.com/swcarpentry/boot-camps/blob/master/shell-genomics/shell_cheatsheet.md)
-
-Web sites where you can see what the different components of a shell command are doing.  
-* [http://explainshell.com](http://explainshell.com)* [http://www.commandlinefu.com](http://www.commandlinefu.com)
-
 ## Objectives
 
 -	What is the shell?
 -	How do you access it?
+- Connecting to cloud computing resources
 -	How do you use it?
-	-	Getting around the Unix file system
-	-	looking at files
-	-	manipulating files
-	-	automating tasks
+  -	Getting around the Unix file system
+  -	looking at files
+  -	manipulating files
+  -	automating tasks
 -	What is it good for?
 -	Where are resources where I can learn more? (because the shell is awesome)
 
+## What is the shell?
+
+The *shell* is a program that presents a command line interface which allows you to control your computer using commands entered with a keyboard instead of controlling graphical user interfaces (GUIs) with a mouse/keyboard combination.
+
+*Why should you care?*
+
+- For 99% of bioinformatics tools, you have to use the shell (the command line). There is no graphical interface.
+- The shell gives you *power*. The command line gives you the power to do your work more efficiently and more quickly. When you need to do things tens to hundreds of times, knowing how to use the shell is transformative.
+- You have to use the shell to connect to remote computers.
+
+### Automation
+
+Have 10,000,000 files to rename, read in, analyze, and visualize? It's easy to automate things with the shell.
+
+![Automation](img/geek_vs_nongeek.png)
+
+### More resources on the shell
+
+Cheat sheets:
+- http://fosswire.com/post/2007/08/unixlinux-command-cheat-sheet/
+
+Web sites where you can see what the different components of a shell command are doing:
+- [explainshell.com](http://explainshell.com)
+- [commandlinefu.com](http://www.commandlinefu.com)
+
 ## How to access the shell
 
-The shell is already available on Mac and Linux. For Windows, you'll have to download a separate program.
+You access the shell through a program called a Terminal. We're going to use a terminal to connect to the shell of a remote computer. The terminal program is built-in on Mac and Linux. For Windows, you'll have to download a separate program called a terminal emulator that will allow you to connect to remote computers.
 
 ### Mac
 
-On Mac the shell is available through Terminal  
-Applications -> Utilities -> Terminal  
+On Mac the shell is available through Terminal:
+
+**Applications -> Utilities -> Terminal**
+
 Go ahead and drag the Terminal application to your Dock for easy access.
 
 ### Windows
 
-For Windows, we're going to be using gitbash.  
-Download and install [gitbash](http://msysgit.github.io) Open up the program.
+On Windows machines we'll be using a terminal emulator called [PuTTY](http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe).
+
+## Connecting to cloud computing resources
+
+Cloud computing means different things to different people. There's Software-as-a-Service (Saas) like Gmail, Facebook, etc., that most people think of when they think of cloud computing. Here, we're strictly talking about Infrastructure-as-a-Service (IaaS). That is, we're using (or *renting*) computing infrastructure that we don't *own*.
+
+fixme:
+- fixme: add content about amazon on separate 00-lesson?
+- fixme: launching instance w/o keys
+- fixme: connecting to instance w/ username/password (terminal on mac, putty on windows)
+- fixme: file transfer on mac/windows with cyberduck
 
 ## Starting with the shell
 
-We will spend most of our time learning about the basics of the shell by manipulating some experimental data.
+We will spend most of our time learning about the basics of the shell by manipulating some experimental data. Now we're going to download the data for the tutorial. For this you'll need internet access, because you're going to get it off the web.
 
-Now we're going to download the data for the tutorial. For this you'll need internet access, because you're going to get it off the web.
-
-Open the shell
-
-Enter the command:
+Open the shell and type the command:
 
 ```
-git clone https://github.com/tracykteal/shell-genomics.git -b gh-pages
+git clone https://github.com/bioconnector/workshops.git
 ```
 
 This command will grab all of the data needed for this workshop. It's using something called git that's used for version control, but we won't talk about that here.
 
-Alternatively you can go to:
+## Moving around and listing files
+
+We'll start out by moving around the file system and listing files. Today we're going to go through using the command line. These commands are in the README.md file and on your handout (fixme).
+
+Let's go in to that directory we just downloaded:
 
 ```
-https://github.com/tracykteal/shell-genomics
+cd workshops
 ```
-
-And click on 'Download Zip' in the bottom right
-
-## Let's get started!
-
-Today we're going to go through using the command line.
-
-##Running through commands
-
-These commands are in the README.md file and on your handout.
-
-## Starting with the shell
-
-Let's go in to that directory we just downloaded
-
-```
-cd shell-genomics
 
 `cd` stands for 'change directory'
 
-```
 
 In this directory, there should be some things we just downloaded. Let's check. Type:
 
