@@ -491,7 +491,7 @@ are identical to the `man` program.
 | Key   | Action              |
 |-------|---------------------|
 | space | go forward          |
-| b     | go backwarsd        |
+| b     | go backwards        |
 | g     | go to the beginning |
 | G     | go to the end       |
 | q     | quit                |
