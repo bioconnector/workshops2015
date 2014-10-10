@@ -1,61 +1,36 @@
 # Notes on developing RNA-seq workshop
 
-Prelim agenda:
+## Machine image
 
-0800-1000: Introduction to UNIX shell  
-1015-1200: QC, alignment, and expression quantitation  
-1300-1500: Introduction to R  
-1515-1700: QC and differential expression with R
-
-
-Intro - will need "remedial" linux/R session at beginning?
-
-First download some data, analyze it, find interesting genes/regions, extract very small fastq from bam files so can do alignment in reasonable time frame. Also, get data only from a single chromosome, so can index that chromosome for aligner so can do this with small amount of RAM on a VM running on an average laptop.
-
-To do:
-* convert analysis .R script to .Rmd
-* write readme
-* adapt intro linux/R materials from SWC or other materials
-* load everything on to VM and test
-* figure out registration w/ eventbrite
-* pick a date
-
-
-## VM
-
-Stuff need install on VM
-
-Before installing guest additions
+Ubuntu 14.04 LTS image from AWS
 
 ```bash
-sudo apt-get install gcc make ruby curl git vim cowsay wamerican wamerican-huge wamerican-large
-# sudo apt-get install dkms build-essential linux-headers-generic # linux-headers-`uname -r`
-# sudo apt-get install virtualbox-guest-x11
+# install software
+sudo apt-get -y update
+sudo apt-get -y upgrade
+sudo apt-get -y install gcc make ruby curl git vim parallel unzip cowsay wamerican wamerican-huge wamerican-large
+
+# download and extract genome data:
+mkdir genomedata
+cd genomedata
+wget ftp://ftp.ensembl.org/pub/release-77/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.4.fa.gz
+wget ftp://ftp.ensembl.org/pub/release-77/gtf/homo_sapiens/Homo_sapiens.GRCh38.77.gtf.gz
+gunzip *.gz
+mv Homo_sapiens.GRCh38.dna.chromosome.4.fa chr4.fa
+mv Homo_sapiens.GRCh38.77.gtf genes.gtf
 ```
 
-For my own sanity:
+## Install bioinformatics tools
 
-```bash
-echo 'alias l="ls -lhGgop --color=always"' >> ~/.bashrc
-```
+Check out https://github.com/Homebrew/homebrew-science
 
-https://github.com/Homebrew/homebrew-science
-
+* samtools
 * bowtie
 * tophat
-* STAR
-* R
-* RStudio
 * fastqc
 * fastx toolkit
+* featureCounts
 
-
-
-Download human genome chromosome 4 from ucsc in case poor internet connection
-http://hgdownload.cse.ucsc.edu/goldenPath/hg19/chromosomes/chr4.fa.gz
-
-
-etc.
 
 ## Orig data
 

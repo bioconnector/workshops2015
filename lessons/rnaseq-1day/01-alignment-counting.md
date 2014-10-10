@@ -4,7 +4,13 @@ layout: page
 
 # RNA-seq data analysis: reads to counts
 
-In this section of the workshop we will start with raw RNA-seq reads and do everything that we need to do to get a //count matrix// - a table or "spreadsheet" containing the the number of reads mapping to each gene for each sample.
+In this section of the workshop we will start with raw RNA-seq reads and do everything that we need to do to get a *count matrix* - a table or "spreadsheet" in a single file containing the the number of reads mapping to each gene for each sample. This count matrix is the input into R for differential gene expression analysis. A count matrix is a table in a single file with a row for every gene and a column for every sample. Cell<sub>i,j</sub> will contain the number of genes mapping to the <em>i</em>th gene for the <em>j</em>th sample. For example, in the table below, 865 reads mapped to GeneB for sample ctl2.
+
+|       | ctl1 | ctl2 | ctl3 | uvb1 | uvb2 | uvb3 |
+|-------|------|------|------|------|------|------|
+| GeneA | 33   | 54   | 10   | 12   | 50   | 49   |
+| GeneB | 255  | 865  | 864  | 5446 | 2664 | 4665 |
+| GeneC | 0    | 0    | 1    | 2    | 3    |  15  |
 
 ## Objectives
 
@@ -19,10 +25,14 @@ First, let's extract the fastq files if we haven't done so already:
 
 ```
 cd workshops/lessons/rnaseq-1day/data
-ll
+ls -l
 gunzip *.fastq.gz
-ll
+ls -l
 ```
+
+## Quality control
+
+### Quality assessment
 
 Next, let's run some quality control analysis. Google search "FastQC" to find the [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) package from Simon Andrews. It's a program that pretty much everyone uses for QC analysis that can be run at the command line on a batch of FASTQ files.
 
@@ -33,7 +43,11 @@ fastqc -h
 fastqc *.fastq --threads 4 --outdir .
 ```
 
-Open up your SFTP client and enter your IP address and credentials. Transfer this data over to your computer to view it. You'll see how the last 5 bases of each read is pretty terrible quality, so let's trim those reads. Google "FASTX Toolkit" to find [Greg Hannon's FASTX-Toolkit software](http://hannonlab.cshl.edu/fastx_toolkit/). This lets you do lots of things for manipulating FASTQ and FASTA files. We're just going to use a feature to trim the end of the reads. You can see which tool you need by looking at the [online documentation](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html).
+Open up your SFTP client and enter your IP address and credentials. Transfer this data over to your computer to view it. You'll see how the last 5 bases of each read is pretty terrible quality, so let's trim those reads.
+
+### Trimming: one sample
+
+Google "FASTX Toolkit" to find [Greg Hannon's FASTX-Toolkit software](http://hannonlab.cshl.edu/fastx_toolkit/). This lets you do lots of things for manipulating FASTQ and FASTA files. We're just going to use a feature to trim the end of the reads. You can see which tool you need by looking at the [online documentation](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html).
 
 First, let's run `fastx_trimmer` to get some help.
 
@@ -86,51 +100,118 @@ Run `ls` on the current directory. We need to clean things up before they get ou
 
 ---
 
+### Trimming: all samples in parallel
 
+Let's use GNU parallel to run these trimming jobs in parallel:
 
+```
+find *.fastq | parallel --dry-run fastx_trimmer -t 5 -Q33 -i {} -o trimmed_{}
+```
+
+Tip: `*` matches everything or nothing. If we wanted to look at the first few lines of one of these files, we could do this:
+
+```
+head *ctl1.fastq
+```
+
+Which would print the first few lines of the trimmed and untrimmed version.
+
+Let's make a directory for all the untrimmed files:
+
+```
+mkdir untrimmed
+mv ctl*.fastq uvb*.fastq untrimmed
+```
+
+## Alignment
+
+### Building an index
+
+For the sake of time and compute requirements I've extracted reads that originate from a 100MB region of chromosome 4. In reality, you would want to do this with the entire genome. The first step here is to create an index.
+
+Google "Ensembl FTP" to get to the [FTP download page](http://useast.ensembl.org/info/data/ftp/index.html). Scroll down to the Human FASTA sequences. Click that link and copy the link to download the FASTA sequence for chromsome 4. While we're at it let's go ahead and download the gene set annotation (GTF file). We're looking at chromosome 4.
+
+This is what you *would* do if you were doing this on your own. But this can take a while so I've already downloaded and extracted these two files for you. See `~/genomedata`.
 
 ```bash
-# extract
+wget ftp://ftp.ensembl.org/pub/release-77/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.4.fa.gz
+wget ftp://ftp.ensembl.org/pub/release-77/gtf/homo_sapiens/Homo_sapiens.GRCh38.77.gtf.gz
+find Homo_sapiens*.gz | parallel --dry-run gunzip {}
+```
 
-# fastqc
-fastqc -h
-fastqc *.fastq --outdir .
+Or just move them from genomedata in the home directory:
 
-# trim
-fastx_trimmer -h
-# Q33 undocumented, try heading the file
-mkdir Untrimmed
-mv *.fastq Untrimmed
-cd Untrimmed
-find *.fastq | parallel --dry-run fastx_trimmer -t 5 -Q33 -i {} -o ../{}
-cd ..
-head ctl1.fastq
-head Untrimmed/ctl1.fastq
+```
+ls -l ~/genomedata
+mv ~/genomedata/* .
+```
 
-# get chromosome 4 fasta
-# http://hgdownload.cse.ucsc.edu/goldenPath/hg19/chromosomes/chr4.fa.gz
-# google "ensembl download fasta"
-mkdir Index
-cd Index
-wget ftp://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/dna/Homo_sapiens.GRCh37.75.dna.chromosome.4.fa.gz
-gunzip Homo_sapiens.GRCh37.75.dna.chromosome.4.fa.gz
-mv Homo_sapiens.GRCh37.75.dna.chromosome.4.fa chr4.fa
+Now, let's build an index. Tophat is a spliced aligner. It uses the Bowtie aligner under the hood. To run Bowtie we have to first build an index using a utility that comes with Bowtie. You only have to do this once each time you build a reference. First, let's get a little help, then get it started running while we talk about alignment and aligner indexes.
 
-# create index
-bowtie-build chr4.fa chr4
+```
+bowtie2-build -h
+bowtie2-build chr4.fa chr4
+```
 
-# While that's building, let's make annotation
-cd Annotation
-wget ftp://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/dna/Homo_sapiens.GRCh37.75.dna.chromosome.4.fa.gz
-gunzip Homo_sapiens.GRCh37.75.gtf.gz
+### Alignment with TopHat
 
-# create index
-bowtie-build chr4.fa chr4
+Let's try a small sample first
 
-# map
-find *.fastq | parallel --dry-run tophat --bowtie1 --no-coverage-search -o {}_tophat Index/chr4 {}
-more */align_summary.txt
+```
+head -n 40000 trimmed_ctl1.fastq > test10k.fastq
+tophat --no-coverage-search chr4 -o test10k_tophat test10k.fastq
+```
 
-# count
+---
+
+**EXERCISE**
+
+First, look around at the results, then delete those files when you're done:
+
+- Go into the output directory that was just created.
+- Look at the `align_summary.txt` file that was created (**don't try to `cat` the .bam files in that directory!**)
+- When you're done, remove the entire directory containing that test output, and remove the test10k.fastq file you created.
+
+Next, Using `find` and `parallel --dry-run`, try to construct the command that would run all the samples through tophat in parallel. Using the `-o` option, make the output for each run be a directory with `_tophat` appended to it. The command generated should look like this:
+
+```
+tophat --no-coverage-search -o trimmed_ctl1.fastq_tophat chr4 trimmed_ctl1.fastq
+tophat --no-coverage-search -o trimmed_ctl2.fastq_tophat chr4 trimmed_ctl2.fastq
+tophat --no-coverage-search -o trimmed_ctl3.fastq_tophat chr4 trimmed_ctl3.fastq
+tophat --no-coverage-search -o trimmed_uvb1.fastq_tophat chr4 trimmed_uvb1.fastq
+tophat --no-coverage-search -o trimmed_uvb2.fastq_tophat chr4 trimmed_uvb2.fastq
+tophat --no-coverage-search -o trimmed_uvb3.fastq_tophat chr4 trimmed_uvb3.fastq
+```
+
+**But, don't launch the jobs just yet**
+
+---
+
+Now, before we launch those jobs, let's take a look at the help for GNU parallel. We can specify an upper limit to the number of jobs run in parallel using the -j option. Let's only run three jobs in parallel so we don't crash our system. Tophat consumes quite a bit of memory, and we only have 15GB available to us.
+
+```bash
+parallel -h
+find *.fastq | parallel -j 3 --dry-run tophat --no-coverage-search -o {}_tophat chr4 {}
+```
+
+---
+
+**EXERCISE**
+
+- When that's done, from the main data directory, look at all the `align_summary.txt` files with one command.
+- Using `grep`, pull out the line that shows you the number of mapped reads.
+
+---
+
+## Counting
+
+```
 featureCounts -a Annotation/Homo_sapiens.GRCh37.75.gtf -o counts.txt -t exon -g gene_name */accepted_hits.bam
 ```
+
+## Resources
+
+- [Illumina iGenomes](http://support.illumina.com/sequencing/sequencing_software/igenome.html): Gene annotations and pre-computed indexes for a variety of organisms.
+- Bowtie2 Manual: <http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml>
+- Tophat2: [Tutorial](http://ccb.jhu.edu/software/tophat/tutorial.shtml), [Manual](http://ccb.jhu.edu/software/tophat/manual.shtml)
+-
