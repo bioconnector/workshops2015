@@ -203,10 +203,24 @@ find *.fastq | parallel -j 3 --dry-run tophat --no-coverage-search -o {}_tophat 
 
 ---
 
-## Counting
+### View the alignment
+
+If time allows...
 
 ```
-featureCounts -a Annotation/Homo_sapiens.GRCh37.75.gtf -o counts.txt -t exon -g gene_name */accepted_hits.bam
+samtools view accepted_hits.bam | less
+samtools index accepted_hits.bam
+samtools tview accepted_hits.bam ../chr4.fa
+# g 4:82426431
+```
+
+
+## Counting
+
+For each read we now have an alignment. If we look at one of those alignments (`samtools view`) that shows us where the read aligned on the reference seqeunce. But that's all we have so far, is a sequence and a chromosomal position of where each read aligned. We don't have any information here yet about
+
+```
+featureCounts -a genes.gtf -o counts.txt -t exon -g gene_name */accepted_hits.bam
 ```
 
 ## Resources
