@@ -28,9 +28,9 @@ Stuff need install on VM
 Before installing guest additions
 
 ```bash
-sudo apt-get install gcc make ruby curl git vim
-sudo apt-get install dkms build-essential linux-headers-generic # linux-headers-`uname -r`
-sudo apt-get install virtualbox-guest-x11
+sudo apt-get install gcc make ruby curl git vim cowsay wamerican wamerican-huge wamerican-large
+# sudo apt-get install dkms build-essential linux-headers-generic # linux-headers-`uname -r`
+# sudo apt-get install virtualbox-guest-x11
 ```
 
 For my own sanity:
@@ -43,8 +43,12 @@ https://github.com/Homebrew/homebrew-science
 
 * bowtie
 * tophat
+* STAR
 * R
 * RStudio
+* fastqc
+* fastx toolkit
+
 
 
 Download human genome chromosome 4 from ucsc in case poor internet connection
