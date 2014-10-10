@@ -11,5 +11,5 @@ url: "http://stephenturner.us"
 baseurl: "/workshops"
 
 # Build settings
-markdown: redcarpet2
+#markdown: redcarpet
 permalink: pretty
