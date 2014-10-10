@@ -12,4 +12,6 @@ baseurl: "/workshops"
 
 # Build settings
 markdown: redcarpet
+redcarpet:
+  extensions: ["tables"]
 permalink: pretty
