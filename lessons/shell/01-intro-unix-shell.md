@@ -367,15 +367,15 @@ We did sequencing, and what we have here are just reads that came from a 100 MB 
 
 #### Wild cards
 
-Navigate to the `workshops/lessons/rnaseq-1day/data` directory from your home. This directory contains our FASTQ files and some other ones we'll need for analyses. If we type `ls`, we will see that there are several files in there. Some of the end with .fastq.
+Navigate to the `workshops/lessons/rnaseq-1day/data` directory from your home. This directory contains our FASTQ files and some other ones we'll need for analyses. If we type `ls`, we will see that there are several files in there. Some of the end with .fastq.gz. These are compressed fastq files.
 
 The `*` character is a shortcut for "everything". Thus, if you enter `ls *`, you will see all of the contents of a given directory.
 
 ```
-ls *fastq
+ls *fastq.gz
 ```
 
-This lists every file that ends with a `fastq`. This command:
+This lists every file that ends with a `fastq.gz`. This command:
 
 ```
 ls /usr/bin/*.sh
@@ -387,10 +387,18 @@ If we wanted to list just the controls or just the uvb-treated samples, we could
 
 ```
 ls ctl*
-ls uvb*.fastq
+ls uvb*
 ```
 
-So how does this actually work? Well...when the shell sees a word that contains the `*` character, it automatically looks for filenames that match the given pattern. In this case, it identified 3 such files. Then, it replaced the `ctl*fastq` with the list of files, separated by spaces.
+So how does this actually work? Well...when the shell sees a word that contains the `*` character, it automatically looks for filenames that match the given pattern. In this case, it identified 3 such files. Then, it replaced the `ctl*` with the list of files, separated by spaces.
+
+Because we'll use these files later, let's go ahead and extract or uncompress these files. To compres a text file we would use `gzip`. To extract, we'll use `gunzip`. Let's extract all the files that end in `.gz`. This will extract both the fastq files and the counts.txt file as well:
+
+```
+gunzip *.gz
+```
+
+Now, time for some more practice with wildcards.
 
 ---
 
