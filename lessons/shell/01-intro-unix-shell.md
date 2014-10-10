@@ -10,7 +10,6 @@ Learn more:
 
 - <http://datacarpentry.org/>
 - <http://software-carpentry.org/>
-- test http://google.com
 
 ## Objectives
 
