@@ -205,23 +205,49 @@ find *.fastq | parallel -j 3 --dry-run tophat --no-coverage-search -o {}_tophat 
 
 ### View the alignment
 
-If time allows...
+If time allows let's look around with samtools Tview. Much better to do this with software such as the Broad's [Integrative Genomics Viewer (IGV)](http://www.broadinstitute.org/igv/).
 
 ```
+cd trimmed_ctl1.fastq_tophat/
 samtools view accepted_hits.bam | less
 samtools index accepted_hits.bam
+samtools tview
 samtools tview accepted_hits.bam ../chr4.fa
-# g 4:82426431
+# ?
+# g 4:82426400
+# . to turn on off dot view
+# n to turn on nt colors
+# b to turn on base call qualities
+# r to toggle read names
+# space/backspace to move around
 ```
 
 
 ## Counting
 
-For each read we now have an alignment. If we look at one of those alignments (`samtools view`) that shows us where the read aligned on the reference seqeunce. But that's all we have so far, is a sequence and a chromosomal position of where each read aligned. We don't have any information here yet about
+Remember what we want to end up with is a table that gives us the number of reads mapping to each gene for each sample.
+
+All we have now is an alignment which tells us for each sample the genomic positions of where each read aligned on the reference seqeunce. It doesn't tell us anything about genes. For that we'll need a gene annotation, which tells us the genomic position of genes (more specifically, exons). Then we can kind of intersect the two.
+
+There's a tool called featureCounts that's part of a larger package called subread that very quickly goes through all your alignments for all your samples and counts which reads map to exons in a supplied annotation file.
+
+<http://subread.sourceforge.net/>
+
+If you run `featureCounts` without any arguments, it gives you some help.
+
+You're required to give it an annotation file, an output file, and one ore more input files.
+
+You might want to pay special attention to the `-t` and `-g` options. Here we want to count all the reads mapping to any exon of a gene (`-t exon`), and summarize the counts for that gene across all the exons that gene has (`-g gene_name`). Use `less genes.gtf` to look at the annotation to see what the names of the meta-features are.  
+
+We can also use the `-T` option to specify that we want to run multiple threads to speed things up.
+
+Take a look at other options for dealing with paired-end data, strand-specific data, multi-mapping reads, etc.
 
 ```
-featureCounts -a genes.gtf -o counts.txt -t exon -g gene_name */accepted_hits.bam
+featureCounts -a genes.gtf -o counts.txt -t exon -g gene_name -T 16 */accepted_hits.bam
 ```
+
+After mapping is complete, take a look at the summary file produced.
 
 ## Resources
 
