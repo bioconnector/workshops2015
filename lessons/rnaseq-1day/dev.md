@@ -8,7 +8,7 @@ Ubuntu 14.04 LTS image from AWS
 # install software
 sudo apt-get -y update
 sudo apt-get -y upgrade
-sudo apt-get -y install gcc make ruby curl git vim parallel unzip cowsay wamerican wamerican-huge wamerican-large
+sudo apt-get -y install gcc make ruby curl git vim parallel unzip libreoffice firefox cowsay wamerican wamerican-huge wamerican-large
 
 # download and extract genome data:
 mkdir genomedata
@@ -18,6 +18,8 @@ wget ftp://ftp.ensembl.org/pub/release-77/gtf/homo_sapiens/Homo_sapiens.GRCh38.7
 gunzip *.gz
 mv Homo_sapiens.GRCh38.dna.chromosome.4.fa chr4.fa
 mv Homo_sapiens.GRCh38.77.gtf genes.gtf
+grep ^r genes.gtf > chr4.gtf
+# need to index the fa with samtools faidx and then create bowtie2 indexes.
 ```
 
 ## Install bioinformatics tools
