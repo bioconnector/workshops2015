@@ -191,7 +191,7 @@ Now, before we launch those jobs, let's take a look at the help for GNU parallel
 
 ```bash
 parallel -h
-find *.fastq | parallel -j 3 --dry-run tophat --no-coverage-search -o {}_tophat chr4 {}
+find trimmed_*.fastq | parallel -j 3 --dry-run tophat --no-coverage-search -o {}_tophat chr4 {}
 ```
 
 ---
@@ -244,7 +244,7 @@ We can also use the `-T` option to specify that we want to run multiple threads 
 Take a look at other options for dealing with paired-end data, strand-specific data, multi-mapping reads, etc.
 
 ```
-featureCounts -a genes.gtf -o counts.txt -t exon -g gene_name -T 16 */accepted_hits.bam
+featureCounts -a chr4.gtf -o counts.txt -t exon -g gene_name -T 16 */accepted_hits.bam
 ```
 
 After mapping is complete, take a look at the summary file produced.
@@ -253,5 +253,7 @@ After mapping is complete, take a look at the summary file produced.
 
 - [Illumina iGenomes](http://support.illumina.com/sequencing/sequencing_software/igenome.html): Gene annotations and pre-computed indexes for a variety of organisms.
 - Bowtie2 Manual: <http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml>
-- Tophat2: [Tutorial](http://ccb.jhu.edu/software/tophat/tutorial.shtml), [Manual](http://ccb.jhu.edu/software/tophat/manual.shtml)
--
+- Tophat2
+  - Tutorial: <http://ccb.jhu.edu/software/tophat/tutorial.shtml>
+  - Manual: <http://ccb.jhu.edu/software/tophat/manual.shtml>
+- featureCounts tutorial: <http://bioinf.wehi.edu.au/featureCounts/>
