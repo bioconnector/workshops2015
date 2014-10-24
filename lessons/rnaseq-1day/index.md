@@ -17,7 +17,10 @@ Participants will also be exposed to operating in a virtual environment and/or p
 **Time**: 8:00 am (sharp!) - 5:00 pm  
 **Location**: Carter classroom, first floor Health Sciences Library
 
-**Pre-requisites**: You must bring a laptop to the course with the necessary software installed (see instructions below).
+**Pre-requisites**: [See the setup requirements below](#setup). Set aside an hour to create the necessary accounts and install the software *prior to* the workshop. *We will not have time to do this during the workshop*.
+
+**Instructor / Technical contact**: Stephen Turner  (<a href="http://www.google.com/recaptcha/mailhide/d?k=01uXi4zl-bIdygzSeXF4649A==&amp;c=_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501uXi4zl-bIdygzSeXF4649A\75\75\46c\75_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">s...</a>@virginia.edu)  
+**Logistics / registration contact**: Bart Ragon (<a href="http://www.google.com/recaptcha/mailhide/d?k=01uXi4zl-bIdygzSeXF4649A==&amp;c=Vsnuy3VwvY13wVeE0K2DFU5Cf-2n-YnO3260iwqa1RA=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501uXi4zl-bIdygzSeXF4649A\75\75\46c\75Vsnuy3VwvY13wVeE0K2DFU5Cf-2n-YnO3260iwqa1RA\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">b...</a>@virginia.edu)
 
 ## Agenda
 
@@ -62,7 +65,9 @@ Registration is $20 (includes lunch). Click the link below and scroll down to fi
 <iframe src="//www.eventbrite.com/tickets-external?eid={{page.eventbrite}}&ref=etckt" frameborder="0" width="100%" height="253px" scrolling="auto"></iframe>
 {% endif %}
 
+<a name="setup"></a>
 ## Setup
+
 
 Please bring a laptop with the software below installed (everything is free). You'll also need to create an Amazon Web Services account. I can't understate how important it is to do this *prior to the course* - we will not have time during the workshop to troubleshoot installation issues. Please email me (<a href="http://www.google.com/recaptcha/mailhide/d?k=01uXi4zl-bIdygzSeXF4649A==&amp;c=_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501uXi4zl-bIdygzSeXF4649A\75\75\46c\75_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">sd...</a>@virginia.edu) if you have any trouble.
 
