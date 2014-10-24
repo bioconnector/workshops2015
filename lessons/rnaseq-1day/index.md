@@ -73,13 +73,14 @@ Please bring a laptop with the software below installed (everything is free). Yo
 
 Setup checklist:
 
-* AWS account
-* Get a free AWS voucher from Dr. Turner.
-* PuTTY (Windows users only)
-* Cyberduck
-* R
-* RStudio
-* DESeq R package
+* Register & activate an AWS account
+* Get a free AWS voucher from Dr. Turner
+* Download PuTTY (Windows users only)
+* Install Cyberduck
+* Download and extract course repository zip file
+* Install R
+* Install RStudio
+* Install DESeq R package
 
 
 ### Software setup, part I: AWS and a terminal
