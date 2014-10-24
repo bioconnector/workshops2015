@@ -247,7 +247,7 @@ Take a look at other options for dealing with paired-end data, strand-specific d
 featureCounts -a chr4.gtf -o counts.txt -t exon -g gene_name -T 16 */accepted_hits.bam
 ```
 
-After mapping is complete, take a look at the summary file produced.
+After mapping is complete, take a look at the summary file produced. Open up cyberduck and using SFTP, download the counts.txt file you just created.
 
 ## Resources
 
