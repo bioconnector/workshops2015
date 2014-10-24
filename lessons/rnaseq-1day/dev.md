@@ -8,7 +8,13 @@ Ubuntu 14.04 LTS image from AWS
 # install software
 sudo apt-get -y update
 sudo apt-get -y upgrade
-sudo apt-get -y install gcc make ruby curl git vim parallel unzip libreoffice firefox cowsay wamerican wamerican-huge wamerican-large
+sudo apt-get -y install gcc make ruby curl git vim parallel unzip firefox cowsay wamerican-huge
+sudo apt-get -y install samtools fastx-toolkit fastqc
+
+# download and extract manually:
+# bowtie2
+# tophat2
+# featureCounts
 
 # download and extract genome data:
 mkdir genomedata
@@ -21,18 +27,6 @@ mv Homo_sapiens.GRCh38.77.gtf genes.gtf
 grep ^r genes.gtf > chr4.gtf
 # need to index the fa with samtools faidx and then create bowtie2 indexes.
 ```
-
-## Install bioinformatics tools
-
-Check out https://github.com/Homebrew/homebrew-science
-
-* samtools
-* bowtie
-* tophat
-* fastqc
-* fastx toolkit
-* featureCounts
-
 
 ## Orig data
 
