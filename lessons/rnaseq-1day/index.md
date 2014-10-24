@@ -19,13 +19,7 @@ Participants will also be exposed to operating in a virtual environment and/or p
 
 **Pre-requisites**: You must bring a laptop to the course with the necessary software installed (see instructions below).
 
-**Link to slides (*check back after course*)**
-
-**Course Material**
-
-*Links coming soon*
-
-**Agenda**
+## Agenda
 
 ***The workshop will start promptly at 8:00am***. If you have any trouble with setup, please contact Stephen Turner prior to the course. Dr. Turner will also be available 30 minutes prior to the course for hands-on troubleshooting, but please try to solve any setup problems prior to this time if possible.
 
@@ -36,6 +30,15 @@ Participants will also be exposed to operating in a virtual environment and/or p
 * 1300-1445: Introduction to R
 * 1500-1700: QC, differential expression, and visualization with R/Bioconductor
 
+## Course Material
+
+(links coming soon)
+
+* Slides
+* Introduction to Unix
+* NGS data analysis: QC, Alignment, Quantitation
+* Introduction to R
+* RNA-seq data analysis with DESeq2
 
 ## Registration
 
@@ -59,14 +62,29 @@ Registration is $20 (includes lunch). Click the link below and scroll down to fi
 <iframe src="//www.eventbrite.com/tickets-external?eid={{page.eventbrite}}&ref=etckt" frameborder="0" width="100%" height="253px" scrolling="auto"></iframe>
 {% endif %}
 
-## Before coming
+## Setup
 
-Before coming please install the software as instructed below, and take the pre-workshop survey (this should take ~60 seconds).
+Please bring a laptop with the software below installed (everything is free). You'll also need to create an Amazon Web Services account. I can't understate how important it is to do this *prior to the course* - we will not have time during the workshop to troubleshoot installation issues. Please email me (<a href="http://www.google.com/recaptcha/mailhide/d?k=01uXi4zl-bIdygzSeXF4649A==&amp;c=_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501uXi4zl-bIdygzSeXF4649A\75\75\46c\75_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">sd...</a>@virginia.edu) if you have any trouble.
 
-### Software setup
+Setup checklist:
 
-{% include setup-rnaseq-1day.md %}
+* AWS account
+* Get a free AWS voucher from Dr. Turner.
+* PuTTY (Windows users only)
+* Cyberduck
+* R
+* RStudio
+* DESeq R package
 
-### Take the pre-workshop survey
+
+### Software setup, part I: AWS and a terminal
+
+{% include setup-shell.md %}
+
+### Software setup, part II: R and RStudio
+
+{% include setup-r.md %}
+
+## Take the pre-workshop survey
 
 TBA
