@@ -208,11 +208,11 @@ What do you notice about the positions of the outliers on these plots? How would
 
 ## DESeq2 analysis
 
-DESeq2 is an R package for analysis of RNAseq data. It is available from [Bioconductor](http://www.bioconductor.org/). Bioconductor is a project to provide tools for analysing high-throughput genomic data including RNA-seq, ChIP-seq and arrays. You can explore Bioconductor packages [here](http://www.bioconductor.org/packages/release/BiocViews.html#___Software). 
+DESeq2 is an R package for analyzing count-based NGS data like RNA-seq. It is available from [Bioconductor](http://www.bioconductor.org/). Bioconductor is a project to provide tools for analysing high-throughput genomic data including RNA-seq, ChIP-seq and arrays. You can explore Bioconductor packages [here](http://www.bioconductor.org/packages/release/BiocViews.html#___Software). 
+
+Just like R packages from CRAN, you only need to install Bioconductor packages once, then load them every time you start a new R session.
 
 ```{r install_deseq2, eval=FALSE}
-# install and have a break to check everyone is up to date?
-# explain bioconductor?
 source("http://bioconductor.org/biocLite.R")
 biocLite("DESeq2")
 ```
@@ -222,40 +222,33 @@ library("DESeq2")
 citation("DESeq2")
 ```
 
-It requires the count data to be in matrix form, and an additional dataframe describing the structure of the experiment.
+It requires the count data to be in matrix form, and an additional dataframe describing sample metadata. Notice that the **colnames of the countdata** match the **rownames of the metadata*. 
 
-```{r convert_to_matrix}
-# countdata is currently a data.frame, but DESeq2 expects its input to be in 
-# matrix format, so we will convert our countdata to a matrix.
-class(countdata)
-countdata <- as.matrix(countdata)
-class(countdata)
-head(countdata)
-
-# construct colData dataframe
-# three replicates of control and UVB.
-colData <- data.frame(condition=c(rep("ctl", 3), rep("uvb",3)), row.names=colnames(countdata))
+```{r read_coldata}
+mycoldata <- read.csv("data/coldata.csv", row.names=1)
+mycoldata
 ```
 
-DESeq works on a particular type of object called a DESeqDataSet.
+DESeq works on a particular type of object called a DESeqDataSet. The DESeqDataSet is a single object that contains input values, intermediate calculations like how things are normalized, and all results of a differential expression analysis. You can construct a DESeqDataSet from a count matrix, a metadata file, and a formula indicating the design of the experiment. 
 
 ```{r make_deseqdataset}
-# introduce how DESeq2 works - type of object it works on etc
-# instantiate the DESeqDataSet
-dds <- DESeqDataSetFromMatrix(countdata=countdata, colData=colData, design=~condition)
+dds <- DESeqDataSetFromMatrix(countData=countdata, colData=mycoldata, design=~condition)
 dds
 ```
 
-Run the DESeq pipeline on this object. [Describe pipeline steps?]
-Get results and have a look at them
+Next, let's run the DESeq pipeline on the dataset, and reassign the resulting object back to the same variable. Before we start, `dds` is a bare-bones DESeqDataSet. The `DESeq()` function takes a DESeqDataSet and returns a DESeqDataSet, but with lots of other information filled in (normalization, results, etc). Here, we're running the DESeq pipeline on the `dds` object, and reassigning the whole thing back to `dds`, which will now be a DESeqDataSet populated with results.
 
 ```{r run_deseq}
 dds <- DESeq(dds)
+```
 
+Now, let's use the `results()` function to pull out the results from the `dds` object. Let's re-order by the adjusted p-value.
+
+```{r}
 # Get differential expression results
 res <- results(dds)
 head(res)
-table(res$padj<0.05)
+
 # Order by adjusted p-value
 res <- res[order(res$padj), ]
 head(res)
@@ -264,14 +257,9 @@ head(res)
 Combine DEseq results with the original counts data. Write significant results to a file.
 
 ```{r write_results}
-resData <- merge(as.data.frame(res), as.data.frame(counts(dds, normalized=TRUE)), by="row.names", sort=FALSE)
-head(resData)
-names(resData)[1] <- "GeneID"
-head(resData)
-
-sig <- subset(resData, padj<0.05)
+sig <- subset(res, padj<0.05)
 dir.create("results")
-write.table(sig, file="results/sig.txt", sep="\t") # tab delim data
+write.csv(sig, file="results/sig.csv") # tab delim data
 ```
 
 You can open this file in Excel or any text editor (try it now).
@@ -280,9 +268,7 @@ You can open this file in Excel or any text editor (try it now).
 
 We can also do some exploratory plotting of the data.
 
-```{r plot_dispersion}
-plotDispEsts(dds, main="Dispersion plot")
-```
+
 
 ```{r plot_heatmaps}
 # Regularized log transformation for clustering/heatmaps, etc
