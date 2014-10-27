@@ -3,3 +3,6 @@
 .Rproj.user
 .Rhistory
 .RData
+
+# don't keep analysis results
+*pasilla_results.csv

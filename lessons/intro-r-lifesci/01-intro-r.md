@@ -203,6 +203,15 @@ Try running the built-in `sum()` function on a numeric vector:
 sum(x)
 ```
 
+---
+
+**EXERCISE**
+
+Without using the `+` symbol, get the sum of the integers 50 through 55
+
+---
+
+
 Combining characters with numerics results in coercing everything to be a character class.
 
 
@@ -249,6 +258,14 @@ x[20:25]
 # values.  Missing values are represented as NA
 x[45:55]  #NA is missing value!
 ```
+
+---
+
+**EXERCISE**
+
+Sum the integers 1 through 100 and 501 through 600 (e.g. 1+2+...+99+100+501+502+...+599+600)
+
+---
 
 ### Data Frames
 
@@ -306,21 +323,29 @@ We can also use the `subset()` function to return a subset of the data frame tha
 The commands below will:
 
 0. Return only cars with 6 cylinder engines.
-0. Return only cars with greater than 6 cylinders.
+0. Return only cars having more than 6 cylinders **and** an engine displacement volume less than 300cc.
 0. Return only the cars that get at least 20 miles per gallon or have a displacement volume of less than 100cc.
 0. Return cars with 6 cylinder engines, but using the `select=` argument, only the MPG and displacement columns. Note the syntax there -- we're passing a vector of variables created with the `c()` function to the `select=` argument, which only returns certain columns.
-0. Return cars that have greater than or equal to 6 cylinders *and* get at least 15 miles per gallon, but display only the MPG, cylinders, and qsec columns (qsec is the 1/4 mile time).
 
 Try some subsetting on your own.
 
 
 ```r
 subset(mtcars, cyl == 6)
-subset(mtcars, cyl > 6)
+subset(mtcars, cyl > 6 & disp < 300)
 subset(mtcars, mpg >= 20 | disp < 100)
 subset(mtcars, cyl == 6, select = c(mpg, disp))
-subset(mtcars, cyl >= 6 & mpg >= 15, select = c(mpg, cyl, qsec))
 ```
+
+---
+
+**EXERCISE**
+
+Return cars that have greater than or equal to 6 cylinders *and* get at least 15 miles per gallon, but display only the MPG, cylinders, and qsec columns (qsec is the 1/4 mile time).
+
+
+
+---
 
 The `with()` function is particularly helpful. Let's say you wanted to compute some (senseless) value by computing the MPG times the number of cylinders divided by the car's displacement. You could access the dataset's variables using the `$` notation, or you could use `with()` to temporarily *attach* the data frame, and call the variables directly. The first argument to `with()` is the name of the data frame, and the second argument is all the stuff you'd like to do with the particular features in that data frame.
 
@@ -377,9 +402,15 @@ with(mtcars, plot(disp, mpg, pch = 16, col = "red", main = "MPG vs Displacement"
 
 Notice how on that last line I broke the command up into two lines for better readability. I broke the command at the comma separating arguments, and indented the following line for readability.
 
-On your own, try plotting horsepower vs displacement for vehicles with more than 4 cylinders. Give the graph a title and label the axes. Make the points solid (hint, `pch=16`) blue (hint, `col="blue"`) circles. Your plot should look something like this:
+---
+
+**EXERCISE**
+
+Plot horsepower (y-axis) vs displacement (x-axis) for vehicles with more than 4 cylinders. Give the graph a title and label the axes. Make the points solid (hint, `pch=16`) blue (hint, `col="blue"`) circles. Your plot should look something like this:
 
 
+
+---
 
 ### Reading in / writing out data
 
@@ -507,6 +538,10 @@ library(Biobase)
 library(DESeq2)
 ```
 
+```
+## Warning: package 'RcppArmadillo' was built under R version 3.1.1
+```
+
 Next, you'll need to set your working directory (folder) to the `lessons/intro-r-lifesci` subdirectory wherever you saved and extracted the [code repository for this lesson](https://github.com/bioconnector/workshops/archive/master.zip). This way, you can reference the data using a *relative path* (e.g. `data/pasilla_counts.csv`) instead of an *absolute path* (e.g. `C:/Users/name/downloads/workshops/lessons/data/pasilla_counts.csv`). You can do this either through the RStudio graphical menu (Session, Set Working Directory, Choose...), or through the `setwd()` function. You can check where you are with `getwd()`.
 
 
@@ -560,7 +595,7 @@ head(res)
 mcols(res)
 res <- res[order(res$padj), ]
 head(res)
-write.csv(res, file = "results/pasilla_results.csv")
+write.csv(res, file = "pasilla_results.csv")
 
 # Create MA Plot
 plotMA(dds, ylim = c(-2, 2))
@@ -608,14 +643,14 @@ sessionInfo()
 ## [8] base     
 ## 
 ## other attached packages:
-##  [1] DESeq2_1.4.5              RcppArmadillo_0.4.300.8.0
-##  [3] Rcpp_0.11.2               GenomicRanges_1.16.3     
-##  [5] GenomeInfoDb_1.0.2        IRanges_1.22.9           
-##  [7] Biobase_2.24.0            BiocGenerics_0.10.0      
-##  [9] knitr_1.6                 BiocInstaller_1.14.2     
+##  [1] DESeq2_1.4.5            RcppArmadillo_0.4.320.0
+##  [3] Rcpp_0.11.2             GenomicRanges_1.16.3   
+##  [5] GenomeInfoDb_1.0.2      IRanges_1.22.9         
+##  [7] Biobase_2.24.0          BiocGenerics_0.10.0    
+##  [9] knitr_1.6               BiocInstaller_1.14.2   
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] annotate_1.42.0      AnnotationDbi_1.26.0 DBI_0.2-7           
+##  [1] annotate_1.42.1      AnnotationDbi_1.26.0 DBI_0.3.1           
 ##  [4] evaluate_0.5.5       formatR_0.10         genefilter_1.46.1   
 ##  [7] geneplotter_1.42.0   grid_3.1.0           lattice_0.20-29     
 ## [10] locfit_1.5-9.1       RColorBrewer_1.0-5   RSQLite_0.11.4      
