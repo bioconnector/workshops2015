@@ -28,6 +28,10 @@ grep ^r genes.gtf > chr4.gtf
 # need to index the fa with samtools faidx and then create bowtie2 indexes.
 ```
 
+## Teach in intro to R
+
+
+
 ## Orig data
 
 Paper: http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0093338

@@ -74,11 +74,14 @@ Web sites where you can see what the different components of a shell command are
 
 Cloud computing means different things to different people. There's Software-as-a-Service (Saas) like Gmail, Facebook, etc., that most people think of when they think of cloud computing. Here, we're strictly talking about Infrastructure-as-a-Service (IaaS). That is, we're using (or *renting*) computing infrastructure that we don't *own*.
 
-fixme:
+We'll cover in class how to start and connect to an Amazon Web Services EC2 instance. ***It's essential that you stop or terminate any running AWS instances after you're done with them***.
+
+<!--
 - fixme: add content about amazon on separate 00-lesson?
 - fixme: launching instance w/o keys
 - fixme: connecting to instance w/ username/password (terminal on mac, putty on windows)
 - fixme: file transfer on mac/windows with cyberduck
+-->
 
 ## Shell basics
 
