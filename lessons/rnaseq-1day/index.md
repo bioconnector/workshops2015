@@ -66,8 +66,8 @@ Registration is $20 (includes lunch). Click the link below and scroll down to fi
 {% endif %}
 
 <a name="setup"></a>
-## Setup
 
+## Setup
 
 Please bring a laptop with the software below installed (everything is free). You'll also need to create an Amazon Web Services account. I can't understate how important it is to do this *prior to the course* - we will not have time during the workshop to troubleshoot installation issues. Please email me (<a href="http://www.google.com/recaptcha/mailhide/d?k=01uXi4zl-bIdygzSeXF4649A==&amp;c=_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501uXi4zl-bIdygzSeXF4649A\75\75\46c\75_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">sd...</a>@virginia.edu) if you have any trouble.
 
