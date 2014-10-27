@@ -2,15 +2,11 @@
 layout: page
 ---
 
-```{r, echo=FALSE, message=FALSE, eval=TRUE}
-# Set eval=TRUE here to hide all results and figures.
-# This sets defaults. Can change this manually in individual chunks.
-# Must load knitr so opts_chunk is in search path.
-library(knitr)
-opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none", tidy=TRUE)
-```
 
-# RNA-seq data analysis
+
+# RNA-seq: differential gene expression analysis
+
+*[back to course contents](..)*
 
 This is an introduction to RNAseq analysis involving reading in count data from an RNAseq experiment, exploring the data using base R functions and then analysis with the DESeq2 package.
 
@@ -18,7 +14,8 @@ This is an introduction to RNAseq analysis involving reading in count data from 
 
 First, install some packages that you'll use. You only have to do this once, but you'll need to load them each time you start a new R session.
 
-```{r install_packages, eval=FALSE}
+
+```r
 install.packages("gplots")
 install.packages("ggplot2")
 install.packages("calibrate")
@@ -36,11 +33,12 @@ The output from this tool is provided in the `counts.txt` file in the `data` dir
 
 First, set your working directory to the top level of the RNA-seq course. Import the data into R as a `data.frame` and examine it again. You can set the arguments of `read.table` to import the first row as a header giving the column names, and the first column as row names. 
 
-```{r data_input}
+
+```r
 # Filename with output from featureCounts
 countfile <- "data/counts.txt"
 # Read in the data
-countdata <- read.table(countfile, header=TRUE, row.names=1)
+countdata <- read.table(countfile, header = TRUE, row.names = 1)
 head(countdata)
 colnames(countdata)
 class(countdata)
@@ -48,27 +46,31 @@ class(countdata)
 
 The data.frame contains information about genes (one gene per row) with the gene positions in the first five columns and then information about the number of reads aligning to the gene in each experimental sample. There are three replicates for control (column names starting with "ctl") and three for samples treated with ultraviolet-B light (starting "uvb"). We don't need the information on gene position for this analysis, just the counts for each gene and sample, so we can remove it from the data frame.
 
-```{r remove_metadata_cols}
+
+```r
 # Remove first five columns (chr, start, end, strand, length)
-countdata <- countdata[ ,-(1:5)]
+countdata <- countdata[, -(1:5)]
 head(countdata)
 colnames(countdata)
 ```
 
 We can rename the columns to something shorter and a bit more readable. 
 
-```{r bad_renaming, eval=FALSE}
+
+```r
 # Manually
 c("ctl1", "ctl2", "ctl3", "uvb1", "uvb2", "uvb3")
 ```
 
 We can do it manually, but what if we have 600 samples instead of 6? This would become cumbersome. Also, it's always a bad idea to hard-code sample phenotype information at the top of the file like this. A better way to do this is to use the `gsub` command to strip out the extra information. This more robust to introduced errors, for example if the column order changes at some point in the future or you add additional replicates. 
 
-```{r rename_cols}
-# Using gsub -- robust
-?gsub
-gsub(pattern="trimmed_|.fastq_tophat.accepted_hits.bam", replacement="", x=colnames(countdata))
-colnames(countdata) <- gsub(pattern="trimmed_|.fastq_tophat.accepted_hits.bam", replacement="", x=colnames(countdata))
+
+```r
+# Using gsub -- robust. Get help with ?gsub
+gsub(pattern = "trimmed_|.fastq_tophat.accepted_hits.bam", replacement = "", 
+    x = colnames(countdata))
+colnames(countdata) <- gsub(pattern = "trimmed_|.fastq_tophat.accepted_hits.bam", 
+    replacement = "", x = colnames(countdata))
 head(countdata)
 ```
 
@@ -83,12 +85,7 @@ There's an R function called `rowSums()` that calculates the sum of each row in 
 0. In which sample does it have the highest expression? 
 0. What is the function of the gene? Can you suggest why this is the top expressed gene?
 
-```{r, echo=FALSE, include=FALSE}
-topGene <- which.max(rowSums(countdata))
-topGene
-countdata[topGene, ]
-# this is a pseudogene - maybe an artefact of only aligning reads to a single chromosome?
-```
+
 
 ---
 
@@ -98,19 +95,19 @@ We can investigate this data a bit more using some of the basic R functions befo
 
 First make a copy of the data, because we'll need it later. We will work on the copy. We will calculate the mean for each gene for each condition and plot them.
 
-```{r get_means}
-cd2 <- countdata #make a copy
+
+```r
+cd2 <- countdata  #make a copy
 
 # get Control columns
 colnames(cd2)
 
-# grep searches for matches to a pattern 
-?grep 
+# grep searches for matches to a pattern. Get help with ?grep
 
 # get the indexes for the controls
 grep("ctl", colnames(cd2))
 ctlCols <- grep("ctl", colnames(cd2))
-head(cd2[,ctlCols])
+head(cd2[, ctlCols])
 
 # use the rowMeans function
 cd2$ctlmean <- rowMeans(cd2[, ctlCols])
@@ -131,24 +128,20 @@ Using the `subset()` function, print out all the columns where the control mean 
 
 Bonus: code golf -- use the fewest characters to get the same solution.
 
-```{r, echo=FALSE, include=FALSE}
-subset(cd2, ctlmean>0 & uvbmean>0)
-subset(cd2, ctlmean*uvbmean>0)
-```
 
----
 
 ---
 
 **EXERCISE**
 
-0. Plot the mean expression of each gene in control against the UVB sample mean. Are there any outliers?
-0. How could you make this plot more informative and look more professional? Hint: try plotting on the log scale and using a different point character.
+1. Plot the mean expression of each gene in control against the UVB sample mean. Are there any outliers?
+2. How could you make this plot more informative and look more professional? Hint: try plotting on the log scale and using a different point character.
 
-```{r plot_means}
+
+```r
 plot(cd2$ctlmean, cd2$uvbmean)
-with(cd2, plot(log10(ctlmean), log10(uvbmean), pch=16))
-with(cd2, plot(ctlmean, uvbmean, log="xy", pch=16))
+with(cd2, plot(log10(ctlmean), log10(uvbmean), pch = 16))
+with(cd2, plot(ctlmean, uvbmean, log = "xy", pch = 16))
 ```
 
 ---
@@ -159,21 +152,24 @@ We can find candidate differentially expressed genes by looking for genes with a
 
 First, check for genes with a mean expression of 0. Putting zeroes into the log2 fold change calculation will produce NAs, so we might want to remove these genes. Note: this is for mathematical reasons, although different software may produce different results when you try to do `log2(0)`.
 
-```{r count_expressed}
+
+```r
 head(cd2$ctlmean)
 head(cd2$ctlmean > 0)
 ```
 
 In R, `TRUE` and `FALSE` can be represented as `1` and `0`, respectively. When we call `sum(cd2$ctlmean > 0)`, we're really asking, "how many genes have a mean above 0 in the control group?"
 
-```{r remove_unexpressed}
+
+```r
 sum(cd2$ctlmean > 0)
 sum(cd2$uvbmean > 0)
 ```
 
 Now, let's subset the data and keep things where either the control or UVB group means are greater than zero.
 
-```{r subset_nonzero}
+
+```r
 nrow(cd2)
 cd2 <- subset(cd2, cd2$ctlmean > 0 | cd2$uvbmean > 0)
 nrow(cd2)
@@ -184,24 +180,26 @@ Mathematically things work out better for us when we test things on the log scal
 
 When we do this we'll see some `Inf` and `-Inf` values. This is what happens when we take `log2(Inf)` or `log2(0)`.
 
-```{r log2FC}
+
+```r
 # calculate the log2 fold change
-cd2$log2FC <- log2(cd2$uvbmean / cd2$ctlmean)
+cd2$log2FC <- log2(cd2$uvbmean/cd2$ctlmean)
 head(cd2)
 
 # see how many are up, down, or both (using the absolute value function)
 sum(cd2$log2FC > 2)
 sum(cd2$log2FC < -2)
-sum(abs(cd2$log2FC)>2)
+sum(abs(cd2$log2FC) > 2)
 ```
 
 We can few just the "outliers" with `subset(cd2, abs(log2FC)>2)`, which gets us just the things that have a large fold change in either direction. Let's plot these.
 
-```{r plot_outliers}
-with(cd2, plot(ctlmean, uvbmean, log="xy", pch=16))
-subset(cd2, abs(log2FC)>2)
+
+```r
+with(cd2, plot(ctlmean, uvbmean, log = "xy", pch = 16))
+subset(cd2, abs(log2FC) > 2)
 # use the points function to add more points to the same axes
-with(subset(cd2, abs(log2FC)>2), points(ctlmean, uvbmean, pch=16, col="red"))
+with(subset(cd2, abs(log2FC) > 2), points(ctlmean, uvbmean, pch = 16, col = "red"))
 ```
 
 What do you notice about the positions of the outliers on these plots? How would you interpret this? What are some of the problems with this simple approach?
@@ -212,39 +210,45 @@ DESeq2 is an R package for analyzing count-based NGS data like RNA-seq. It is av
 
 Just like R packages from CRAN, you only need to install Bioconductor packages once, then load them every time you start a new R session.
 
-```{r install_deseq2, eval=FALSE}
+
+```r
 source("http://bioconductor.org/biocLite.R")
 biocLite("DESeq2")
 ```
 
-```{r load_deseq2}
+
+```r
 library("DESeq2")
 citation("DESeq2")
 ```
 
 It requires the count data to be in matrix form, and an additional dataframe describing sample metadata. Notice that the **colnames of the countdata** match the **rownames of the metadata*. 
 
-```{r read_coldata}
-mycoldata <- read.csv("data/coldata.csv", row.names=1)
+
+```r
+mycoldata <- read.csv("data/coldata.csv", row.names = 1)
 mycoldata
 ```
 
 DESeq works on a particular type of object called a DESeqDataSet. The DESeqDataSet is a single object that contains input values, intermediate calculations like how things are normalized, and all results of a differential expression analysis. You can construct a DESeqDataSet from a count matrix, a metadata file, and a formula indicating the design of the experiment. 
 
-```{r make_deseqdataset}
-dds <- DESeqDataSetFromMatrix(countData=countdata, colData=mycoldata, design=~condition)
+
+```r
+dds <- DESeqDataSetFromMatrix(countData = countdata, colData = mycoldata, design = ~condition)
 dds
 ```
 
 Next, let's run the DESeq pipeline on the dataset, and reassign the resulting object back to the same variable. Before we start, `dds` is a bare-bones DESeqDataSet. The `DESeq()` function takes a DESeqDataSet and returns a DESeqDataSet, but with lots of other information filled in (normalization, results, etc). Here, we're running the DESeq pipeline on the `dds` object, and reassigning the whole thing back to `dds`, which will now be a DESeqDataSet populated with results.
 
-```{r run_deseq}
+
+```r
 dds <- DESeq(dds)
 ```
 
 Now, let's use the `results()` function to pull out the results from the `dds` object. Let's re-order by the adjusted p-value.
 
-```{r}
+
+```r
 # Get differential expression results
 res <- results(dds)
 head(res)
@@ -256,10 +260,11 @@ head(res)
 
 Combine DEseq results with the original counts data. Write significant results to a file.
 
-```{r write_results}
-sig <- subset(res, padj<0.05)
+
+```r
+sig <- subset(res, padj < 0.05)
 dir.create("results")
-write.csv(sig, file="results/sig.csv") # tab delim data
+write.csv(sig, file = "results/sig.csv")  # tab delim data
 ```
 
 You can open this file in Excel or any text editor (try it now).
@@ -268,59 +273,104 @@ You can open this file in Excel or any text editor (try it now).
 
 We can also do some exploratory plotting of the data.
 
+The differential expression analysis above operates on the raw (normalized) count data. But for visualizing or clustering data as you would with a microarray experiment, you ned to work with transformed versions of the data. First, use a *regularlized log* transofmration while re-estimating the dispersion ignoring any information you have about the samples (`blind=TRUE`). Perform a principal components analysis and hierarchical clustering.
 
 
-```{r plot_heatmaps}
-# Regularized log transformation for clustering/heatmaps, etc
+```r
+# Transform
 rld <- rlogTransformation(dds)
-plotPCA(rld)
 
-# Sample distance heatmap
+# Principal components analysis
+plotPCA(rld, intgroup = "condition")
+
+# Hierarchical clustering analysis let's get the actual values for the first
+# few genes
 head(assay(rld))
-assay(rld)[1:5,1:5]
-t(assay(rld))[1:5,1:5]
+## now transpose those
+t(head(assay(rld)))
+## now get the sample distances from the transpose of the whole thing
 dist(t(assay(rld)))
-as.matrix(dist(t(assay(rld))))
-sampleDists <- as.matrix(dist(t(assay(rld))))
-heatmap(sampleDists)
+sampledist <- dist(t(assay(rld)))
+plot(hclust(sampledist))
+```
+
+Let's plot a heatmap.
+
+
+```r
+# ?heatmap for help
+sampledist
+as.matrix(sampledist)
+sampledistmat <- as.matrix(sampledist)
+heatmap(sampledistmat)
+```
+
+That's a horribly ugly default. You can change the built-in heatmap function, but others are better.
+
+
+```r
 # better heatmap with gplots
 library("gplots")
-heatmap.2(sampleDists)
-heatmap.2(sampleDists, col=colorpanel(64, "steelblue", "white"), key=FALSE, trace="none")
-heatmap.2(sampleDists, col=colorpanel(64, "black", "white"), key=FALSE, trace="none")
-heatmap.2(sampleDists, col=colorpanel(64, "red", "black", "green"), key=FALSE, trace="none")
-heatmap.2(sampleDists, col=colorpanel(64, "red", "white", "blue"), key=FALSE, trace="none")
+heatmap.2(sampledistmat)
+heatmap.2(sampledistmat, key = FALSE, trace = "none")
+colorpanel(10, "black", "white")
+heatmap.2(sampledistmat, col = colorpanel(64, "black", "white"), key = FALSE, 
+    trace = "none")
+heatmap.2(sampledistmat, col = colorpanel(64, "steelblue", "white"), key = FALSE, 
+    trace = "none")
+heatmap.2(sampledistmat, col = colorpanel(64, "red", "white", "blue"), key = FALSE, 
+    trace = "none")
 ```
 
-```{r plot_pval_hist}
+What about a histogram of the p-values?
+
+
+```r
 # Examine plot of p-values
-hist(res$pvalue, breaks=50, col="grey")
+hist(res$pvalue, breaks = 50, col = "grey")
 ```
 
+Let's plot an MA-plot. This shows the fold change versus the overall expression values.
 
-```{r MA_plot}
-# These are the plots that are most recognisable from papers
-# MA Plot
-par(pch=16)
-with(res, plot(baseMean, log2FoldChange, pch=20, cex=.5, log="x"))
-with(subset(res, padj<.05), points(baseMean, log2FoldChange, col="red", pch=16))
+
+```r
+with(res, plot(baseMean, log2FoldChange, pch = 16, cex = 0.5, log = "x"))
+with(subset(res, padj < 0.05), points(baseMean, log2FoldChange, col = "red", 
+    pch = 16))
+
+# optional: label the points with the calibrate package. see ?textxy for
+# help
 library("calibrate")
-?textxy
 res$Gene <- rownames(res)
-with(subset(res, padj<.05), textxy(baseMean, log2FoldChange, labs=Gene, cex=1, col=2))
+head(res)
+with(subset(res, padj < 0.05), textxy(baseMean, log2FoldChange, labs = Gene, 
+    cex = 1, col = "red"))
 ```
 
-```{r volcano_plot}
-# Volcano plot
-# Set point character
-par(pch=16)
-with(res, plot(log2FoldChange, -log10(pvalue), main="Volcano plot"))
-with(subset(res, padj<.05 ), points(log2FoldChange, -log10(pvalue), col="red"))
-with(subset(res, abs(log2FoldChange)>1), points(log2FoldChange, -log10(pvalue), col="orange"))
-with(subset(res, padj<.05 & abs(log2FoldChange)>1), points(log2FoldChange, -log10(pvalue), col="green"))
+Let's create a volcano plot.
+
+
+```r
+par(pch = 16)
+with(res, plot(log2FoldChange, -log10(pvalue), main = "Volcano plot"))
+with(subset(res, padj < 0.05), points(log2FoldChange, -log10(pvalue), col = "red"))
+with(subset(res, abs(log2FoldChange) > 2), points(log2FoldChange, -log10(pvalue), 
+    col = "orange"))
+with(subset(res, padj < 0.05 & abs(log2FoldChange) > 2), points(log2FoldChange, 
+    -log10(pvalue), col = "green"))
 # Add legend
-legend("topleft", legend=c("FDR<0.05", "|LFC|>1", "both"), pch=16, col=c("red","orange","green"))
+legend("topleft", legend = c("FDR<0.05", "|LFC|>2", "both"), pch = 16, col = c("red", 
+    "orange", "green"))
 # Label points
-with(subset(res, padj<.05 & abs(log2FoldChange)>1), textxy(log2FoldChange, -log10(pvalue), labs=Gene, cex=1))
+with(subset(res, padj < 0.05 & abs(log2FoldChange) > 2), textxy(log2FoldChange, 
+    -log10(pvalue), labs = Gene, cex = 1))
 ```
 
+## Going further
+
+* After the course, download the [Integrative Genome Viewer](http://www.broadinstitute.org/igv/) from the Broad Institute. Download all your .bam files from your AWS instance, and load them into IGV. Try navigating to regions around differentially expressed genes to view how reads map to genes differently in the controls versus the irradiated samples.
+* Can you see any genes where differential expression is likely attributable to a specific isoform?
+* Do you see any instances of differential exon usage? You can investigate this formally with the [DEXSeq](http://www.bioconductor.org/packages/release/bioc/html/DEXSeq.html) package. 
+* Read about pathway analysis with [GOSeq](http://www.bioconductor.org/packages/release/bioc/html/goseq.html) or [SeqGSEA](http://www.bioconductor.org/packages/release/bioc/html/SeqGSEA.html) - tools for gene ontology analysis and gene set enrichment analysis using next-generation sequencing data.
+
+After the course, make sure you stop any running AWS instances.
