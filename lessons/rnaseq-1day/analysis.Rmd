@@ -2,13 +2,21 @@
 layout: page
 ---
 
+```{r, echo=FALSE, message=FALSE, eval=TRUE}
+# Set eval=TRUE here to hide all results and figures.
+# This sets defaults. Can change this manually in individual chunks.
+# Must load knitr so opts_chunk is in search path.
+library(knitr)
+opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none", tidy=TRUE)
+```
+
 # RNA-seq data analysis
 
 This is an introduction to RNAseq analysis involving reading in count data from an RNAseq experiment, exploring the data using base R functions and then analysis with the DESeq2 package.
 
 ## Install required CRAN packages
 
-First, install some packages that you'll use.
+First, install some packages that you'll use. You only have to do this once, but you'll need to load them each time you start a new R session.
 
 ```{r install_packages, eval=FALSE}
 install.packages("gplots")
@@ -18,76 +26,71 @@ install.packages("calibrate")
 
 ## Introduction and data import
 
-The analysis of an RNAseq experiment begins with sequencing reads. These then need to be aligned to a reference genome or transcriptome. There are many different alignment tools available, but the process of alignment is both computationally intensive and time-consuming, so we won't cover it today. Once reads are aligned, the number of reads mapped to each gene can be counted. Again, there are several ways of doing this. The best way to find out about the tools that are available and suitable for your research is to look for recent review papers that compare the different tools.
+Analyzing an RNAseq experiment begins with sequencing reads. These are aligned to a reference genome, then the number of reads mapped to each gene can be counted. 
 
-The data for this tutorial comes from a PLOS ONE paper, [Genome-Wide Transcriptional Profiling of Skin and Dorsal Root Ganglia after Ultraviolet-B-Induced Inflammation](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0093338)[1], and the raw data can be downloaded from the [Gene Expression Omnibus database (GEO)](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE54413). 
+The data for this tutorial comes from a PLOS ONE paper, [Genome-Wide Transcriptional Profiling of Skin and Dorsal Root Ganglia after Ultraviolet-B-Induced Inflammation](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0093338), and the raw data can be downloaded from [Gene Expression Omnibus database (GEO)](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE54413). 
 
-This data has already been downloaded and aligned to the human genome. The command line tool [featureCounts](http://bioinf.wehi.edu.au/featureCounts/) was used to count reads mapped to human genes from the Ensembl annotation (available for download [here](http://www.ensembl.org/info/data/ftp/index.html)). 
+This data has already been downloaded and aligned to the human genome. The command line tool [featureCounts](http://bioinf.wehi.edu.au/featureCounts/) was used to count reads mapped to human genes from the [Ensembl annotation](http://www.ensembl.org/info/data/ftp/index.html). 
 
-The output from this tool is provided in the `counts.txt` file. Have a look at this file in the shell, using `head`.
+The output from this tool is provided in the `counts.txt` file in the `data` directory. Have a look at this file in the shell, using `head`.
 
-Import the data into R as a `data.frame` and examine it again. You can set the arguments of `read.table` to import the first row as a header giving the column names, and the first column as row names. 
+First, set your working directory to the top level of the RNA-seq course. Import the data into R as a `data.frame` and examine it again. You can set the arguments of `read.table` to import the first row as a header giving the column names, and the first column as row names. 
 
 ```{r data_input}
 # Filename with output from featureCounts
-countFile <- "data/counts.txt"
+countfile <- "data/counts.txt"
 # Read in the data
-countData <- read.table(countFile, header=TRUE, row.names=1)
-head(countData)
-colnames(countData)
-class(countData)
+countdata <- read.table(countfile, header=TRUE, row.names=1)
+head(countdata)
+colnames(countdata)
+class(countdata)
 ```
 
 The data.frame contains information about genes (one gene per row) with the gene positions in the first five columns and then information about the number of reads aligning to the gene in each experimental sample. There are three replicates for control (column names starting with "ctl") and three for samples treated with ultraviolet-B light (starting "uvb"). We don't need the information on gene position for this analysis, just the counts for each gene and sample, so we can remove it from the data frame.
 
-```{r}
+```{r remove_metadata_cols}
 # Remove first five columns (chr, start, end, strand, length)
-countData <- countData[ ,-(1:5)]
-head(countData)
-colnames(countData)
+countdata <- countdata[ ,-(1:5)]
+head(countdata)
+colnames(countdata)
 ```
 
-We can rename the columns to something shorter and a bit more readable.
+We can rename the columns to something shorter and a bit more readable. 
 
-```{r eval=FALSE}
+```{r bad_renaming, eval=FALSE}
 # Manually
 c("ctl1", "ctl2", "ctl3", "uvb1", "uvb2", "uvb3")
-# Using paste
-?paste
-paste("ctl", 1:3)
-paste("ctl", 1:3, sep="")
-?paste0
-paste0("ctl", 1:3)
-c(paste0("ctl", 1:3), paste0("uvb", 1:3))
 ```
 
-An easier way to do this, especially for files with many columns, is to use the `gsub` command to strip out the extra information. This is also more robust to introduced errors, for example if the column order changes at some point in the future or you add additional replicates.
+We can do it manually, but what if we have 600 samples instead of 6? This would become cumbersome. Also, it's always a bad idea to hard-code sample phenotype information at the top of the file like this. A better way to do this is to use the `gsub` command to strip out the extra information. This more robust to introduced errors, for example if the column order changes at some point in the future or you add additional replicates. 
 
 ```{r rename_cols}
 # Using gsub -- robust
 ?gsub
-gsub(pattern=".fastq_tophat.accepted_hits.bam", replacement="", x=colnames(countData))
-colnames(countData) <- gsub(pattern=".fastq_tophat.accepted_hits.bam", replacement="", x=colnames(countData))
-head(countData)
+gsub(pattern="trimmed_|.fastq_tophat.accepted_hits.bam", replacement="", x=colnames(countdata))
+colnames(countdata) <- gsub(pattern="trimmed_|.fastq_tophat.accepted_hits.bam", replacement="", x=colnames(countdata))
+head(countdata)
 ```
 
-### Exercise 1
-Find the gene with the highest expression in any sample -- remember, each row is a gene. Extract the expression data for this gene for all samples. In which sample does it have the highest expression? 
+---
 
-What is the function of the gene? Can you suggest why this is the top expressed gene?
+**EXERCISE**
 
-Hint 1: use the `apply` function from the introductory R lessons.
+There's an R function called `rowSums()` that calculates the sum of each row in a numeric matrix, like the count matrix we have here, and it returns a vector. There's also a function called `which.max()` that determines the index of the maximum value in a vector.
 
-Hint 2: try `?which.max`.
+0. Find the gene with the highest expression across all samples -- remember, each row is a gene. 
+0. Extract the expression data for this gene for all samples. 
+0. In which sample does it have the highest expression? 
+0. What is the function of the gene? Can you suggest why this is the top expressed gene?
 
-```{r exercise_1, echo=FALSE, include=FALSE}
-# use apply to get the maximum of each row, then get the maximum of these
-max(apply(countData, 1, max)) # max expression is 7013
-topGene <- which.max(apply(countData, 1, max)) # gene is EEF1A1P9
-countData[topGene, ] # get other sample data - max is in uvb1
-
+```{r, echo=FALSE, include=FALSE}
+topGene <- which.max(rowSums(countdata))
+topGene
+countdata[topGene, ]
 # this is a pseudogene - maybe an artefact of only aligning reads to a single chromosome?
 ```
+
+---
 
 ## Data investigation using base R
 
@@ -96,114 +99,112 @@ We can investigate this data a bit more using some of the basic R functions befo
 First make a copy of the data, because we'll need it later. We will work on the copy. We will calculate the mean for each gene for each condition and plot them.
 
 ```{r get_means}
-countData2 <- countData #make a copy
+cd2 <- countdata #make a copy
 
 # get Control columns
-colnames(countData2)
-?grep #grep searches for matches to a pattern 
-grep("ctl", colnames(countData2))
-ctlCols <- grep("ctl", colnames(countData2))
-head(countData2[,ctlCols])
-head(apply(countData2[, ctlCols], 1, mean))
-# here we'll use rowMeans instead, it's a convenient shortcut, and also faster!
-countData2$ctlMean <- rowMeans(countData2[, ctlCols])
+colnames(cd2)
+
+# grep searches for matches to a pattern 
+?grep 
+
+# get the indexes for the controls
+grep("ctl", colnames(cd2))
+ctlCols <- grep("ctl", colnames(cd2))
+head(cd2[,ctlCols])
+
+# use the rowMeans function
+cd2$ctlmean <- rowMeans(cd2[, ctlCols])
+head(cd2)
 
 # same for uvb
-uvbCols <- grep("uvb", colnames(countData2))
-countData2$uvbMean <- rowMeans(countData2[, uvbCols])
+uvbCols <- grep("uvb", colnames(cd2))
+cd2$uvbmean <- rowMeans(cd2[, uvbCols])
+
+head(cd2)
 ```
 
-Plot the mean expression of each gene in control against the UVB sample mean. Are there any outliers?
+---
+
+**EXERCISE**
+
+Using the `subset()` function, print out all the columns where the control mean does not equal 0 **and** where the UVB mean does not equal zero.
+
+Bonus: code golf -- use the fewest characters to get the same solution.
+
+```{r, echo=FALSE, include=FALSE}
+subset(cd2, ctlmean>0 & uvbmean>0)
+subset(cd2, ctlmean*uvbmean>0)
+```
+
+---
+
+---
+
+**EXERCISE**
+
+0. Plot the mean expression of each gene in control against the UVB sample mean. Are there any outliers?
+0. How could you make this plot more informative and look more professional? Hint: try plotting on the log scale and using a different point character.
 
 ```{r plot_means}
-plot(countData2$ctlMean, countData2$uvbMean)
+plot(cd2$ctlmean, cd2$uvbmean)
+with(cd2, plot(log10(ctlmean), log10(uvbmean), pch=16))
+with(cd2, plot(ctlmean, uvbmean, log="xy", pch=16))
 ```
 
-```{r ggplot_means}
-library("ggplot2")
-ggplot(countData2, aes(x=ctlMean, y=uvbMean)) + geom_point()
-```
+---
 
-### Exercise 2
-How could you make this plot more informative and look more professional? 
-
-Hint: try using a log scale. You can also changing colours, transparencies, sizes, or shapes of points. 
-
-`?par` will give you information on lots of graphical parameters that can be set. Help for ggplot2 can be found [here](http://docs.ggplot2.org/current/).
-
-```{r exercise2_1, echo=FALSE, include=FALSE}
-plot(countData2$ctlMean, countData2$uvbMean, log="xy", pch=16)
-```
-
-```{r exercise2_2, echo=FALSE, include=FALSE}
-ggplot(countData2, aes(x=ctlMean, y=uvbMean)) + geom_point() + scale_x_log10() + scale_y_log10() + theme_bw()
-```
-
-There are many more options you can use to alter the appearance of these plots.
-
-## Find candidate differentially expressed genes
+## Poor man's differential gene expression
 
 We can find candidate differentially expressed genes by looking for genes with a large change between control and UVB samples. A common threshold used is log2 fold change more than 2 or less than -2. We will calculate log2 fold change for all the genes and colour the genes with log2 fold change of more than 2 or less than -2 on the plot.
 
 First, check for genes with a mean expression of 0. Putting zeroes into the log2 fold change calculation will produce NAs, so we might want to remove these genes. Note: this is for mathematical reasons, although different software may produce different results when you try to do `log2(0)`.
 
-`TRUE` and `FALSE` can also be represented as 1 and 0. This is useful for getting the total number of observations for which a condition is true. 
-
-```{r true_false}
-TRUE == 0
-TRUE == 1
-FALSE == 0
-```
-
-This can be applied to testing whether genes have a mean expression of more than zero.
-
 ```{r count_expressed}
-head(countData2$ctlMean)
-head(countData2$ctlMean > 0)
-head(as.numeric(countData2$ctlMean > 0))
+head(cd2$ctlmean)
+head(cd2$ctlmean > 0)
 ```
 
-When we call `sum(countData2$ctlMean > 0)`, we're really asking, "how many genes have a mean above 0 in the control group?"
+In R, `TRUE` and `FALSE` can be represented as `1` and `0`, respectively. When we call `sum(cd2$ctlmean > 0)`, we're really asking, "how many genes have a mean above 0 in the control group?"
 
 ```{r remove_unexpressed}
-# discuss: why to remove zeroes (NAs produced)
-sum(countData2$ctlMean > 0)
-sum(countData2$uvbMean > 0)
-
-nrow(countData2)
-countData2 <- subset(countData2, (countData2$ctlMean > 0 | countData2$uvbMean > 0))
-# explain: | operator meaning OR in this context?
-nrow(countData2)
+sum(cd2$ctlmean > 0)
+sum(cd2$uvbmean > 0)
 ```
+
+Now, let's subset the data and keep things where either the control or UVB group means are greater than zero.
+
+```{r subset_nonzero}
+nrow(cd2)
+cd2 <- subset(cd2, cd2$ctlmean > 0 | cd2$uvbmean > 0)
+nrow(cd2)
+head(cd2)
+```
+
+Mathematically things work out better for us when we test things on the log scale. On the absolute scale, upregulation goes from 1 to infinity, while downregulation is bounded by 0 and 1. On the log scale, upregulation goes from 0 to infinity, and downregulation goes from 0 to negative infinity. Let's compute a log-base-2 of the fold change.
+
+When we do this we'll see some `Inf` and `-Inf` values. This is what happens when we take `log2(Inf)` or `log2(0)`.
 
 ```{r log2FC}
-# explain: what is fold change? why do we use log2 to quantify the fold change?
-# discuss: Inf / -Inf may be produced in some cases. Concept of adding pseudocounts.
-countData2$log2FC <- log2(countData2$uvbMean / countData2$ctlMean)
-# again, reinforce that summing a logical vector gives you the number of 
-# occurences of TRUE.
-sum(countData2$log2FC > 2)
-sum(countData2$log2FC < -2)
+# calculate the log2 fold change
+cd2$log2FC <- log2(cd2$uvbmean / cd2$ctlmean)
+head(cd2)
+
+# see how many are up, down, or both (using the absolute value function)
+sum(cd2$log2FC > 2)
+sum(cd2$log2FC < -2)
+sum(abs(cd2$log2FC)>2)
 ```
 
-Make a new column to store this information in.
-
-```{r outliers}
-countData2$outlier <- FALSE
-countData2$outlier[countData2$log2FC > 2] <- TRUE
-countData2$outlier[countData2$log2FC < -2] <- TRUE
-```
+We can few just the "outliers" with `subset(cd2, abs(log2FC)>2)`, which gets us just the things that have a large fold change in either direction. Let's plot these.
 
 ```{r plot_outliers}
-plot(countData2$ctlMean, countData2$uvbMean, log="xy", pch=16)
-points(countData2$ctlMean[countData2$outlier==TRUE], countData2$uvbMean[countData2$outlier==TRUE], col="red", pch=16)
+with(cd2, plot(ctlmean, uvbmean, log="xy", pch=16))
+subset(cd2, abs(log2FC)>2)
+# use the points function to add more points to the same axes
+with(subset(cd2, abs(log2FC)>2), points(ctlmean, uvbmean, pch=16, col="red"))
 ```
 
-```{r ggplot_outliers}
-ggplot(countData2, aes(x=ctlMean, y=uvbMean, colour=outlier)) + geom_point() + scale_x_log10() + scale_y_log10() + theme_bw()
-```
-
-What do you notice about the positions of the outliers on these plots? How would you interpret this?
+What do you notice about the positions of the outliers on these plots? How would you interpret this? What are some of the problems with this simple approach?
 
 ## DESeq2 analysis
 
@@ -224,16 +225,16 @@ citation("DESeq2")
 It requires the count data to be in matrix form, and an additional dataframe describing the structure of the experiment.
 
 ```{r convert_to_matrix}
-# countData is currently a data.frame, but DESeq2 expects its input to be in 
-# matrix format, so we will convert our countData to a matrix.
-class(countData)
-countData <- as.matrix(countData)
-class(countData)
-head(countData)
+# countdata is currently a data.frame, but DESeq2 expects its input to be in 
+# matrix format, so we will convert our countdata to a matrix.
+class(countdata)
+countdata <- as.matrix(countdata)
+class(countdata)
+head(countdata)
 
 # construct colData dataframe
 # three replicates of control and UVB.
-colData <- data.frame(condition=c(rep("ctl", 3), rep("uvb",3)), row.names=colnames(countData))
+colData <- data.frame(condition=c(rep("ctl", 3), rep("uvb",3)), row.names=colnames(countdata))
 ```
 
 DESeq works on a particular type of object called a DESeqDataSet.
@@ -241,7 +242,7 @@ DESeq works on a particular type of object called a DESeqDataSet.
 ```{r make_deseqdataset}
 # introduce how DESeq2 works - type of object it works on etc
 # instantiate the DESeqDataSet
-dds <- DESeqDataSetFromMatrix(countData=countData, colData=colData, design=~condition)
+dds <- DESeqDataSetFromMatrix(countdata=countdata, colData=colData, design=~condition)
 dds
 ```
 
@@ -337,6 +338,3 @@ legend("topleft", legend=c("FDR<0.05", "|LFC|>1", "both"), pch=16, col=c("red","
 with(subset(res, padj<.05 & abs(log2FoldChange)>1), textxy(log2FoldChange, -log10(pvalue), labs=Gene, cex=1))
 ```
 
-## References
-
-1. Dawes JM, Antunes-Martins A, Perkins JR, Paterson KJ, Sisignano M, et al. (2014) Genome-Wide Transcriptional Profiling of Skin and Dorsal Root Ganglia after Ultraviolet-B-Induced Inflammation. PLoS ONE 9(4): e93338. doi: 10.1371/journal.pone.0093338 
