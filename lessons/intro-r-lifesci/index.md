@@ -12,11 +12,21 @@ This workshop is directed toward life scientists with little to no experience wi
 
 **Pre-requisites**: You must bring a laptop to the course with the necessary software installed (see instructions below).
 
-**[Link to slides]()** (*coming soon*)
+**Course material:**
 
-**[Link to R Cheat Sheet](http://dx.doi.org/10.6084/m9.figshare.1080756)**
+* [Link to R Cheat Sheet](http://dx.doi.org/10.6084/m9.figshare.1080756): Print out and bring to class
+* [Link to slides](): *Check back after course*
+* [Code used in course](): *Check back after course*
 
-**[Link to course material](01-intro-r/)**
+<!--
+Before course:
+* [Link to slides](): *Check back after course*
+* [Code used in course](): *Check back after course*
+
+After course:
+* [Link to slides](https://speakerdeck.com/stephenturner/introduction-to-r-for-life-scientists)
+* [Code used in course](01-intro-r/)
+-->
 
 ## Before coming
 
