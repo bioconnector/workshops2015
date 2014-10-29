@@ -10,15 +10,45 @@ layout: page
 
 This is an introduction to RNAseq analysis involving reading in count data from an RNAseq experiment, exploring the data using base R functions and then analysis with the DESeq2 package.
 
-## Install required CRAN packages
+## Install and load packages
 
-First, install some packages that you'll use. You only have to do this once, but you'll need to load them each time you start a new R session.
+First, we'll need to install some add-on packages. Most generic R packages are hosted on the Comprehensive R Archive Network (CRAN, <http://cran.us.r-project.org/>). To install one of these packages, you would use `install.packages("packagename")`. You only need to install a package once, then load it each time using `library(packagename)`. Let's install the **gplots** and **calibrate** packages.
 
 
 ```r
 install.packages("gplots")
-install.packages("ggplot2")
 install.packages("calibrate")
+```
+
+Bioconductor packages work a bit differently, and are not hosted on CRAN. Go to <http://bioconductor.org/> to learn more about the Bioconductor project. To use any Bioconductor package, you'll need a few "core" Bioconductor packages. Run the following commands to (1) download the installer script, and (2) install some core Bioconductor packages. You'll need internet connectivity to do this, and it'll take a few minutes, but it only needs to be done once.
+
+
+```r
+# Download the installer script
+source("http://bioconductor.org/biocLite.R")
+
+# biocLite() is the bioconductor installer function. Run it without any
+# arguments to install the core packages or update any installed packages.
+# This requires internet connectivity and will take some time!
+biocLite()
+```
+
+To install specific packages, first download the installer script if you haven't done so, and use `biocLite("packagename")`. This only needs to be done once then you can load the package like any other package. Let's download the [DESeq2 package](http://www.bioconductor.org/packages/release/bioc/html/DESeq2.html):
+
+
+```r
+# Do only once
+source("http://bioconductor.org/biocLite.R")
+biocLite("DESeq2")
+```
+
+Now let's load the packages we'll use:
+
+
+```r
+library(DESeq2)
+library(gplots)
+library(calibrate)
 ```
 
 ## Introduction and data import
