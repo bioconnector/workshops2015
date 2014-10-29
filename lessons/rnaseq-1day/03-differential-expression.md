@@ -396,11 +396,53 @@ with(subset(res, padj < 0.05 & abs(log2FoldChange) > 2), textxy(log2FoldChange,
     -log10(pvalue), labs = Gene, cex = 1))
 ```
 
+## Record package and version info with `sessionInfo()`
+
+The `sessionInfo()` prints version information about R and any attached packages. It's a good practice to always run this command at the end of your R session and record it for the sake of reproducibility in the future.
+
+
+```r
+sessionInfo()
+```
+
+```
+## R version 3.1.0 (2014-04-10)
+## Platform: x86_64-apple-darwin13.1.0 (64-bit)
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] parallel  methods   stats     graphics  grDevices utils     datasets 
+## [8] base     
+## 
+## other attached packages:
+##  [1] calibrate_1.7.2         MASS_7.3-33            
+##  [3] gplots_2.14.1           DESeq2_1.4.5           
+##  [5] RcppArmadillo_0.4.320.0 Rcpp_0.11.2            
+##  [7] GenomicRanges_1.16.3    GenomeInfoDb_1.0.2     
+##  [9] IRanges_1.22.9          BiocGenerics_0.10.0    
+## [11] knitr_1.6               BiocInstaller_1.14.2   
+## 
+## loaded via a namespace (and not attached):
+##  [1] annotate_1.42.1      AnnotationDbi_1.26.0 Biobase_2.24.0      
+##  [4] bitops_1.0-6         caTools_1.17         DBI_0.3.1           
+##  [7] evaluate_0.5.5       formatR_0.10         gdata_2.13.3        
+## [10] genefilter_1.46.1    geneplotter_1.42.0   grid_3.1.0          
+## [13] gtools_3.4.1         KernSmooth_2.23-12   lattice_0.20-29     
+## [16] locfit_1.5-9.1       RColorBrewer_1.0-5   RSQLite_0.11.4      
+## [19] splines_3.1.0        stats4_3.1.0         stringr_0.6.2       
+## [22] survival_2.37-7      tools_3.1.0          XML_3.98-1.1        
+## [25] xtable_1.7-3         XVector_0.4.0
+```
+
+
 ## Going further
 
 * After the course, download the [Integrative Genome Viewer](http://www.broadinstitute.org/igv/) from the Broad Institute. Download all your .bam files from your AWS instance, and load them into IGV. Try navigating to regions around differentially expressed genes to view how reads map to genes differently in the controls versus the irradiated samples.
 * Can you see any genes where differential expression is likely attributable to a specific isoform?
 * Do you see any instances of differential exon usage? You can investigate this formally with the [DEXSeq](http://www.bioconductor.org/packages/release/bioc/html/DEXSeq.html) package. 
 * Read about pathway analysis with [GOSeq](http://www.bioconductor.org/packages/release/bioc/html/goseq.html) or [SeqGSEA](http://www.bioconductor.org/packages/release/bioc/html/SeqGSEA.html) - tools for gene ontology analysis and gene set enrichment analysis using next-generation sequencing data.
+* Read about multifactor designs in the [DESeq2 vignette](http://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf) for cases where you have multiple variables of interest (e.g. irradiated vs controls in multiple tissue types).
 
-After the course, make sure you stop any running AWS instances.
+***After the course, make sure you stop any running AWS instances.***
