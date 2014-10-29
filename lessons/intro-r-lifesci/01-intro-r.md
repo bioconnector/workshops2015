@@ -2,28 +2,33 @@
 layout: page
 ---
 
-# Introduction to R for Life Scientists
 
 
+# Introduction to R
 
-**[Click here for information about this course](../).**
+*[back to course contents](..)*
+
+The first part of this workshop will demonstrate very basic functionality in R, including functions, functions, vectors, creating variables, getting help, subsetting, data frames, plotting, and reading/writing files.
 
 [Link to slides](https://speakerdeck.com/stephenturner/introduction-to-r-for-life-scientists).
 
 [Link to R Cheat Sheet](http://dx.doi.org/10.6084/m9.figshare.1080756).
 
-
 ## Before coming
 
 {% include setup-r.md %}
 
-## R basics
+## RStudio
 
-The first part of this workshop will demonstrate very basic functionality in R, including functions, functions, vectors, creating variables, getting help, subsetting, data frames, plotting, and reading/writing files.
+Let's start by learning about RStudio. **R** is the underlying statistical computing environment, but using R alone is no fun. **RStudio** is a graphical integrated development environment that makes using R much easier.
 
-### Basic operations
+- Panes in RStudio: I set up my window to have the editor in the top left, console top right, environment/history on the bottom left, and plots/help on the bottom right. 
+- Code that you type into the console is code that R executes. From here forward we will use the editor window to write a script that we can save to a file and run it again whenever we want to. We usually give it a `.R` extension, but it's just a plain text file. If you want to send commands from your editor to the console, use `CMD`+`Enter` (`Ctrl`+`Enter` on Windows).
+- Anything after a `#` sign is a comment. Use them liberally to *comment your code*.
 
-R can be used as a glorified calculator. Try typing this in directly into the console. Then start typing this into the editor, and save your script. Use the run button, or press `CMD`+`Enter` (`Ctrl`+`Enter` on Windows).
+## Basic operations
+
+R can be used as a glorified calculator. Try typing this in directly into the console. Make sure you're typing into into the editor, not the console, and save your script. Use the run button, or press `CMD`+`Enter` (`Ctrl`+`Enter` on Windows).
 
 
 ```r
@@ -32,14 +37,81 @@ R can be used as a glorified calculator. Try typing this in directly into the co
 2^3
 ```
 
-R Knows order of operations.
+R Knows order of operations and scientific notation.
 
 
 ```r
 2 + 3 * 4/(5 + 3) * 15/2^2 + 3 * 4^2
+50000
 ```
 
-### Functions
+However, to do useful and interesting things, we need to assign *values* to *objects*. To create objects, we need to give it a name followed by the assignment operator `<-` and the value we want to give it:
+
+
+```r
+weight_kg <- 55
+```
+
+`<-` is the assignment operator. Assigns values on the right to objects on the left, it is like an arrow that points from the value to the object. Mostly similar to `=` but not always. Learn to use `<-` as it is good programming practice. Using `=` in place of `<-` can lead to issues down the line.
+
+Objects can be given any name such as `x`, `current_temperature`, or `subject_id`. You want your object names to be explicit and not too long. They cannot start with a number (`2x` is not valid but `x2` is). R is case sensitive (e.g., `weight_kg` is different from `Weight_kg`). There are some names that cannot be used because they represent the names of fundamental functions in R (e.g., `if`, `else`, `for`, see [here](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html) for a complete list). In general, even if it's allowed, it's best to not use other function names, which we'll get into shortly (e.g., `c`, `T`, `mean`, `data`, `df`, `weights`). In doubt check the help to see if the name is already in use. It's also best to avoid dots (`.`) within a variable name as in `my.dataset`. It is also recommended to use nouns for variable names, and verbs for function names.
+
+When assigning a value to an object, R does not print anything. You can force to print the value by typing the name:
+
+
+```r
+weight_kg
+```
+
+Now that R has `weight_kg` in memory, we can do arithmetic with it. For instance, we may want to convert this weight in pounds (weight in pounds is 2.2 times the weight in kg):
+
+
+```r
+2.2 * weight_kg
+```
+
+We can also change a variable's value by assigning it a new one:
+
+
+```r
+weight_kg <- 57.5
+2.2 * weight_kg
+```
+
+This means that assigning a value to one variable does not change the values of other variables. For example, let's store the animal's weight in pounds in a variable.
+
+
+```r
+weight_lb <- 2.2 * weight_kg
+```
+
+and then change `weight_kg` to 100.
+
+
+```r
+weight_kg <- 100
+```
+
+What do you think is the current content of the object `weight_lb`? 126.5 or 220?
+
+---
+
+**EXERCISE**
+
+What are the values after each statement in the following?
+
+
+```r
+mass <- 50  # mass?
+age <- 30  # age?
+mass <- mass * 2  # mass?
+age <- age - 10  # age?
+mass_index <- mass/age  # massIndex?
+```
+
+---
+
+## Functions
 
 R has built-in functions.
 
@@ -58,16 +130,25 @@ help(log)
 ?log
 ```
 
-Note syntax highlighting when typing this into the editor. Also note how we pass *arguments* to functions. Finally, see how you can *next* one function inside of another (here taking the square root of the log-base-10 of 1000).
+Note syntax highlighting when typing this into the editor. Also note how we pass *arguments* to functions. The `base=` part inside the parentheses is called an argument, and most functions use arguments. Arguments modify the behavior of the function. Functions some input (e.g., some data, an object) and other options to change what the function will return, or how to treat the data provided. Finally, see how you can *next* one function inside of another (here taking the square root of the log-base-10 of 1000).
 
 
 ```r
 log(1000)
 log(1000, base = 10)
+log(1000, 10)
 sqrt(log(1000, base = 10))
 ```
 
-### Vectors
+---
+
+**EXERCISE**
+
+See `?abs` and calculate the square root of the log-base-10 of the absolute value of $-4\times{}(2550-50)$.
+
+---
+
+## Vectors
 
 Let's create some numeric vectors. Vectors (aka "arrays" in Perl, "lists" in Python) are single *objects* containing an ordered collection of *elements*. A simple vector is a numeric vector, a single *object* containing several numbers. Here let's display a few vectors. We can also do vector arithmetic. When printing vectors to the screen that have lots of elements, notice that the bracketed number in the gutter of the output is just a counter indexing the number of elements in the vector.
 
@@ -134,13 +215,6 @@ ls()
 rm(x)
 ls()
 x  # oops! you should get an error because x no longer exists!
-```
-
-```
-## Error: object 'x' not found
-```
-
-```r
 rm(y, z)
 ```
 
@@ -166,10 +240,6 @@ Certain *functions* operate only on certain *classes* of object. Here, `name` is
 toupper(name)
 # can't run a function that expects character on an object of class function
 toupper(log)
-```
-
-```
-## Error: cannot coerce type 'special' to vector of type 'character'
 ```
 
 We can combine values into a vector with the built-in `c()` function.
@@ -228,10 +298,6 @@ Certain functions only operate on certain classes. You can't compute the `sum()`
 ```r
 z
 sum(z)
-```
-
-```
-## Error: invalid 'type' (character) of argument
 ```
 
 ### Slicing/indexing vectors
@@ -465,196 +531,4 @@ cars8
 rm(cars8)
 cars8 <- read.csv(file = "cars8.csv", header = TRUE, row.names = 1)
 cars8
-```
-
-## Using R and Bioconductor for gene expression analysis
-
-In this section we'll analyze some publicly available gene expression data using R and bioinformatics-focused R packages in [Bioconductor](http://bioconductor.org/). But first, a bit about R *packages*.
-
-### Packages
-
-Most generic R packages are hosted on the Comprehensive R Archive Network (CRAN, <http://cran.us.r-project.org/>). To install one of these packages, you would use `install.packages("packagename")`. You only need to install a package once, then load it each time using `library(packagename)`. Let's install the **ggplot2** package, and load it.
-
-
-```r
-# Install only once.
-install.packages("ggplot2")
-
-# Load the package every time you want to use it.
-library(ggplot2)
-```
-
-### Bioconductor
-
-Bioconductor packages work a bit different, and are not hosted on CRAN. Go to <http://bioconductor.org/> to learn more about the Bioconductor project. To use any Bioconductor package, you'll need a few "core" Bioconductor packages. Run the following commands to (1) download the installer script, and (2) install some core Bioconductor packages. You'll need internet connectivity to do this, and it'll take a few minutes, but it only needs to be done once.
-
-
-```r
-# Download the installer script
-source("http://bioconductor.org/biocLite.R")
-
-# biocLite() is the bioconductor installer function. Run it without any
-# arguments to install the core packages or update any installed packages.
-# This requires internet connectivity and will take some time!
-biocLite()
-```
-
-To install specific packages, first download the installer script if you haven't done so, and use `biocLite("packagename")`. This only needs to be done once then you can load the package like any other package. Let's download the [DESeq2 package](http://www.bioconductor.org/packages/release/bioc/html/DESeq2.html):
-
-
-```r
-# Do only once
-source("http://bioconductor.org/biocLite.R")
-biocLite("DESeq2")
-
-# Every time you need to use the DESeq2 package
-library(DESeq2)
-```
-
-Bioconductor packages usually have great documentation in the form of *vignettes*. For a great example, take a look at the [DESeq2 vignette for analyzing count data](http://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf).
-
-
-
-### Analyzing publicly available RNA-seq data
-
-Now, let's analyze some publicly available gene expression (RNA-seq) data. NCBI Gene Expression Omnibus (<http://www.ncbi.nlm.nih.gov/geo/>) is an international public repository that archives and freely distributes microarray, next-generation sequencing, and other forms of high-throughput functional genomics data submitted by the research community. Many publishers require gene expression data be submitted to GEO and made publicly available before publication. You can learn a lot more about GEO by reading their [overview](http://www.ncbi.nlm.nih.gov/geo/info/overview.html) and [FAQ](http://www.ncbi.nlm.nih.gov/geo/info/faq.html) pages. At the time of this writing, GEO hosts over 45,000 studies comprising over 1,000,000 samples on over 10,000 different technology platforms.
-
-In this demonstration, we're going to be using data from GEO Series accession number GSE18508. You can enter this number in the search box on the GEO homepage, or use [this direct link](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE18508). In this study, the authors performed RNA-sequencing of mRNA from *Drosophila melanogaster* S2-DRSC cells that have been RNAi depleted of mRNAs encoding RNA binding proteins and splicing factors. This was done as part of the modENCODE project, published in: Brooks AN et al. Conservation of an RNA regulatory map between Drosophila and mammals. *Genome Res* 2011 Feb;21(2):193-202.
-
-You can go to the [GEO accession page](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE18508) and download all the raw data at the bottom under supplementary data. However, this dataset is nearly 100GB. What I have in this repository is a spreadsheet containing a matrix of gene counts, where genes are in rows and samples are in columns. That is, this data has already been aligned and counted, and the number in the cell is the number of RNA-seq reads that mapped to that gene for that sample. The value in the *i*-th row and the *j*-th column of the matrix tells how many reads have been mapped to gene *i* in sample *j*. To do these steps yourself, you would need to align reads to the genome (e.g., using [STAR](https://code.google.com/p/rna-star/)) and count reads mapping to features (e.g., using a GTF file from Ensembl and a tool like [featureCounts](http://bioinf.wehi.edu.au/featureCounts/))
-
-Note: much of this was adapted from the [DESeq2 package vignette](http://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf).
-
-#### Load packages and set working directory
-
-First, we'll need to load the Bioconductor packages we'll be using:
-
-
-```r
-# Bioconductor packages.  Use the installation instructions at
-# http://www.bioconductor.org/install/ If you haven't already installed
-# these (install once, load every time)
-library(Biobase)
-library(DESeq2)
-```
-
-```
-## Warning: package 'RcppArmadillo' was built under R version 3.1.1
-```
-
-Next, you'll need to set your working directory (folder) to the `lessons/intro-r-lifesci` subdirectory wherever you saved and extracted the [code repository for this lesson](https://github.com/bioconnector/workshops/archive/master.zip). This way, you can reference the data using a *relative path* (e.g. `data/pasilla_counts.csv`) instead of an *absolute path* (e.g. `C:/Users/name/downloads/workshops/lessons/data/pasilla_counts.csv`). You can do this either through the RStudio graphical menu (Session, Set Working Directory, Choose...), or through the `setwd()` function. You can check where you are with `getwd()`.
-
-
-```r
-getwd()
-```
-
-#### Load the data
-
-Next, load two different datasets: one with the count data, and one with sample information. Take a look at the first few rows of the count dataset, as well as the entire metadata data frame.
-
-
-```r
-# Load the count data
-pasillacounts <- read.csv("data/pasilla_counts.csv", header = TRUE, row.names = 1)
-head(pasillacounts)
-
-# Load the sample metadata
-pasillameta <- read.csv("data/pasilla_metadata.csv", header = TRUE, row.names = 1)
-pasillameta
-```
-
-The class used by the DESeq2 package to store the read counts is the **DESeqDataSet** class. This facilitates preparation steps andalso downstream exploration of results. A DESeqDataSet object must have an associated design formula. The design formula expresses the variables which will be used in modeling. The formula should be a tilde (~) followed by the variables with plus signs between them (it will be coerced into an formula if it is not already). An intercept is included, representing the base mean of counts. The design can be changed later, however then all differential analysis steps should be repeated, as the design formula is used to estimate the dispersions and to estimate the log2 fold changes of the model. Do do this, we run the `DESeqDataSetFromMatrix` function, giving it data frames containing the count matrix as well as the column (metadata) information, and the design formula.
-
-
-```r
-dds <- DESeqDataSetFromMatrix(countData = pasillacounts, colData = pasillameta, 
-    design = ~condition)
-dds
-```
-
-#### Differential expression analysis
-
-The standard differential expression analysis steps are wrapped into a single function, `DESeq`. This convenience function normalizes the library, estimates dispersion, and performs a statistical test under the negative binomial model.
-
-
-```r
-# Normalize, estimate dispersion, fit model
-dds <- DESeq(dds)
-```
-
-The results are accessed using the function `results`. The `mcols` function gives you more information about what the columns in the results tell you. You can reorder and write the results to a file if you wish. Finally, you can create an MA-plot, showing the log2 fold change over the normalized counts for each gene, colored red if statistically significant (padj<0.1).
-
-
-```r
-# Extract results
-res <- results(dds)
-
-# View, reorder, and write out results
-head(res)
-mcols(res)
-res <- res[order(res$padj), ]
-head(res)
-write.csv(res, file = "pasilla_results.csv")
-
-# Create MA Plot
-plotMA(dds, ylim = c(-2, 2))
-```
-
-#### Data transformation and visualization
-
-The differential expression analysis above operates on the raw (normalized) count data. But for visualizing or clustering data as you would with a microarray experiment, you ned to work with transformed versions of the data. First, use a *regularlized log* transofmration while re-estimating the dispersion ignoring any information you have about the samples (`blind=TRUE`). Perform a principal components analysis and hierarchical clustering.
-
-
-```r
-# Transform
-rld <- rlogTransformation(dds, blind = TRUE)
-
-# Principal components analysis
-plotPCA(rld, intgroup = c("condition", "type"))
-
-# Hierarchical clustering analysis
-distrl <- dist(t(assay(rld)))
-plot(hclust(distrl))
-```
-
-#### Multifactor design
-
-See the [DESeq2 vignette](http://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf) for more information on multifactor designs.
-
-#### Record package and version info with `sessionInfo()`
-
-The `sessionInfo()` prints version information about R and any attached packages. It's a good practice to always run this command at the end of your R session and record it for the sake of reproducibility in the future.
-
-
-```r
-sessionInfo()
-```
-
-```
-## R version 3.1.0 (2014-04-10)
-## Platform: x86_64-apple-darwin13.1.0 (64-bit)
-## 
-## locale:
-## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
-## 
-## attached base packages:
-## [1] parallel  methods   stats     graphics  grDevices utils     datasets 
-## [8] base     
-## 
-## other attached packages:
-##  [1] DESeq2_1.4.5            RcppArmadillo_0.4.320.0
-##  [3] Rcpp_0.11.2             GenomicRanges_1.16.3   
-##  [5] GenomeInfoDb_1.0.2      IRanges_1.22.9         
-##  [7] Biobase_2.24.0          BiocGenerics_0.10.0    
-##  [9] knitr_1.6               BiocInstaller_1.14.2   
-## 
-## loaded via a namespace (and not attached):
-##  [1] annotate_1.42.1      AnnotationDbi_1.26.0 DBI_0.3.1           
-##  [4] evaluate_0.5.5       formatR_0.10         genefilter_1.46.1   
-##  [7] geneplotter_1.42.0   grid_3.1.0           lattice_0.20-29     
-## [10] locfit_1.5-9.1       RColorBrewer_1.0-5   RSQLite_0.11.4      
-## [13] splines_3.1.0        stats4_3.1.0         stringr_0.6.2       
-## [16] survival_2.37-7      tools_3.1.0          XML_3.98-1.1        
-## [19] xtable_1.7-3         XVector_0.4.0
 ```
