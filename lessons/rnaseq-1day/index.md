@@ -7,7 +7,7 @@ layout: page
 This workshop is directed toward life scientists with little to no experience with statistical computing or bioinformatics. This interactive workshop will introduce both the Linux/UNIX operating system and the R statistical computing environment, with a focus on a biological application - analyzing RNA-seq data for differentially expressed genes. The morning session will introduce basic operation in a UNIX environment, and will cover the first steps in an RNA-seq analysis including QC, alignment, and quantitation. The afternoon will introduce the R statistical computing environment, and will cover differential gene expression analysis using Bioconductor. By the end of the workshop, participants will:
 
 0. Be familiar with the UNIX shell, including nagivating the filesystem, creating/examining/removing files, getting help, and batch operations.
-0. Know how to align and quantitate gene expression with RNA-seq data/
+0. Know how to align and quantitate gene expression with RNA-seq data
 0. Become familiar with the R statistical computing environment, including data types, variables, array manipulation, functions, data frames, data import/export, visualization, and using packages.
 0. Know what packages to use and what steps to take to analyze RNA-seq data for differentially expressed genes.
 
