@@ -11,7 +11,7 @@ This workshop is directed toward life scientists with little to no experience wi
 0. Become familiar with the R statistical computing environment, including data types, variables, array manipulation, functions, data frames, data import/export, visualization, and using packages.
 0. Know what packages to use and what steps to take to analyze RNA-seq data for differentially expressed genes.
 
-Participants will also be exposed to operating in a virtual environment and/or provisioning their own cloud computing resources. This course is sponsored by the Claude Moore Health Sciences Library.
+Participants will also be exposed to operating in a virtual environment and/or provisioning their own cloud computing resources. This course is sponsored by the Claude Moore Health Sciences Library, and borrows some materials from the Software Carpentry and Data Carpentry projects.
 
 **Date**: Monday, November 10, 2014  
 **Time**: 8:00 am (sharp!) - 5:00 pm  
