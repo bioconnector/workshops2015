@@ -4,7 +4,7 @@ layout: page
 
 # Introduction to the UNIX shell
 
-Modified from Tracy Teal's lessons for Data Carpentry with original contributions from Paul Wilson, Milad Fatenejad, Sasha Wood and Radhika Khetani for Software Carpentry.
+Modified from lessons for Data Carpentry with original contributions from Tracy Teal, Paul Wilson, Milad Fatenejad, Sasha Wood and Radhika Khetani.
 
 Learn more:
 
@@ -194,7 +194,7 @@ This puts you in your home directory. That's **/home/username**
 
 ---
 
-**EXERCISE
+**EXERCISE**
 
 -	Using `cd` and `ls`, go in to the 'workshops/shell/data' directory and list its contents.
 -	How many files, how many directories and how many programs are there?
