@@ -10,23 +10,21 @@ This workshop is directed toward life scientists with little to no experience wi
 **Time**: 2:00-5:00pm  
 **Location**: Brown Science & Engineering Library, Electronic Classroom
 
-**Pre-requisites**: You must bring a laptop to the course with the necessary software installed (see instructions below).
+**Pre-requisites**:
+
+* Bring a laptop to the course with the software installed as detailed below.
+* Print and bring this [R Cheat Sheet](http://dx.doi.org/10.6084/m9.figshare.1080756) created specifically for this workshop.
 
 **Course material:**
 
-* [Link to R Cheat Sheet](http://dx.doi.org/10.6084/m9.figshare.1080756): Print out and bring to class
-* [Link to slides](): *Check back after course*
-* [Code used in course](): *Check back after course*
+_Check back after course_
 
 <!--
-Before course:
-* [Link to slides](): *Check back after course*
-* [Code used in course](): *Check back after course*
-
-After course:
-* [Link to slides](https://speakerdeck.com/stephenturner/introduction-to-r-for-life-scientists)
-* [Code used in course](01-intro-r/)
--->
+* [Slides](https://speakerdeck.com/stephenturner/introduction-to-r-for-life-scientists)
+* Code used in course:
+    * Part I: [Introduction to R](01-intro-r/)
+    * Part II: [RNA-seq data analysis](02-deseq-demo/)
+ -->
 
 ## Before coming
 

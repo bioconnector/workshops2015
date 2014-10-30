@@ -20,7 +20,7 @@ In this demo we'll analyze some publicly available RNA-seq gene expression data 
 
 First, we'll need to install some add-on packages. Most generic R packages are hosted on the Comprehensive R Archive Network (CRAN, <http://cran.us.r-project.org/>). To install one of these packages, you would use `install.packages("packagename")`. You only need to install a package once, then load it each time using `library(packagename)`. Let's install the **gplots** and **calibrate** packages.
 
-```{r install_packages, eval=FALSE}
+```{r install_packages, eval=FALSE, warning=FALSE}
 install.packages("gplots")
 install.packages("calibrate")
 ```
@@ -47,7 +47,7 @@ biocLite("DESeq2")
 
 Now let's load the packages we'll use:
 
-```{r load_pkgs}
+```{r load_pkgs, warning=FALSE}
 library(DESeq2)
 library(gplots)
 library(calibrate)

@@ -47,21 +47,7 @@ Now let's load the packages we'll use:
 
 ```r
 library(DESeq2)
-```
-
-```
-## Warning: package 'RcppArmadillo' was built under R version 3.1.1
-```
-
-```r
 library(gplots)
-```
-
-```
-## Warning: package 'gplots' was built under R version 3.1.1
-```
-
-```r
 library(calibrate)
 ```
 

@@ -362,7 +362,7 @@ subset(mtcars, cyl==6)$mpg
 
 **EXERCISE**
 
-1. Print out the dataset cars that have greater than or equal to 6 cylinders *and* get at least 15 miles per gallon.
+1. Print out the part of the mtcars dataset only for cars that have greater than or equal to 6 cylinders *and* get at least 15 miles per gallon.
 2. What's the mean engine displacement of these vehicles?
 
 ```{r, echo=FALSE, eval=FALSE}
