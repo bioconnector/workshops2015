@@ -51,17 +51,19 @@ library(gplots)
 library(calibrate)
 ```
 
+Bioconductor packages usually have great documentation in the form of *vignettes*. For a great example, take a look at the [DESeq2 vignette for analyzing count data](http://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf).
+
 ## Introduction and data import
 
-Analyzing an RNAseq experiment begins with sequencing reads. These are aligned to a reference genome, then the number of reads mapped to each gene can be counted. 
+Analyzing an RNAseq experiment begins with sequencing reads. These are aligned to a reference genome, then the number of reads mapped to each gene can be counted.
 
-The data for this tutorial comes from a PLOS ONE paper, [Genome-Wide Transcriptional Profiling of Skin and Dorsal Root Ganglia after Ultraviolet-B-Induced Inflammation](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0093338), and the raw data can be downloaded from [Gene Expression Omnibus database (GEO)](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE54413). 
+The data for this tutorial comes from a PLOS ONE paper, [Genome-Wide Transcriptional Profiling of Skin and Dorsal Root Ganglia after Ultraviolet-B-Induced Inflammation](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0093338), and the raw data can be downloaded from [Gene Expression Omnibus database (GEO)](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE54413).
 
-This data has already been downloaded and aligned to the human genome. The command line tool [featureCounts](http://bioinf.wehi.edu.au/featureCounts/) was used to count reads mapped to human genes from the [Ensembl annotation](http://www.ensembl.org/info/data/ftp/index.html). 
+This data has already been downloaded and aligned to the human genome. The command line tool [featureCounts](http://bioinf.wehi.edu.au/featureCounts/) was used to count reads mapped to human genes from the [Ensembl annotation](http://www.ensembl.org/info/data/ftp/index.html).
 
 The output from this tool is provided in the `counts.txt` file in the `data` directory. Have a look at this file in the shell, using `head`.
 
-First, set your working directory to the top level of the RNA-seq course. Import the data into R as a `data.frame` and examine it again. You can set the arguments of `read.table` to import the first row as a header giving the column names, and the first column as row names. 
+First, set your working directory to the top level of the RNA-seq course. Import the data into R as a `data.frame` and examine it again. You can set the arguments of `read.table` to import the first row as a header giving the column names, and the first column as row names.
 
 
 ```r
@@ -84,7 +86,7 @@ head(countdata)
 colnames(countdata)
 ```
 
-We can rename the columns to something shorter and a bit more readable. 
+We can rename the columns to something shorter and a bit more readable.
 
 
 ```r
@@ -92,7 +94,7 @@ We can rename the columns to something shorter and a bit more readable.
 c("ctl1", "ctl2", "ctl3", "uvb1", "uvb2", "uvb3")
 ```
 
-We can do it manually, but what if we have 600 samples instead of 6? This would become cumbersome. Also, it's always a bad idea to hard-code sample phenotype information at the top of the file like this. A better way to do this is to use the `gsub` command to strip out the extra information. This more robust to introduced errors, for example if the column order changes at some point in the future or you add additional replicates. 
+We can do it manually, but what if we have 600 samples instead of 6? This would become cumbersome. Also, it's always a bad idea to hard-code sample phenotype information at the top of the file like this. A better way to do this is to use the `gsub` command to strip out the extra information. This more robust to introduced errors, for example if the column order changes at some point in the future or you add additional replicates.
 
 
 ```r
@@ -110,9 +112,9 @@ head(countdata)
 
 There's an R function called `rowSums()` that calculates the sum of each row in a numeric matrix, like the count matrix we have here, and it returns a vector. There's also a function called `which.max()` that determines the index of the maximum value in a vector.
 
-0. Find the gene with the highest expression across all samples -- remember, each row is a gene. 
-0. Extract the expression data for this gene for all samples. 
-0. In which sample does it have the highest expression? 
+0. Find the gene with the highest expression across all samples -- remember, each row is a gene.
+0. Extract the expression data for this gene for all samples.
+0. In which sample does it have the highest expression?
 0. What is the function of the gene? Can you suggest why this is the top expressed gene?
 
 
@@ -236,7 +238,7 @@ What do you notice about the positions of the outliers on these plots? How would
 
 ## DESeq2 analysis
 
-DESeq2 is an R package for analyzing count-based NGS data like RNA-seq. It is available from [Bioconductor](http://www.bioconductor.org/). Bioconductor is a project to provide tools for analysing high-throughput genomic data including RNA-seq, ChIP-seq and arrays. You can explore Bioconductor packages [here](http://www.bioconductor.org/packages/release/BiocViews.html#___Software). 
+DESeq2 is an R package for analyzing count-based NGS data like RNA-seq. It is available from [Bioconductor](http://www.bioconductor.org/). Bioconductor is a project to provide tools for analysing high-throughput genomic data including RNA-seq, ChIP-seq and arrays. You can explore Bioconductor packages [here](http://www.bioconductor.org/packages/release/BiocViews.html#___Software).
 
 Just like R packages from CRAN, you only need to install Bioconductor packages once, then load them every time you start a new R session.
 
@@ -252,7 +254,7 @@ library("DESeq2")
 citation("DESeq2")
 ```
 
-It requires the count data to be in matrix form, and an additional dataframe describing sample metadata. Notice that the **colnames of the countdata** match the **rownames of the metadata*. 
+It requires the count data to be in matrix form, and an additional dataframe describing sample metadata. Notice that the **colnames of the countdata** match the **rownames of the metadata*.
 
 
 ```r
@@ -260,7 +262,7 @@ mycoldata <- read.csv("data/coldata.csv", row.names = 1)
 mycoldata
 ```
 
-DESeq works on a particular type of object called a DESeqDataSet. The DESeqDataSet is a single object that contains input values, intermediate calculations like how things are normalized, and all results of a differential expression analysis. You can construct a DESeqDataSet from a count matrix, a metadata file, and a formula indicating the design of the experiment. 
+DESeq works on a particular type of object called a DESeqDataSet. The DESeqDataSet is a single object that contains input values, intermediate calculations like how things are normalized, and all results of a differential expression analysis. You can construct a DESeqDataSet from a count matrix, a metadata file, and a formula indicating the design of the experiment.
 
 
 ```r
@@ -396,11 +398,53 @@ with(subset(res, padj < 0.05 & abs(log2FoldChange) > 2), textxy(log2FoldChange,
     -log10(pvalue), labs = Gene, cex = 1))
 ```
 
+## Record package and version info with `sessionInfo()`
+
+The `sessionInfo()` prints version information about R and any attached packages. It's a good practice to always run this command at the end of your R session and record it for the sake of reproducibility in the future.
+
+
+```r
+sessionInfo()
+```
+
+```
+## R version 3.1.0 (2014-04-10)
+## Platform: x86_64-apple-darwin13.1.0 (64-bit)
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] parallel  methods   stats     graphics  grDevices utils     datasets 
+## [8] base     
+## 
+## other attached packages:
+##  [1] calibrate_1.7.2         MASS_7.3-33            
+##  [3] gplots_2.14.1           DESeq2_1.4.5           
+##  [5] RcppArmadillo_0.4.320.0 Rcpp_0.11.2            
+##  [7] GenomicRanges_1.16.3    GenomeInfoDb_1.0.2     
+##  [9] IRanges_1.22.9          BiocGenerics_0.10.0    
+## [11] knitr_1.6               BiocInstaller_1.14.2   
+## 
+## loaded via a namespace (and not attached):
+##  [1] annotate_1.42.1      AnnotationDbi_1.26.0 Biobase_2.24.0      
+##  [4] bitops_1.0-6         caTools_1.17         DBI_0.3.1           
+##  [7] evaluate_0.5.5       formatR_0.10         gdata_2.13.3        
+## [10] genefilter_1.46.1    geneplotter_1.42.0   grid_3.1.0          
+## [13] gtools_3.4.1         KernSmooth_2.23-12   lattice_0.20-29     
+## [16] locfit_1.5-9.1       RColorBrewer_1.0-5   RSQLite_0.11.4      
+## [19] splines_3.1.0        stats4_3.1.0         stringr_0.6.2       
+## [22] survival_2.37-7      tools_3.1.0          XML_3.98-1.1        
+## [25] xtable_1.7-3         XVector_0.4.0
+```
+
+
 ## Going further
 
 * After the course, download the [Integrative Genome Viewer](http://www.broadinstitute.org/igv/) from the Broad Institute. Download all your .bam files from your AWS instance, and load them into IGV. Try navigating to regions around differentially expressed genes to view how reads map to genes differently in the controls versus the irradiated samples.
 * Can you see any genes where differential expression is likely attributable to a specific isoform?
-* Do you see any instances of differential exon usage? You can investigate this formally with the [DEXSeq](http://www.bioconductor.org/packages/release/bioc/html/DEXSeq.html) package. 
+* Do you see any instances of differential exon usage? You can investigate this formally with the [DEXSeq](http://www.bioconductor.org/packages/release/bioc/html/DEXSeq.html) package.
 * Read about pathway analysis with [GOSeq](http://www.bioconductor.org/packages/release/bioc/html/goseq.html) or [SeqGSEA](http://www.bioconductor.org/packages/release/bioc/html/SeqGSEA.html) - tools for gene ontology analysis and gene set enrichment analysis using next-generation sequencing data.
+* Read about multifactor designs in the [DESeq2 vignette](http://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf) for cases where you have multiple variables of interest (e.g. irradiated vs controls in multiple tissue types).
 
-After the course, make sure you stop any running AWS instances.
+***After the course, make sure you stop any running AWS instances.***
