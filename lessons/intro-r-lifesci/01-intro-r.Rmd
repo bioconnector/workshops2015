@@ -253,9 +253,7 @@ Sum the integers 1 through 100 and 501 through 600 (e.g. 1+2+...+99+100+501+502+
 
 ---
 
-xx
-
-### Slicing/indexing vectors
+## Slicing/indexing vectors
 
 Let's create a vector of 50 integers going from 101 to 150. We can access certain elements of that vector by putting the element's *index(es)* in square brackets. E.g., `x[1]` will return the first element in vector `x`. Calling `x[c(3,5)]` will access the third and fifth elements. Calling `x[1:10]` will return the first ten elements of `x`.
 
@@ -279,12 +277,11 @@ x[20:25]
 x[45:55] #NA is missing value!
 ```
 
+## Data Frames
 
-### Data Frames
+We use **data frames** to store heterogeneous tabular data in R: tabular, meaning that individuals or observations are typically represented in rows, while variables or features are represented as columns; heterogeneous, meaning that columns/features/variables can be different classes (on variable, e.g. age, can be numeric, while another, e.g., cause of death, can be text).
 
-Data frames are a standard way to store heterogeneous tabular data in R: tabular, meaning that individuals or observations are typically represented in rows, while variables or features are represented as columns; heterogeneous, meaning that columns/features/variables can be different classes (on variable, e.g. age, can be numeric, while another, e.g., cause of death, can be text).
-
-Later on we'll go over how we load our own data, but for now, let's use a built-in data frame called `mtcars`. This data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models). We can load this built-in data with `data(mtcars)`. By the way, running `data()` without any arguments will list all the available built-in datasets included with R.
+Later on we'll read in data from a text file into a data frame object using one of the functions `read.table()` for text files or `read.csv()` for comma-separated tables. But for now, let's use a built-in data frame called `mtcars`. This data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models). We can load this built-in data with `data(mtcars)`. By the way, running `data()` without any arguments will list all the available built-in datasets included with R.
 
 Let's load the data first. Type the name of the object itself (`mtcars`) to view the entire data frame. *Note: doing this with large data frames can cause you trouble.*
 
@@ -294,21 +291,36 @@ class(mtcars)
 mtcars
 ```
 
-There are several built-in functions that are useful for working with data frames.
-* `head()` prints the first few lines of a large data frame.
-* `length()` tells you the number of features (variables, columns) in a data frame.
-* `dim()` returns a two-element vector containing the number of rows and the number of columns in a data frame.
-* `str()` displays the structure of a data frame, printing out details and a preview of every column.
-* `summary()` works differently depending on what kind of object you pass to it. Passing a data frame to the `summary()` function prints out some summary statistics about each column (min, max, median, mean, etc.)
+### Inspecting data.frame objects
 
-```{r}
+There are several built-in functions that are useful for working with data frames.
+
+* Content:
+    * `head()`: shows the first 6 rows
+    * `tail()`: shows the last 6 rows
+* Size:
+    * `dim()`: returns a 2-element vector with the number of rows in the first element, and the number of columns as the second element (the dimensions of the object)
+    * `nrow()`: returns the number of rows
+    * `ncol()`: returns the number of columns
+* Summary:
+    * `colnames()` (or just `names()`): returns the column names
+    * `rownames()`: returns the row names
+    * `str()`: structure of the object and information about the class, length and content of each column
+    * `summary()`: works differently depending on what kind of object you pass to it. Passing a data frame to the `summary()` function prints out some summary statistics about each column (min, max, median, mean, etc.)
+
+```{r data_frame_functions}
 head(mtcars)
-length(mtcars)
+tail(mtcars)
 dim(mtcars)
-dim(mtcars)[1] # number of rows (individual cars in the survey)
-dim(mtcars)[2] # number of columns (number of variables measured)
+nrow(mtcars)
+ncol(mtcars)
+colnames(mtcars)
+rownames(mtcars)
 str(mtcars)
+summary(mtcars)
 ```
+
+### Accessing variables & subsetting data frames
 
 We can access individual variables within a data frame using the `$` operator, e.g., `mydataframe$specificVariable`. Let's print out the number of cylinders for every car, and calculate the average miles per gallon for ever car in the dataset (using the built-in `mean()` function).
 
@@ -320,44 +332,50 @@ mtcars$mpg
 mean(mtcars$mpg)
 ```
 
-We can also access certain rows or columns of a dataset by providing multiple indices using the syntax `mydataframe[rows, columns]`. Let's get the first 4 rows and the first two rows (MPG and # cylinders) from the dataset:
+We can also use the `subset()` function to return a subset of the data frame that meets a specific condition. 
+
+1. The first argument is the data frame you want to subset, e.g. `subset(mtcars...`.
+2. The second argument is a condition you must satisfy, e.g. `subset(mtcars, cyl==6)`. If you want to satisfy *all* of multiple conditions, you can use the "and" operator, `&`. The "or" operator `|` (the pipe character, usually shift-backslash) will return a subset that meet *any* of the conditions.
+    * `==`: Equal to
+    * `!=`: Not equal to
+    * `>`, `>=`: Greater than, greater than or equal to
+    * `<`, `<=`: Less than, less than or equal to
+
+Try it out:
 
 ```{r}
-head(mtcars)
-mtcars[1:4, 1:2]
+# Return only cars with 6 cylinder engines.
+subset(mtcars, cyl==6)
+# Return only cars having more than 6 cylinders **and** an engine displacement volume less than 300cc.
+subset(mtcars, cyl>6 & disp<300)
+# Return only the cars that get at least 20 miles per gallon or have a displacement volume of less than 100cc.
+subset(mtcars, mpg>=20 | disp<100)
 ```
 
-We can also use the `subset()` function to return a subset of the data frame that meets a specific condition. The first argument is the data frame you want to subset. The second argument is a condition you must satisfy. If you want to satisfy *all* of multiple conditions, you can use the "and" operator, `&`. The "or" operator `|` (the pipe character, usually shift-backslash) will return a subset that meet *any* of the conditions.
-
-The commands below will:
-
-0. Return only cars with 6 cylinder engines.
-0. Return only cars having more than 6 cylinders **and** an engine displacement volume less than 300cc.
-0. Return only the cars that get at least 20 miles per gallon or have a displacement volume of less than 100cc.
-0. Return cars with 6 cylinder engines, but using the `select=` argument, only the MPG and displacement columns. Note the syntax there -- we're passing a vector of variables created with the `c()` function to the `select=` argument, which only returns certain columns.
-
-Try some subsetting on your own.
+Finally, take a look at the class of what's returned by a `subset()` function. The `subset()` function takes a data.frame and returns a data.frame. You can operate on this new data.frame just as you would any other data.frame using the `$` operator. E.g., print the MPG for all the 6 cylinder vehicles:
 
 ```{r}
-subset(mtcars, cyl==6)
-subset(mtcars, cyl>6 & disp<300)
-subset(mtcars, mpg>=20 | disp<100)
-subset(mtcars, cyl==6, select=c(mpg, disp))
+subset(mtcars, cyl==6)$mpg
 ```
 
 ---
 
 **EXERCISE**
 
-Return cars that have greater than or equal to 6 cylinders *and* get at least 15 miles per gallon, but display only the MPG, cylinders, and qsec columns (qsec is the 1/4 mile time).
+1. Print out the dataset cars that have greater than or equal to 6 cylinders *and* get at least 15 miles per gallon.
+2. What's the mean engine displacement of these vehicles?
 
 ```{r, echo=FALSE, eval=FALSE}
-subset(mtcars, cyl>=6 & mpg>=15, select=c(mpg, cyl, qsec))
+subset(mtcars, cyl>=6 & mpg>=15)
+subset(mtcars, cyl>=6 & mpg>=15)$disp
+mean(subset(mtcars, cyl>=6 & mpg>=15)$disp)
 ```
 
 ---
 
-The `with()` function is particularly helpful. Let's say you wanted to compute some (senseless) value by computing the MPG times the number of cylinders divided by the car's displacement. You could access the dataset's variables using the `$` notation, or you could use `with()` to temporarily *attach* the data frame, and call the variables directly. The first argument to `with()` is the name of the data frame, and the second argument is all the stuff you'd like to do with the particular features in that data frame.
+### with()
+
+The `with()` function is particularly helpful. Let's say you wanted to compute some (senseless) value by computing the MPG times the number of cylinders divided by the car's displacement. You could access the dataset's variables using the `$` notation, or you could use `with()` to temporarily *attach* the data frame, and call the variables directly, as if they were just vectors hanging out in your workspace. The first argument to `with()` is the name of the data frame, and the second argument is all the stuff you'd like to do with the particular features in that data frame.
 
 Try typing the following commands:
 
@@ -371,7 +389,19 @@ mtcars$mpg * mtcars$cyl / mtcars$disp
 with(mtcars, mpg*cyl/disp)
 ```
 
-### Plotting
+---
+
+**EXERCISE**
+
+Using the `with()` and `subset()` functions, compute the average value of the ratio of the engine displacement (`disp`) divided by the engine's horsepower (`hp`) for all the 8-cylinder vehicles.
+
+```{r, echo=FALSE, results='markup'}
+paste("Answer:", with(subset(mtcars, cyl==8), mean(disp/hp)))
+```
+
+---
+
+## Plotting basics
 
 Plotting a single numeric variable goes down the rows and plots a value on the y-axis for each observation (index) in the data frame.
 
@@ -380,7 +410,6 @@ plot(mtcars$mpg)
 ```
 
 This isn't a very useful figure. More appropriate might be a histogram. We can try to let R decide how many breaks to insert in the histogram, or we can set that manually. We can also set the color of the bars.
-
 
 ```{r}
 hist(mtcars$mpg)
@@ -396,7 +425,7 @@ We can create a scatterplot between two variables with `plot(varX, varY)`.
 with(mtcars, plot(disp, mpg))
 ```
 
-There are hundreds of plotting parameters you can use to make your plot look exactly like you want. Let's use a solid-filled point instead of an open circle with the `pch=` argument, color the points red with the `col=` argument, give it a title by passing a character object to the `main=` argument, and change the x and y axis titles with the `xlab=` and `ylab=` arguments, respectively. Let's go through this one step at a time.
+There are hundreds of plotting parameters you can use to make your plot look exactly like you want. Let's use a solid-filled point instead of an open circle with the `pch=` argument (point character), color the points red with the `col=` argument, give it a title by passing a character object to the `main=` argument, and change the x and y axis titles with the `xlab=` and `ylab=` arguments, respectively. Let's go through this one step at a time.
 
 ```{r}
 with(mtcars, plot(disp, mpg, pch=16))
@@ -408,11 +437,17 @@ with(mtcars, plot(disp, mpg, pch=16,  col="red", main="MPG vs Displacement",
 
 Notice how on that last line I broke the command up into two lines for better readability. I broke the command at the comma separating arguments, and indented the following line for readability.
 
+With plotting parameters, **Google is your friend.** 
+
+* Forget what each point character represents? Google _R pch_.
+* Forget the names of R's colors? Google _R colors_. Want to learn more about color schemes in R? Google _RColorBrewer_.
+* Try googling _R graphical parameters_.
+
 ---
 
 **EXERCISE**
 
-Plot horsepower (y-axis) vs displacement (x-axis) for vehicles with more than 4 cylinders. Give the graph a title and label the axes. Make the points solid (hint, `pch=16`) blue (hint, `col="blue"`) circles. Your plot should look something like this:
+Plot horsepower (y-axis) vs displacement (x-axis) for vehicles with more than 4 cylinders. Give the graph a title and label the axes. Make the points solid (hint, `pch=16`) blue (hint, `col="blue"`) circles.
 
 ```{r, echo=FALSE}
 with(subset(mtcars, cyl>4), plot(disp, hp, pch=16, col="blue",
@@ -422,7 +457,7 @@ with(subset(mtcars, cyl>4), plot(disp, hp, pch=16, col="blue",
 
 ---
 
-### Reading in / writing out data
+## Reading in / writing out data
 
 First, lets create a small dataset consisting of only 8 cylinder cars.
 

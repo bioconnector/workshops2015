@@ -94,6 +94,16 @@ weight_kg <- 100
 
 What do you think is the current content of the object `weight_lb`? 126.5 or 220?
 
+You can see what objects (variables) are stored by viewing the Environment tab in Rstudio. You can also use the `ls()` function. You can remove objects (variables) with the `rm()` function. You can do this one at a time or remove several objects at once.
+
+
+```r
+ls()
+rm(weight_lb, weight_kg)
+ls()
+weight_lb  # oops! you should get an error because weight_lb no longer exists!
+```
+
 ---
 
 **EXERCISE**
@@ -144,11 +154,11 @@ sqrt(log(1000, base = 10))
 
 **EXERCISE**
 
-See `?abs` and calculate the square root of the log-base-10 of the absolute value of $-4\times{}(2550-50)$.
+See `?abs` and calculate the square root of the log-base-10 of the absolute value of `-4*(2550-50)`. Answer should be `2`.
 
 ---
 
-## Vectors
+## Vectors and classes
 
 Let's create some numeric vectors. Vectors (aka "arrays" in Perl, "lists" in Python) are single *objects* containing an ordered collection of *elements*. A simple vector is a numeric vector, a single *object* containing several numbers. Here let's display a few vectors. We can also do vector arithmetic. When printing vectors to the screen that have lots of elements, notice that the bracketed number in the gutter of the output is just a counter indexing the number of elements in the vector.
 
@@ -182,125 +192,85 @@ help(seq)
 seq(from = 2, to = 200, by = 4)
 ```
 
-### Variables / objects
-
-You can store values in a variable or object. Use the `<-` operator for assignment. `=` also will work, but `<-` is conventional and preferred. Objects should start with a letter and can include numbers and underscores. Named variables are objects containing whatever is assigned to them. Remember, *everything is an object*.
+You can assign this vector of values to an object, just like you would for one item. For example we can create a vector of animal weights:
 
 
 ```r
-x <- 5
-x
-
-y <- 42
-y
-
-y - x
-z <- y - x
-z
-
-x <- 1:5
-y <- 6:10
-x
-y
-x + y
-x * y
-x^y
+weights <- c(50, 60, 65)
+weights
 ```
 
-You can see what objects (variables) are stored by viewing the Environment tab in Rstudio. You can also use the `ls()` function. You can remove objects (variables) with the `rm()` function. You can do this one at a time or remove several objects at once.
+A vector can also contain characters:
 
 
 ```r
-ls()
-rm(x)
-ls()
-x  # oops! you should get an error because x no longer exists!
-rm(y, z)
+animals <- c("mouse", "rat", "dog")
+animals
 ```
 
-### Classes: everything is an object
-
-Use the `class()` function to see what *kind* of object a something is. You can run `class()` on constants, built-in objects, or objects you create. Let's create a character object and then get it's class.
+There are many functions that allow you to inspect the content of a vector. `length()` tells you how many elements are in a particular vector:
 
 
 ```r
-class(42)
-class(log)
-name <- "Stephen"
-name
-class(name)
+length(weights)
+length(animals)
 ```
 
-Certain *functions* operate only on certain *classes* of object. Here, `name` is a `character` class, assigned to `"Stephen"`. The built-in `toupper()` function will operate on character objects, but not others.
+`class()` indicates the class (the type of element) of an object:
 
 
 ```r
-# name is an object of class character. methods or functions are associated
-# with certain classes.
-toupper(name)
-# can't run a function that expects character on an object of class function
-toupper(log)
-```
-
-We can combine values into a vector with the built-in `c()` function.
-
-
-```r
-# Get some help with ?c
-x <- c(1, 3, 5)
-x
-class(x)
-length(x)
-```
-
-Let's create and manipulate a character vector:
-
-
-```r
-y <- c("My", "name", "is", "Stephen")
-y
-class(y)
-length(y)
-y <- c(y, "Turner")
-y
-length(y)
-```
-
-Try running the built-in `sum()` function on a numeric vector:
-
-
-```r
-sum(x)
+class(weights)
+class(animals)
 ```
 
 ---
 
 **EXERCISE**
 
-Without using the `+` symbol, get the sum of the integers 50 through 55
+- Use the `c()` function to create/assign a new object that combines the `weights` and `animals` vectors into a single vector called `combined`.
+- What happened to the numeric values? *Hint*: What's the `class()` of `combined`?
+- Why do you think this happens?
 
 ---
 
-
-Combining characters with numerics results in coercing everything to be a character class.
-
-
-```r
-y
-z <- c(x, y)
-z
-class(z)
-```
-
-Certain functions only operate on certain classes. You can't compute the `sum()` of a character vector!
+The function `str()` provides an overview of the structure of an object and the elements it contains. It is a really useful function when working with large and complex objects:
 
 
 ```r
-z
-sum(z)
+str(weights)
+str(animals)
 ```
 
-### Slicing/indexing vectors
+You can add elements to your vector simply by using the `c()` function:
+
+
+```r
+weights
+weights <- c(weights, 90)  # adding at the end
+weights <- c(30, weights)  # adding at the beginning
+weights
+```
+
+What happens here is that we take the original vector `weights`, and we are adding another item first to the end of the other ones, and then another item at the beginning. We can do this over and over again to build a vector or a dataset. When you're programming this may be useful to autoupdate results that we are collecting or calculating.
+
+Certain *functions* operate only on certain *classes* of object. Here, `weights` is a `numeric` vector. The built-in `sum()` function will operate on numeric objects, but not characters.
+
+
+```r
+sum(weights)
+sum(animals)
+```
+
+---
+
+**EXERCISE**
+
+Sum the integers 1 through 100 and 501 through 600 (e.g. 1+2+...+99+100+501+502+...+599+600)
+
+---
+
+## Slicing/indexing vectors
 
 Let's create a vector of 50 integers going from 101 to 150. We can access certain elements of that vector by putting the element's *index(es)* in square brackets. E.g., `x[1]` will return the first element in vector `x`. Calling `x[c(3,5)]` will access the third and fifth elements. Calling `x[1:10]` will return the first ten elements of `x`.
 
@@ -325,19 +295,11 @@ x[20:25]
 x[45:55]  #NA is missing value!
 ```
 
----
+## Data Frames
 
-**EXERCISE**
+We use **data frames** to store heterogeneous tabular data in R: tabular, meaning that individuals or observations are typically represented in rows, while variables or features are represented as columns; heterogeneous, meaning that columns/features/variables can be different classes (on variable, e.g. age, can be numeric, while another, e.g., cause of death, can be text).
 
-Sum the integers 1 through 100 and 501 through 600 (e.g. 1+2+...+99+100+501+502+...+599+600)
-
----
-
-### Data Frames
-
-Data frames are a standard way to store heterogeneous tabular data in R: tabular, meaning that individuals or observations are typically represented in rows, while variables or features are represented as columns; heterogeneous, meaning that columns/features/variables can be different classes (on variable, e.g. age, can be numeric, while another, e.g., cause of death, can be text).
-
-Later on we'll go over how we load our own data, but for now, let's use a built-in data frame called `mtcars`. This data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models). We can load this built-in data with `data(mtcars)`. By the way, running `data()` without any arguments will list all the available built-in datasets included with R.
+Later on we'll read in data from a text file into a data frame object using one of the functions `read.table()` for text files or `read.csv()` for comma-separated tables. But for now, let's use a built-in data frame called `mtcars`. This data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models). We can load this built-in data with `data(mtcars)`. By the way, running `data()` without any arguments will list all the available built-in datasets included with R.
 
 Let's load the data first. Type the name of the object itself (`mtcars`) to view the entire data frame. *Note: doing this with large data frames can cause you trouble.*
 
@@ -348,22 +310,37 @@ class(mtcars)
 mtcars
 ```
 
+### Inspecting data.frame objects
+
 There are several built-in functions that are useful for working with data frames.
-* `head()` prints the first few lines of a large data frame.
-* `length()` tells you the number of features (variables, columns) in a data frame.
-* `dim()` returns a two-element vector containing the number of rows and the number of columns in a data frame.
-* `str()` displays the structure of a data frame, printing out details and a preview of every column.
-* `summary()` works differently depending on what kind of object you pass to it. Passing a data frame to the `summary()` function prints out some summary statistics about each column (min, max, median, mean, etc.)
+
+* Content:
+    * `head()`: shows the first 6 rows
+    * `tail()`: shows the last 6 rows
+* Size:
+    * `dim()`: returns a 2-element vector with the number of rows in the first element, and the number of columns as the second element (the dimensions of the object)
+    * `nrow()`: returns the number of rows
+    * `ncol()`: returns the number of columns
+* Summary:
+    * `colnames()` (or just `names()`): returns the column names
+    * `rownames()`: returns the row names
+    * `str()`: structure of the object and information about the class, length and content of each column
+    * `summary()`: works differently depending on what kind of object you pass to it. Passing a data frame to the `summary()` function prints out some summary statistics about each column (min, max, median, mean, etc.)
 
 
 ```r
 head(mtcars)
-length(mtcars)
+tail(mtcars)
 dim(mtcars)
-dim(mtcars)[1]  # number of rows (individual cars in the survey)
-dim(mtcars)[2]  # number of columns (number of variables measured)
+nrow(mtcars)
+ncol(mtcars)
+colnames(mtcars)
+rownames(mtcars)
 str(mtcars)
+summary(mtcars)
 ```
+
+### Accessing variables & subsetting data frames
 
 We can access individual variables within a data frame using the `$` operator, e.g., `mydataframe$specificVariable`. Let's print out the number of cylinders for every car, and calculate the average miles per gallon for ever car in the dataset (using the built-in `mean()` function).
 
@@ -376,44 +353,50 @@ mtcars$mpg
 mean(mtcars$mpg)
 ```
 
-We can also access certain rows or columns of a dataset by providing multiple indices using the syntax `mydataframe[rows, columns]`. Let's get the first 4 rows and the first two rows (MPG and # cylinders) from the dataset:
+We can also use the `subset()` function to return a subset of the data frame that meets a specific condition. 
+
+1. The first argument is the data frame you want to subset, e.g. `subset(mtcars...`.
+2. The second argument is a condition you must satisfy, e.g. `subset(mtcars, cyl==6)`. If you want to satisfy *all* of multiple conditions, you can use the "and" operator, `&`. The "or" operator `|` (the pipe character, usually shift-backslash) will return a subset that meet *any* of the conditions.
+    * `==`: Equal to
+    * `!=`: Not equal to
+    * `>`, `>=`: Greater than, greater than or equal to
+    * `<`, `<=`: Less than, less than or equal to
+
+Try it out:
 
 
 ```r
-head(mtcars)
-mtcars[1:4, 1:2]
+# Return only cars with 6 cylinder engines.
+subset(mtcars, cyl == 6)
+# Return only cars having more than 6 cylinders **and** an engine
+# displacement volume less than 300cc.
+subset(mtcars, cyl > 6 & disp < 300)
+# Return only the cars that get at least 20 miles per gallon or have a
+# displacement volume of less than 100cc.
+subset(mtcars, mpg >= 20 | disp < 100)
 ```
 
-We can also use the `subset()` function to return a subset of the data frame that meets a specific condition. The first argument is the data frame you want to subset. The second argument is a condition you must satisfy. If you want to satisfy *all* of multiple conditions, you can use the "and" operator, `&`. The "or" operator `|` (the pipe character, usually shift-backslash) will return a subset that meet *any* of the conditions.
-
-The commands below will:
-
-0. Return only cars with 6 cylinder engines.
-0. Return only cars having more than 6 cylinders **and** an engine displacement volume less than 300cc.
-0. Return only the cars that get at least 20 miles per gallon or have a displacement volume of less than 100cc.
-0. Return cars with 6 cylinder engines, but using the `select=` argument, only the MPG and displacement columns. Note the syntax there -- we're passing a vector of variables created with the `c()` function to the `select=` argument, which only returns certain columns.
-
-Try some subsetting on your own.
+Finally, take a look at the class of what's returned by a `subset()` function. The `subset()` function takes a data.frame and returns a data.frame. You can operate on this new data.frame just as you would any other data.frame using the `$` operator. E.g., print the MPG for all the 6 cylinder vehicles:
 
 
 ```r
-subset(mtcars, cyl == 6)
-subset(mtcars, cyl > 6 & disp < 300)
-subset(mtcars, mpg >= 20 | disp < 100)
-subset(mtcars, cyl == 6, select = c(mpg, disp))
+subset(mtcars, cyl == 6)$mpg
 ```
 
 ---
 
 **EXERCISE**
 
-Return cars that have greater than or equal to 6 cylinders *and* get at least 15 miles per gallon, but display only the MPG, cylinders, and qsec columns (qsec is the 1/4 mile time).
+1. Print out the dataset cars that have greater than or equal to 6 cylinders *and* get at least 15 miles per gallon.
+2. What's the mean engine displacement of these vehicles?
 
 
 
 ---
 
-The `with()` function is particularly helpful. Let's say you wanted to compute some (senseless) value by computing the MPG times the number of cylinders divided by the car's displacement. You could access the dataset's variables using the `$` notation, or you could use `with()` to temporarily *attach* the data frame, and call the variables directly. The first argument to `with()` is the name of the data frame, and the second argument is all the stuff you'd like to do with the particular features in that data frame.
+### with()
+
+The `with()` function is particularly helpful. Let's say you wanted to compute some (senseless) value by computing the MPG times the number of cylinders divided by the car's displacement. You could access the dataset's variables using the `$` notation, or you could use `with()` to temporarily *attach* the data frame, and call the variables directly, as if they were just vectors hanging out in your workspace. The first argument to `with()` is the name of the data frame, and the second argument is all the stuff you'd like to do with the particular features in that data frame.
 
 Try typing the following commands:
 
@@ -428,7 +411,20 @@ mtcars$mpg * mtcars$cyl/mtcars$disp
 with(mtcars, mpg * cyl/disp)
 ```
 
-### Plotting
+---
+
+**EXERCISE**
+
+Using the `with()` and `subset()` functions, compute the average value of the ratio of the engine displacement (`disp`) divided by the engine's horsepower (`hp`) for all the 8-cylinder vehicles.
+
+
+```
+## [1] "Answer: 1.754801425962"
+```
+
+---
+
+## Plotting basics
 
 Plotting a single numeric variable goes down the rows and plots a value on the y-axis for each observation (index) in the data frame.
 
@@ -438,7 +434,6 @@ plot(mtcars$mpg)
 ```
 
 This isn't a very useful figure. More appropriate might be a histogram. We can try to let R decide how many breaks to insert in the histogram, or we can set that manually. We can also set the color of the bars.
-
 
 
 ```r
@@ -455,7 +450,7 @@ We can create a scatterplot between two variables with `plot(varX, varY)`.
 with(mtcars, plot(disp, mpg))
 ```
 
-There are hundreds of plotting parameters you can use to make your plot look exactly like you want. Let's use a solid-filled point instead of an open circle with the `pch=` argument, color the points red with the `col=` argument, give it a title by passing a character object to the `main=` argument, and change the x and y axis titles with the `xlab=` and `ylab=` arguments, respectively. Let's go through this one step at a time.
+There are hundreds of plotting parameters you can use to make your plot look exactly like you want. Let's use a solid-filled point instead of an open circle with the `pch=` argument (point character), color the points red with the `col=` argument, give it a title by passing a character object to the `main=` argument, and change the x and y axis titles with the `xlab=` and `ylab=` arguments, respectively. Let's go through this one step at a time.
 
 
 ```r
@@ -468,17 +463,23 @@ with(mtcars, plot(disp, mpg, pch = 16, col = "red", main = "MPG vs Displacement"
 
 Notice how on that last line I broke the command up into two lines for better readability. I broke the command at the comma separating arguments, and indented the following line for readability.
 
+With plotting parameters, **Google is your friend.** 
+
+* Forget what each point character represents? Google _R pch_.
+* Forget the names of R's colors? Google _R colors_. Want to learn more about color schemes in R? Google _RColorBrewer_.
+* Try googling _R graphical parameters_.
+
 ---
 
 **EXERCISE**
 
-Plot horsepower (y-axis) vs displacement (x-axis) for vehicles with more than 4 cylinders. Give the graph a title and label the axes. Make the points solid (hint, `pch=16`) blue (hint, `col="blue"`) circles. Your plot should look something like this:
+Plot horsepower (y-axis) vs displacement (x-axis) for vehicles with more than 4 cylinders. Give the graph a title and label the axes. Make the points solid (hint, `pch=16`) blue (hint, `col="blue"`) circles.
 
 
 
 ---
 
-### Reading in / writing out data
+## Reading in / writing out data
 
 First, lets create a small dataset consisting of only 8 cylinder cars.
 
