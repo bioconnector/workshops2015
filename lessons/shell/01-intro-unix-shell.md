@@ -298,7 +298,7 @@ which is the full name of your home directory. This tells you that you are in a 
 Now enter the following command:
 
 ```
-cd /home/ubuntu/workshops/lessons/shell/data/hidden
+cd /home/bioinfo/workshops/lessons/shell/data/hidden
 ```
 
 This jumps to `hidden`. Now go back to the home directory (`cd`). We saw earlier that the command:
@@ -360,7 +360,7 @@ ls ../../
 
 prints the contents of `/home/`. Finally, the special directory `.` always refers to your current directory. So, `ls`, `ls .`, and `ls ././././.` all do the same thing, they print the contents of the current directory. This may seem like a useless shortcut right now, but we'll see when it is needed in a little while.
 
-To summarize, while you are in the `workshops` directory, the commands `ls ~`, `ls ../`, and `ls /home/ubuntu` all do exactly the same thing.
+To summarize, while you are in the `workshops` directory, the commands `ls ~`, `ls ../`, and `ls /home/bioinfo` all do exactly the same thing.
 
 #### Our data set: FASTQ files
 

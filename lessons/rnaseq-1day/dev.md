@@ -5,27 +5,94 @@
 Ubuntu 14.04 LTS image from AWS
 
 ```bash
+# create ubuntu password
+sudo passwd ubuntu #set to ubuntu
+
+# create user bioinfo
+sudo adduser bioinfo #password bioinfo
+sudo adduser bioinfo sudo
+
+# login as bioinfo to do the rest
+su - bioinfo
+
+############################## install.sh ######################################
+
 # install software
 sudo apt-get -y update
 sudo apt-get -y upgrade
 sudo apt-get -y install gcc make ruby curl git vim parallel unzip firefox cowsay wamerican-huge
 sudo apt-get -y install samtools fastx-toolkit fastqc
 
-# download and extract manually:
-# bowtie2
-# tophat2
-# featureCounts
+# Download and extract software manually
+mkdir bin
+cd bin
+## bowtie2
+wget http://downloads.sourceforge.net/project/bowtie-bio/bowtie2/2.2.4/bowtie2-2.2.4-linux-x86_64.zip
+unzip bowtie2-2.2.4-linux-x86_64.zip
+ln -s bowtie2-2.2.4 bowtie2
+## tophat2
+wget http://ccb.jhu.edu/software/tophat/downloads/tophat-2.0.13.Linux_x86_64.tar.gz
+tar zxvf tophat-2.0.13.Linux_x86_64.tar.gz
+ln -s tophat-2.0.13.Linux_x86_64 tophat
+## featureCounts
+wget http://downloads.sourceforge.net/project/subread/subread-1.4.6/subread-1.4.6-Linux-x86_64.tar.gz
+tar zxvf subread-1.4.6-Linux-x86_64.tar.gz
+ln -s subread-1.4.6-Linux-x86_64.tar.gz subread
 
+# Change path
+cd
+echo "export PATH=$HOME/bin/bowtie2-2.2.4/:$HOME/bin/subread-1.4.6-Linux-x86_64/bin/:$HOME/bin/tophat-2.0.13.Linux_x86_64/:$PATH" >> ~/.bashrc
+
+# Get data here
+cd
+wget http://people.virginia.edu/~sdt5z/genomedata.tar .
+tar xvf genomedata.tar
+rm genomedata.tar
+
+# Get workshop data
+git clone https://github.com/bioconnector/workshops.git
+
+################################################################################
+
+# Allow password login
+sudo vim /etc/ssh/sshd_config # PasswordAuthentication yes
+sudo service ssh restart
+
+
+# Lock it down
+## Remove ssh host key pairs and authorized keys
+sudo shred -u /etc/ssh/*_key /etc/ssh/*_key.pub
+sudo find / -name "authorized_keys" -exec rm -f {} \;
+
+
+
+## Remove all shell history
+history -w
+history -c
+shred -u ~/.*history
+sudo find /root/.*history /home/*/.*history -exec rm -f {} \;
+history -w
+history -c
+
+## Save image
+# name: rnaseq
+# description: Ubuntu image for UVA Bioconnector RNA-seq workshop (samtools, bowtie, tophat2, featureCounts, fastx_toolkit, fastqc, etc)
+
+```
+
+```
 # download and extract genome data:
 mkdir genomedata
 cd genomedata
-wget ftp://ftp.ensembl.org/pub/release-77/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.4.fa.gz
-wget ftp://ftp.ensembl.org/pub/release-77/gtf/homo_sapiens/Homo_sapiens.GRCh38.77.gtf.gz
+wget -b ftp://ftp.ensembl.org/pub/release-77/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.4.fa.gz
+wget -b ftp://ftp.ensembl.org/pub/release-77/gtf/homo_sapiens/Homo_sapiens.GRCh38.77.gtf.gz
 gunzip *.gz
 mv Homo_sapiens.GRCh38.dna.chromosome.4.fa chr4.fa
 mv Homo_sapiens.GRCh38.77.gtf genes.gtf
 grep ^r genes.gtf > chr4.gtf
-# need to index the fa with samtools faidx and then create bowtie2 indexes.
+gzip genes.gtf
+samtools faidx chr4.fa
+bowtie2-build chr4.fa chr4
 ```
 
 ## Teach in intro to R
