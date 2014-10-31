@@ -467,11 +467,11 @@ This prints out the contents of the `ctl1.fastq` file.
 **EXERCISE**
 
 -	Print out the contents of the `workshops/lessons/rnaseq-1day/data/coldata.csv` file. What does this file contain?
--	Without changing directories, use one short command to print the contents of all of the files in the `~/workshops/lessons/shell/` directory.
+-	Without changing directories, use one short command to print the contents of all of the files in the `~/workshops/posts/` directory.
 
 ---
 
-Make sure we're in the right place for the next set of the lessons. We want to be in the rnaseq data directory. Check if you're there with `pwd` and if not navigate there. One way to do that would be
+Make sure we're in the right place for the next set of the lessons. We want to be in the rnaseq data directory (`workshops/lessons/rnaseq-1day/data`). Check if you're there with `pwd` and if not navigate there. One way to do that would be
 
 ```
 cd ~/workshops/lessons/rnaseq-1day/data
@@ -482,7 +482,7 @@ cd ~/workshops/lessons/rnaseq-1day/data
 The program, `less`, is useful when files are big and you want to be able to scroll through them.
 
 ```
-less F3D0_S188_L001_R1_001.fastq
+less ctl1.fastq
 ```
 
 `less` opens the file, and lets you navigate through it. The commands
@@ -543,7 +543,7 @@ The `-A` flag stands for "after match" so it's returning the line that matches p
 
 **EXERCISE**
 
-Search for the sequence 'GATTTTTACA' (GATTACA with 5 T's instead of 2) in ctl1.fastq file and in the output have the sequence name, e.g.:
+Search for the sequence 'GATTTTTACA' (GATTACA with 5 T's instead of 2) in ctl1.fastq file and in the output have the sequence name. The output should look like this:
 
 ```
 @SRR1145047.5880759
@@ -709,7 +709,7 @@ rm -r new
 
 Be careful with this.
 
-## Writing files
+### Writing files
 
 We've been able to do a lot of work with files that already exist, but what if we want to write our own files. Obviously, we're not going to type in a FASTA file, but there are a lot of reasons we'll want to edit a file.
 
@@ -745,10 +745,10 @@ We're going to come back and use this file in just a bit.
 Commands like `ls`, `rm`, `echo`, and `cd` are just ordinary programs on the computer. A program is just a file that you can *execute*. The program `which` tells you the location of a particular program. For example:
 
 ```
-which ls
+which pwd
 ```
 
-Will return "/bin/ls". Thus, we can see that `ls` is a program that sits inside of the `/bin` directory. Now enter:
+Will return "/bin/pwd". Thus, we can see that `pwd` is a program that sits inside of the `/bin` directory. Now enter:
 
 ```
 which find
@@ -770,18 +770,19 @@ Remember that file where we wrote our favorite grep command in there? Since we l
 awesome.sh
 ```
 
-You should get an error saying that hello.sh cannot be found. That is because the directory `~/workshops/lessons/rnaseq-1day/data` is not in the`PATH`. You can try again to run the `awesome.sh` program by entering:
+You should get an error saying that awesome.sh cannot be found. That is because the directory `~/workshops/lessons/rnaseq-1day/data` is not in the`PATH`. You can try again to run the `awesome.sh` program by entering:
 
 ```
 ./awesome.sh
 ```
 
-Alas, we get `-bash: ./awesome.sh: Permission denied`. This is because we haven't told the computer that it's a program. To do that we have to make it 'executable'. We do this by changing its mode. The command for that is `chmod` - change mode. We're going to change the mode of this file, so that it's executable and the computer knows it's OK to run it as a program.
+Alas, we get `-bash: ./awesome.sh: Permission denied`. This is because we haven't told the computer that it's a program that can be executed. To do that we have to make it 'executable'. We do this by changing its mode. The command for that is `chmod` - change mode. We're going to change the mode of this file, so that it's executable and the computer knows it's OK to run it as a program.
 
 To run a program, you have to set the right permissions, make it executable rather than just a text file.
 
 ```
 chmod +x awesome.sh
+ls -l
 ```
 
 Now we can run the program
@@ -790,7 +791,111 @@ Now we can run the program
 ./awesome.sh
 ```
 
-Now you should have seen some output, and of course, it's AWESOME! Congratulations, you just created your first shell script! You're set to rule the world.
+Now you should have seen some output, and of course, it's AWESOME! Congratulations, you just created your first shell script!
+
+---
+
+**EXERCISE**
+
+1. In the `data` directory, use `nano` to write a script called `quickpeek.sh` that:
+    * Runs `head` on all the fastq files in the current directory
+    * Runs `wc` on all the fastq files
+    * `echo`s "Done!" when finished.
+2. Make the program executable.
+3. Run the program.
+
+---
+
+## Simple parallel computing with `find` and `parallel`
+
+We've learned how to do a few things already using wildcards. For instance, we extracted all the fastq files with
+
+```
+gunzip *.fastq
+```
+
+which the shell interpreted the same as:
+
+```
+gunzip ctl1.fastq  ctl2.fastq	ctl3.fastq  uvb1.fastq	uvb2.fastq  uvb3.fastq
+```
+
+But what if we wanted to do something more complicated on lots of files, and do it in parallel across multiple processors? For example, what if we wanted to pull out all the reads containing the "GATTACA" motif from each file independently and write those all to separate files for each read?
+
+We can't just do something like:
+
+```
+grep GATTACA *.fastq > gattacareads.txt
+```
+
+Because that would write one big file with all the GATTACA reads from all the files smashed together. What we want to do is something like this:
+
+```
+grep GATTACA ctl1.fastq > ctl1.fastq.gattaca.txt
+grep GATTACA ctl2.fastq > ctl2.fastq.gattaca.txt
+grep GATTACA ctl3.fastq > ctl3.fastq.gattaca.txt
+grep GATTACA uvb1.fastq > uvb1.fastq.gattaca.txt
+grep GATTACA uvb2.fastq > uvb2.fastq.gattaca.txt
+grep GATTACA uvb3.fastq > uvb3.fastq.gattaca.txt
+```
+
+Now, for one, that's a lot of typing. What if you had 100 fastq files you wanted to do this with? And secondly, while this is example data and things run pretty quickly, what if each of these files were 10s of gigabytes, having millions of reads in each? Each `grep` command would take a few minutes to run. But most modern computers have multiple processors or cores in them, and we should be able to take advantage of that and send out each of those processes to a separate core to be done in parallel.
+
+### `find`
+
+The UNIX `find` command is a simple program can be used to find files based on arbitrary criteria. Go back up to the parent `rnaseq-1day` directory, and type this command:
+
+```
+find .
+```
+
+That prints out all the files and directories, and everything in those directories, recursively. Let's print out only files with the `-type f` option:
+
+```
+find . -type f
+```
+
+Now, let's limit the search to find only fastq files with the `-name` option.
+
+```
+find . -name "*.fastq"
+```
+
+That will find anything ending in `.fastq` living in any directory down from where we are currently standing on the filesystem.
+
+Now, what if we wanted to actually do something with those files? There are a few ways to do this, but one we're going to use today involves using a program called `parallel`. If you run the `find` command and pipe the output of `find` into `parallel`, you can run arbitrary commands on the input files you found. Let's run through an example and I'll explain it.
+
+```
+find . -name "*.fastq" | parallel --dry-run "grep GATTACA {} > {}.gattaca.txt"
+```
+
+* First, we're running the same `find` command as before. Remember, this prints out the path for all the fastq files it found, with the path relative to where we ran the find command.
+* Next, we're calling the `parallel` program with the `--dry-run` option. This tells `parallel` to not actually run anything, but to just tell us what it _would_ do.
+* Next, we have the stuff we want to run in parallel inside the quotation marks.
+* The open/closed curly braces `{}` is a special placeholder for `parallel`, which assumes the values of whatever was passed in on the pipe.
+
+This should make sense when you run it. You'll get something like that looks like this:
+
+```
+grep GATTACA ./data/ctl1.fastq > ./data/ctl1.fastq.gattaca.txt
+grep GATTACA ./data/ctl2.fastq > ./data/ctl2.fastq.gattaca.txt
+grep GATTACA ./data/ctl3.fastq > ./data/ctl3.fastq.gattaca.txt
+grep GATTACA ./data/uvb1.fastq > ./data/uvb1.fastq.gattaca.txt
+grep GATTACA ./data/uvb2.fastq > ./data/uvb2.fastq.gattaca.txt
+grep GATTACA ./data/uvb3.fastq > ./data/uvb3.fastq.gattaca.txt
+```
+
+These are the commands that _would be run_ in parallel if you didn't use the `--dry-run` flag. Now, if we go back and re-run that command without the `--dry-run` flag.
+
+---
+
+**EXERCISE**
+
+1. `cd` into the `data` directory and take a look at what files were created.
+2. Open up one of the new files with `less` and use the `/` key to search for the "GATTACA" motif. Does it actually occur on every line?
+3. Use `rm` to delete all the files ending with `.gattaca.txt`.
+
+---
 
 
 ## Where can I learn more about the shell?
