@@ -87,15 +87,24 @@ We'll cover in class how to start and connect to an Amazon Web Services EC2 inst
 
 ### Get some data files to work with
 
-We will spend most of our time learning about the basics of the shell by manipulating some experimental data. Now we're going to download the data for the tutorial. For this you'll need internet access, because you're going to get it off the web.
+We will spend most of our time learning about the basics of the shell by manipulating some experimental data. If you aren't using the virtual machine image you'll need to download the data for the tutorial. For this you'll need internet access, because you're going to get it off the web.
 
-Open the shell and type the command:
+Open the shell and type the commands:
 
 ```
+cd
 git clone https://github.com/bioconnector/workshops.git
 ```
 
 This command will grab all of the data needed for this workshop. It's using something called git that's used for version control, but we won't talk about that here.
+
+If you're already using the machine image you might need to update things.
+
+```
+cd workshops
+git pull
+cd
+```
 
 ### Moving around and listing files
 

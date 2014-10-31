@@ -89,7 +89,7 @@ wget -b ftp://ftp.ensembl.org/pub/release-77/gtf/homo_sapiens/Homo_sapiens.GRCh3
 gunzip *.gz
 mv Homo_sapiens.GRCh38.dna.chromosome.4.fa chr4.fa
 mv Homo_sapiens.GRCh38.77.gtf genes.gtf
-grep ^r genes.gtf > chr4.gtf
+grep ^4 genes.gtf > chr4.gtf
 gzip genes.gtf
 samtools faidx chr4.fa
 bowtie2-build chr4.fa chr4
