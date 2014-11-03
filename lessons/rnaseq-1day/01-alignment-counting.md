@@ -38,6 +38,8 @@ ls -l
 
 Next, let's run some quality control analysis. Google search "FastQC" to find the [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) package from Simon Andrews. It's a program that pretty much everyone uses for QC analysis that can be run at the command line on a batch of FASTQ files.
 
+You'll also need java to run it (`sudo apt-get install default-jre`).
+
 First let's get some help on FastQC. Most bioinformatics programs have a `-h` or `--help` option that gives you some very basic documentation on how to run it. These aren't the same as built-in UNIX man pages. For more in-depth documentation you need to read the paper or visit the tool's website to download a manual. For instance, take a look at the [online FastQC documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/) and look specifically at the differences between [good Illumina data](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/good_sequence_short_fastqc.html) and [bad Illumina data](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/bad_sequence_fastqc.html).
 
 ```
@@ -157,11 +159,12 @@ bowtie2-build chr4.fa chr4
 
 ### Alignment with TopHat
 
-Let's try a small sample first
+Let's try a small sample first. First, run `tophat -h` to get a little help. Let's also look at the [TopHat documentation online](http://ccb.jhu.edu/software/tophat/manual.shtml).
 
 ```
+tophat -h
 head -n 40000 trimmed_ctl1.fastq > test10k.fastq
-tophat --no-coverage-search chr4 -o test10k_tophat test10k.fastq
+tophat --no-coverage-search -o test10k_tophat chr4 test10k.fastq
 ```
 
 ---
@@ -229,7 +232,11 @@ samtools tview accepted_hits.bam ../chr4.fa
 
 Remember what we want to end up with is a table that gives us the number of reads mapping to each gene for each sample.
 
-All we have now is an alignment which tells us for each sample the genomic positions of where each read aligned on the reference seqeunce. It doesn't tell us anything about genes. For that we'll need a gene annotation, which tells us the genomic position of genes (more specifically, exons). Then we can kind of intersect the two.
+All we have now is an alignment which tells us for each sample the genomic positions of where each read aligned on the reference sequeunce. It doesn't tell us anything about genes. For that we'll need a gene annotation, which tells us the genomic position of genes (more specifically, exons). Then we can kind of intersect the two.
+
+```
+head chr4.gtf
+```
 
 There's a tool called featureCounts that's part of a larger package called subread that very quickly goes through all your alignments for all your samples and counts which reads map to exons in a supplied annotation file.
 
@@ -246,10 +253,10 @@ We can also use the `-T` option to specify that we want to run multiple threads 
 Take a look at other options for dealing with paired-end data, strand-specific data, multi-mapping reads, etc.
 
 ```
-featureCounts -a chr4.gtf -o counts.txt -t exon -g gene_name -T 16 */accepted_hits.bam
+featureCounts -a chr4.gtf -o counts.txt -t exon -g gene_name -T 4 */accepted_hits.bam
 ```
 
-After mapping is complete, take a look at the summary file produced. Open up cyberduck and using SFTP, download the counts.txt file you just created.
+After mapping is complete, take a look at the summary file produced. Open up cyberduck and using SFTP, download the counts.txt file you just created. ***Finally, terminate the AWS EC2 instance after you've downloaded all the data you need.***
 
 ## Resources
 

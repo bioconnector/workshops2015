@@ -284,7 +284,7 @@ cd
 cd wo<tab>le<tab>rna<tab>da<tab>
 ```
 
-Now type `ls F3D` and hit tab twice.
+Now type `ls uvb` and hit tab twice.
 
 ```
 ls uvb<tab><tab>
@@ -905,6 +905,17 @@ These are the commands that _would be run_ in parallel if you didn't use the `--
 3. Use `rm` to delete all the files ending with `.gattaca.txt`.
 
 ---
+
+## Installing software
+
+There are a few different ways to install software. We're using an Ubuntu Linux distribution, and Ubuntu has a very nice software package management system called apt. You can read more about it [at the online documentation](https://help.ubuntu.com/community/AptGet/Howto). For what we'll do later on we'll need java, which isn't installed by default. If we try running `which java`, we'll see nothing is returned. If we try running `java`, Ubuntu will suggest a packages that we might try downloading to get java enabled. We'll want the default Java Runtime Environment. To install software we need to temporarily elevate our permissions to the level of the "super user". We do this temporarily by prefacing any command we want to run as super user with the command `sudo`. Let's install Java.
+
+```bash
+which java
+java
+sudo apt-get install default-jre
+```
+
 
 
 ## Where can I learn more about the shell?
