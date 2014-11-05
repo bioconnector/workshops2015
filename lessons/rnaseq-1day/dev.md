@@ -1,30 +1,121 @@
 # Notes on developing RNA-seq workshop
 
-## Machine image
+## Setting up the machine image
 
-Ubuntu 14.04 LTS image from AWS
+Primarily using AWS image for course. Also creating Lubuntu VirtualBox image as backup to install on local computers just in case we have problems with AWS.
+
+### AWS
+
+First, create a new user **bioinfo** and log in as this user. Also, set the password for the **ubuntu** user.
 
 ```bash
-# create ubuntu password
-sudo passwd ubuntu #set to ubuntu
+# create ubuntu password, set to ubuntu
+sudo passwd ubuntu
 
-# create user bioinfo
-sudo adduser bioinfo #password bioinfo
+# create user bioinfo, set password to bioinfo, add to sudoers
+sudo adduser bioinfo
 sudo adduser bioinfo sudo
 
 # login as bioinfo to do the rest
 su - bioinfo
+```
 
+Now run the software installation script below. Then come back and lock things down. Once you run this you won't be able to log into the same instance again. Save the image and launch a new instance from the image.
+
+```bash
+# Allow password login
+sudo vim /etc/ssh/sshd_config # PasswordAuthentication yes
+sudo service ssh restart
+
+# Remove ssh host key pairs and authorized keys
+sudo shred -u /etc/ssh/*_key /etc/ssh/*_key.pub
+sudo find / -name "authorized_keys" -exec rm -f {} \;
+
+# Remove all shell history
+history -w
+history -c
+shred -u ~/.*history
+sudo find /root/.*history /home/*/.*history -exec rm -f {} \;
+history -w
+history -c
+```
+
+Now save the machine image.
+
+* **Name:** rnaseq
+* **Description:** Ubuntu image for UVA Bioconnector RNA-seq workshop (samtools, bowtie, tophat2, featureCounts, fastx_toolkit, fastqc, etc)
+
+
+### Virtualbox backup image
+
+Just in case we have a problem with AWS, let's create a VirtualBox image using Lubuntu that looks pretty much the same as the AWS image.
+
+First, install the linux headers and the VirtualBox guest additions. Then install R, RStudio, and select R packages.
+
+```bash
+# If using virtualbox and want to install guest additions
+sudo apt-get -y install gcc make linux-headers-generic linux-headers-$(uname -r)
+
+# Install guest additions on /media/user/disc
+sudo ./VBoxLinuxAdditions.run
+sudo reboot
+
+# Install R
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+sudo echo "deb http://http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
+sudo apt-get -y install r-base r-cran-xml
+
+# Install RStudio
+wget http://download1.rstudio.org/rstudio-0.98.1087-amd64.deb
+sudo dpkg -i rstudio-0.98.1087-amd64.deb
+```
+
+Within R
+
+```r
+options("repos" = c(CRAN = "http://cran.rstudio.com/"))
+install.packages("calibrate")
+install.packages("gplots")
+
+source("http://bioconductor.org/biocLite.R")
+biocLite()
+biocLite("DESeq2")
+```
+After finishing setup right before saving the image, clear the history:
+
+```bash
+# Remove all shell history
+history -w
+history -c
+shred -u ~/.*history
+sudo find /root/.*history /home/*/.*history -exec rm -f {} \;
+history -w
+history -c
+```
+
+### Setup script
+
+Use this on both the AWS or VirtualBox image to:
+
+* Update & upgrade
+* Install system software
+* Install samtools, fastx-toolkit, and fastqc from apt.
+* Download binaries for bowtie2, tophat2, and subread, and add these binaries to path.
+* Download and extract the genomedata directory used in the course that contains the chromosome 4 fasta file, GTF file, and bowtie2 indexes.
+* Clone the workshop directory.
+
+```bash
 ############################## install.sh ######################################
 
-# install software
+# install from apt
 sudo apt-get -y update
 sudo apt-get -y upgrade
-sudo apt-get -y install gcc make ruby curl git vim parallel unzip firefox cowsay wamerican-huge
+sudo apt-get -y install gcc make ruby curl git vim parallel unzip firefox cowsay wamerican-huge default-jre
 sudo apt-get -y install samtools fastx-toolkit fastqc
 
 # Download and extract software manually
-mkdir bin
+cd
+mkdir -p bin
 cd bin
 ## bowtie2
 wget http://downloads.sourceforge.net/project/bowtie-bio/bowtie2/2.2.4/bowtie2-2.2.4-linux-x86_64.zip
@@ -41,48 +132,27 @@ ln -s subread-1.4.6-Linux-x86_64.tar.gz subread
 
 # Change path
 cd
-echo "export PATH=$HOME/bin/bowtie2-2.2.4/:$HOME/bin/subread-1.4.6-Linux-x86_64/bin/:$HOME/bin/tophat-2.0.13.Linux_x86_64/:$PATH" >> ~/.bashrc
+echo 'export PATH=$HOME/bin/bowtie2-2.2.4/:$HOME/bin/subread-1.4.6-Linux-x86_64/bin/:$HOME/bin/tophat-2.0.13.Linux_x86_64/:$PATH' >> ~/.bashrc
 
 # Get data here
 cd
-wget http://people.virginia.edu/~sdt5z/genomedata.tar .
-tar xvf genomedata.tar
-rm genomedata.tar
+wget http://people.virginia.edu/~sdt5z/genomedata.tgz .
+tar xvf genomedata.tgz
+rm genomedata.tgz
 
 # Get workshop data
 git clone https://github.com/bioconnector/workshops.git
 
 ################################################################################
-
-# Allow password login
-sudo vim /etc/ssh/sshd_config # PasswordAuthentication yes
-sudo service ssh restart
-
-
-# Lock it down
-## Remove ssh host key pairs and authorized keys
-sudo shred -u /etc/ssh/*_key /etc/ssh/*_key.pub
-sudo find / -name "authorized_keys" -exec rm -f {} \;
-
-
-
-## Remove all shell history
-history -w
-history -c
-shred -u ~/.*history
-sudo find /root/.*history /home/*/.*history -exec rm -f {} \;
-history -w
-history -c
-
-## Save image
-# name: rnaseq
-# description: Ubuntu image for UVA Bioconnector RNA-seq workshop (samtools, bowtie, tophat2, featureCounts, fastx_toolkit, fastqc, etc)
-
 ```
 
-```
+## Work done for setting up
+
+### Create genomedata
+
+```bash
 # download and extract genome data:
-mkdir genomedata
+mkdir -p genomedata
 cd genomedata
 wget -b ftp://ftp.ensembl.org/pub/release-77/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.4.fa.gz
 wget -b ftp://ftp.ensembl.org/pub/release-77/gtf/homo_sapiens/Homo_sapiens.GRCh38.77.gtf.gz
@@ -95,11 +165,9 @@ samtools faidx chr4.fa
 bowtie2-build chr4.fa chr4
 ```
 
-## Teach in intro to R
+### Original data to small data
 
-
-
-## Orig data
+This section outlines how I took the original data, did the DGE analysis, then selected just the regions with interesting hits for the example we'll do in class.
 
 Paper: http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0093338
 
@@ -130,7 +198,6 @@ wget sra-files.txt
 
 Now use the sra-toolkit to unpack all the files.
 
-
 ```bash
 find *sra | parallel fastq-dump {}
 ```
@@ -147,6 +214,8 @@ FASTQC on all to make sure the quality encoding worked well.
 find *.f*q | parallel fastqc {} --outdir .
 ```
 
+Rename the files to something meaningful.
+
 ```bash
 mv SRR1145042.fastq.fq uvb1.fq
 mv SRR1145043.fastq.fq uvb2.fq
@@ -158,8 +227,11 @@ mv SRR1145047.fastq.fq ctl1.fq
 mv SRR1145048.fastq.fq ctl2.fq
 mv SRR1145049.fastq.fq ctl3.fq
 mv SRR1145050.fastq.fq ctl4.fq
+```
 
+Align, count, run the DGE, then extract regions of interest.
 
+```bash
 ## Alignment
 NCPUS=12
 MEM="40GB"
@@ -168,56 +240,9 @@ QSUB="qsub -l select=1:ncpus=$NCPUS:mem=$MEM,walltime=24:00:00 -q uvabx -W group
 find `pwd` -name "*.fq" | sed 's/\.fq$//g' | sort | xargs -i echo $QSUB -- `which time` `which STAR` --genomeDir $GENOMEDIR --runThreadN $NCPUS --outFileNamePrefix {}. --readFilesIn {}.fq > runstar.sh
 
 ## Count
-# featureCounts -a ~/genomes/igenomes/Homo_sapiens/UCSC/hg19/Annotation/Genes/genes.gtf -o counts.txt -T 12 -t exon -g gene_id *.sam
+featureCounts -a ~/genomes/igenomes/Homo_sapiens/UCSC/hg19/Annotation/Genes/genes.gtf -o counts.txt -T 12 -t exon -g gene_id *.sam
 
 ## Extract chr4:60000000-160000000
 echo -e "chr4\t60000000\t160000000" > roi.bed
 find *.sam | sed 's/.Aligned.out.sam//g' | sort | parallel --dry-run 'samtools view -Sb {}.Aligned.out.sam | bedtools intersect -abam - -b roi.bed | bedtools bamtofastq -i - -fq {}.fastq'
-```
-
-
-## New small data
-
-```bash
-# extract
-gunzip *.fastq.gz
-
-# fastqc
-find *.fastq | parallel --dry-run fastqc {} --outdir .
-
-# trim
-mkdir Untrimmed
-mv *.fastq Untrimmed
-cd Untrimmed
-find *.fastq | parallel --dry-run fastx_trimmer -t 5 -Q33 -i {} -o ../{}
-cd ..
-head ctl1.fastq
-head Untrimmed/ctl1.fastq
-
-# get chromosome 4 fasta
-# http://hgdownload.cse.ucsc.edu/goldenPath/hg19/chromosomes/chr4.fa.gz
-# google "ensembl download fasta"
-mkdir Index
-cd Index
-wget ftp://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/dna/Homo_sapiens.GRCh37.75.dna.chromosome.4.fa.gz
-gunzip Homo_sapiens.GRCh37.75.dna.chromosome.4.fa.gz
-mv Homo_sapiens.GRCh37.75.dna.chromosome.4.fa chr4.fa
-
-# create index
-bowtie-build chr4.fa chr4
-
-# While that's building, let's make annotation
-cd Annotation
-wget ftp://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/dna/Homo_sapiens.GRCh37.75.dna.chromosome.4.fa.gz
-gunzip Homo_sapiens.GRCh37.75.gtf.gz
-
-# create index
-bowtie-build chr4.fa chr4
-
-# map
-find *.fastq | parallel --dry-run tophat --bowtie1 --no-coverage-search -o {}_tophat Index/chr4 {}
-more */align_summary.txt
-
-# count
-featureCounts -a Annotation/Homo_sapiens.GRCh37.75.gtf -o counts.txt -t exon -g gene_name */accepted_hits.bam
 ```
