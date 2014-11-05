@@ -25,7 +25,7 @@ In this section of the workshop we will start with raw RNA-seq reads and do ever
 
 First, let's extract the fastq files if we haven't done so already:
 
-```
+```bash
 cd workshops/lessons/rnaseq-1day/data
 ls -l
 gunzip *.fastq.gz
@@ -42,7 +42,7 @@ You'll also need java to run it (`sudo apt-get install default-jre`).
 
 First let's get some help on FastQC. Most bioinformatics programs have a `-h` or `--help` option that gives you some very basic documentation on how to run it. These aren't the same as built-in UNIX man pages. For more in-depth documentation you need to read the paper or visit the tool's website to download a manual. For instance, take a look at the [online FastQC documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/) and look specifically at the differences between [good Illumina data](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/good_sequence_short_fastqc.html) and [bad Illumina data](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/bad_sequence_fastqc.html).
 
-```
+```bash
 fastqc -h
 fastqc *.fastq --threads 4 --outdir .
 ```
@@ -55,13 +55,13 @@ Google "FASTX Toolkit" to find [Greg Hannon's FASTX-Toolkit software](http://han
 
 First, let's run `fastx_trimmer` to get some help.
 
-```
+```bash
 fastx_trimmer -h
 ```
 
 It tells us we can use the `-t` option followed by a number to trim that number of nucleotides off the end of the read. It tells us that the default way to use the program is to feed data off the `STDIN`, which is UNIX-speak for piping in data. It's default output is the `STDOUT`, which is UNIX-speak for "printing" the data to the screen. Let's see what that means:
 
-```
+```bash
 head -n 8 ctl1.fastq
 head -n 8 ctl1.fastq | fastx_trimmer -t 5
 ```
@@ -72,21 +72,21 @@ I show you this because this is what doing bioinformatics is like in the real wo
 
 Let's try that again:
 
-```
+```bash
 head -n 8 ctl1.fastq
 head -n 8 ctl1.fastq | fastx_trimmer -t 5 -Q33
 ```
 
 Look at that! `fastx_trimmer` trimmed 5 bases off the end of two reads coming in from a pipe and spit it back out to the screen. We could do this to the whole file if we did something like `cat ctl1.fastq | fastx_trimmer ... > trimmed_ctl1.fastq`. Or we could use the command line options to take input files and write output files.
 
-```
+```bash
 fastx_trimmer -h
 fastx_trimmer -Q33 -t 5 -i ctl1.fastq -o trimmed_ctl1.fastq
 ```
 
 Let's take a look at those files to make sure it worked right. Also, let's do a word count as a sanity check to make sure we didn't lose any reads or anything.
 
-```
+```bash
 head -n 4 ctl1.fastq trimmed_ctl1.fastq
 wc ctl1.fastq trimmed_ctl1.fastq
 ```
@@ -108,13 +108,13 @@ Run `ls` on the current directory. We need to clean things up before they get ou
 
 Let's use GNU parallel to run these trimming jobs in parallel:
 
-```
-find *.fastq | parallel --dry-run fastx_trimmer -t 5 -Q33 -i {} -o trimmed_{}
+```bash
+find *.fastq | parallel --dry-run "fastx_trimmer -t 5 -Q33 -i {} -o trimmed_{}"
 ```
 
 Tip: `*` matches everything or nothing. If we wanted to look at the first few lines of one of these files, we could do this:
 
-```
+```bash
 head *ctl1.fastq
 ```
 
@@ -122,7 +122,7 @@ Which would print the first few lines of the trimmed and untrimmed version.
 
 Let's make a directory for all the untrimmed files:
 
-```
+```bash
 mkdir untrimmed
 mv ctl*.fastq uvb*.fastq untrimmed
 ```
@@ -140,19 +140,19 @@ This is what you *would* do if you were doing this on your own. But this can tak
 ```bash
 wget ftp://ftp.ensembl.org/pub/release-77/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.4.fa.gz
 wget ftp://ftp.ensembl.org/pub/release-77/gtf/homo_sapiens/Homo_sapiens.GRCh38.77.gtf.gz
-find Homo_sapiens*.gz | parallel --dry-run gunzip {}
+gunzip Homo_sapiens*.gz
 ```
 
 Or just move them from genomedata in the home directory:
 
-```
+```bash
 ls -l ~/genomedata
 mv ~/genomedata/* .
 ```
 
 Now, let's build an index. Tophat is a spliced aligner. It uses the Bowtie aligner under the hood. To run Bowtie we have to first build an index using a utility that comes with Bowtie. You only have to do this once each time you build a reference. First, let's get a little help, then get it started running while we talk about alignment and aligner indexes.
 
-```
+```bash
 bowtie2-build -h
 bowtie2-build chr4.fa chr4
 ```
@@ -161,7 +161,7 @@ bowtie2-build chr4.fa chr4
 
 Let's try a small sample first. First, run `tophat -h` to get a little help. Let's also look at the [TopHat documentation online](http://ccb.jhu.edu/software/tophat/manual.shtml).
 
-```
+```bash
 tophat -h
 head -n 40000 trimmed_ctl1.fastq > test10k.fastq
 tophat --no-coverage-search -o test10k_tophat chr4 test10k.fastq
@@ -196,7 +196,7 @@ Now, before we launch those jobs, let's take a look at the help for GNU parallel
 
 ```bash
 parallel -h
-find trimmed_*.fastq | parallel -j 3 --dry-run tophat --no-coverage-search -o {}_tophat chr4 {}
+find trimmed_*.fastq | parallel -j 3 --dry-run "tophat --no-coverage-search -o {}_tophat chr4 {}"
 ```
 
 ---
@@ -212,7 +212,7 @@ find trimmed_*.fastq | parallel -j 3 --dry-run tophat --no-coverage-search -o {}
 
 If time allows let's look around with samtools Tview. Much better to do this with software such as the Broad's [Integrative Genomics Viewer (IGV)](http://www.broadinstitute.org/igv/).
 
-```
+```bash
 cd trimmed_ctl1.fastq_tophat/
 samtools view accepted_hits.bam | less
 samtools index accepted_hits.bam
@@ -234,7 +234,7 @@ Remember what we want to end up with is a table that gives us the number of read
 
 All we have now is an alignment which tells us for each sample the genomic positions of where each read aligned on the reference sequeunce. It doesn't tell us anything about genes. For that we'll need a gene annotation, which tells us the genomic position of genes (more specifically, exons). Then we can kind of intersect the two.
 
-```
+```bash
 head chr4.gtf
 ```
 
@@ -252,7 +252,7 @@ We can also use the `-T` option to specify that we want to run multiple threads 
 
 Take a look at other options for dealing with paired-end data, strand-specific data, multi-mapping reads, etc.
 
-```
+```bash
 featureCounts -a chr4.gtf -o counts.txt -t exon -g gene_name -T 4 */accepted_hits.bam
 ```
 
