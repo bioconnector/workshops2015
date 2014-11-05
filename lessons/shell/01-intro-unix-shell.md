@@ -91,7 +91,7 @@ We will spend most of our time learning about the basics of the shell by manipul
 
 Open the shell and type the commands:
 
-```
+```bash
 cd
 git clone https://github.com/bioconnector/workshops.git
 ```
@@ -100,7 +100,7 @@ This command will grab all of the data needed for this workshop. It's using some
 
 If you're already using the machine image you might need to update things.
 
-```
+```bash
 cd workshops
 git pull
 cd
@@ -112,7 +112,7 @@ We'll start out by moving around the file system and listing files. Today we're 
 
 Let's go in to that directory we just downloaded:
 
-```
+```bash
 cd workshops
 ```
 
@@ -120,7 +120,7 @@ cd workshops
 
 In this directory, there should be some things we just downloaded. Let's check. Type:
 
-```
+```bash
 ls
 ```
 
@@ -130,7 +130,7 @@ Blue things are directories, white things are files.
 
 Now, let's go look in the 'data' directory in the 'shell' lesson. It's nested a few directories deep. To get to it, let's enter and list each directory like so:
 
-```
+```bash
 cd lessons
 ls
 cd shell
@@ -141,7 +141,7 @@ ls
 
 In there, all mixed up together are regular files, directories, and an executable program. If we want to know which is which, we can type:
 
-```
+```bash
 ls -F
 ```
 
@@ -151,7 +151,7 @@ It there's nothing there it's a regular file.
 
 You can also use the command:
 
-```
+```bash
 ls -l
 ```
 
@@ -167,7 +167,7 @@ Most commonly used shell programs have a manual. Let's open the manual page for 
 
 You can access the manual using the `man` program.
 
-```
+```bash
 man ls
 ```
 
@@ -195,7 +195,7 @@ When you are working at your computer or log in to a remote computer, you are on
 
 If we type `cd` by itself:
 
-```
+```bash
 cd
 ```
 
@@ -216,7 +216,7 @@ Let's also check to see where we are. Sometimes when we're wandering around in t
 
 If you want to know what directory you're currently in, type:
 
-```
+```bash
 pwd
 ```
 
@@ -224,7 +224,7 @@ This stands for 'print working directory'. That's the directory you're currently
 
 What if we want to move back up and out of the `data` directory? To go 'back up a level' we need to use `..`
 
-```
+```bash
 cd ..
 ```
 
@@ -242,7 +242,7 @@ Let's go on a file hunt. Move around in the "shell/data/hidden" directory and tr
 
 By default, the `ls` commands lists the contents of the working directory (i.e. the directory you are in). You can always find the directory you are in using the `pwd` command. However, you can also give `ls` the names of other directories to view. Navigate to the home directory if you are not already there using `cd` by itself, then `ls` the contents of the "workshops/lessons/shell" directory:
 
-```
+```bash
 cd
 ls workshops/lessons/shell
 ```
@@ -252,7 +252,7 @@ This listed the contents of workshops/lessons/shell without navigating there.
 The `cd` command works the same way. Try entering:
 
 
-```
+```bash
 cd
 ls workshops/lessons/shell/data/hidden
 ```
@@ -306,13 +306,13 @@ which is the full name of your home directory. This tells you that you are in a 
 
 Now enter the following command:
 
-```
+```bash
 cd /home/bioinfo/workshops/lessons/shell/data/hidden
 ```
 
 This jumps to `hidden`. Now go back to the home directory (`cd`). We saw earlier that the command:
 
-```
+```bash
 cd workshops/lessons/shell/data/hidden
 ```
 
@@ -338,32 +338,32 @@ Over time, it will become easier for you to keep a mental note of the structure 
 
 There are some shortcuts which you should know about. Dealing with the home directory is very common. In the shell the tilde character, `~`, is a shortcut for your home directory.
 
-```
+```bash
 ls ~
 ```
 
 Try it even when you're not in your home directory:
 
-```
+```bash
 cd
 cd workshops
 ```
 
 Then enter the command:
 
-```
+```bash
 ls ~
 ```
 
 This prints the contents of your home directory, without you having to type the full path. The shortcut `..` always refers to the directory above your current directory.
 
-```
+```bash
 ls ..
 ```
 
 prints the contents of the `/home/username/`. You can chain these together, so:
 
-```
+```bash
 ls ../../
 ```
 
@@ -383,13 +383,13 @@ Navigate to the `workshops/lessons/rnaseq-1day/data` directory from your home. T
 
 The `*` character is a shortcut for "everything". Thus, if you enter `ls *`, you will see all of the contents of a given directory.
 
-```
+```bash
 ls *fastq.gz
 ```
 
 This lists every file that ends with a `fastq.gz`. This command:
 
-```
+```bash
 ls /usr/bin/*.sh
 ```
 
@@ -397,7 +397,7 @@ Lists every file in `/usr/bin` that ends in the characters `.sh`.
 
 If we wanted to list just the controls or just the uvb-treated samples, we could do this:
 
-```
+```bash
 ls ctl*
 ls uvb*
 ```
@@ -406,7 +406,7 @@ So how does this actually work? Well...when the shell sees a word that contains 
 
 Because we'll use these files later, let's go ahead and extract or uncompress these files. To compres a text file we would use `gzip`. To extract, we'll use `gunzip`. Let's extract all the files that end in `.gz`. This will extract both the fastq files and the counts.txt file as well:
 
-```
+```bash
 gunzip *.gz
 ```
 
@@ -431,7 +431,7 @@ Control-C will cancel the command you are writing, and give you a fresh prompt.
 
 You can also review your recent commands with the `history` command to see a numbered list of commands you've run.
 
-```
+```bash
 history
 ```
 
@@ -464,7 +464,7 @@ We now know how to switch directories, run programs, and look at the contents of
 
 The easiest way to examine a file is to print out all of the contents using the program `cat`. Enter the following command:
 
-```
+```bash
 cat ctl1.fastq
 ```
 
@@ -482,7 +482,7 @@ This prints out the contents of the `ctl1.fastq` file.
 
 Make sure we're in the right place for the next set of the lessons. We want to be in the rnaseq data directory (`workshops/lessons/rnaseq-1day/data`). Check if you're there with `pwd` and if not navigate there. One way to do that would be
 
-```
+```bash
 cd ~/workshops/lessons/rnaseq-1day/data
 ```
 
@@ -490,7 +490,7 @@ cd ~/workshops/lessons/rnaseq-1day/data
 
 The program, `less`, is useful when files are big and you want to be able to scroll through them.
 
-```
+```bash
 less ctl1.fastq
 ```
 
@@ -516,14 +516,14 @@ There's another way that we can look at files, and in this case, just look at pa
 
 The commands `head` and `tail` let you look at the beginning and end of a file respectively.
 
-```
+```bash
 head ctl1.fastq
 tail ctl1.fastq
 ```
 
 The `-n` option to either of these commands can be used to print the first or last `n` lines of a file. If we want to see the first read in the file, try this:
 
-```
+```bash
 head -n 4 ctl1.fastq
 tail -n 4 ctl1.fastq
 ```
@@ -536,13 +536,13 @@ We can search within files without even opening them, using `grep`. Grep is a co
 
 Let's find all the lines in ctl1.fastq that contain the sequence motif "GATTACA."
 
-```
+```bash
 grep GATTACA ctl1.fastq
 ```
 
 We get back just the sequence line, but what if we wanted all four lines, the whole part of that FASTQ sequence, back instead.
 
-```
+```bash
 grep -B 1 -A 2 GATTACA ctl1.fastq
 ```
 
@@ -573,13 +573,13 @@ We do this with: `>`.
 
 Let's try it out and put all the sequences that contain 'GATTACA' from all the files in to another file called "gattaca-reads.txt".
 
-```
+```bash
 grep GATTACA *.fastq > gattaca-reads.txt
 ```
 
 The prompt should sit there a little bit, and then it should look like nothing happened. But type `ls`. You should have a new file called "gattaca-reads.txt". Take a look at it and see if it has what you think it should.
 
-```
+```bash
 ls
 less gattaca-reads.txt
 ```
@@ -588,7 +588,7 @@ There's another useful redirection command that we're going to show, and that's 
 
 The pipe '|' takes the output of the first thing and then puts it in to the second part
 
-```
+```bash
 grep GATTACA *.fastq | less
 ```
 
@@ -596,19 +596,19 @@ Now we can use the arrows to scroll up and down and use `q` to get out.
 
 There's another command called `wc`. `wc` stands for`word count`. It counts the number of lines or characters. So, we can use it to count the number of lines we're getting back from our `grep` command. And that will tell us how many sequences we're finding with that motif across all the files.
 
-```
+```bash
 grep GATTACA *.fastq | wc
 ```
 
 That tells us the number of lines, words and characters in the file. If we just want the number of lines, we can use the `-l` flag for `lines`.
 
-```
+```bash
 grep GATTACA *.fastq | wc -l
 ```
 
 You could have piped the output to a file like you did the first time and ran `wc` on that file:
 
-```
+```bash
 wc gattaca-reads.txt
 ```
 
@@ -656,7 +656,7 @@ The `coldata.csv` file tells us which sample names are which treatment (in this 
 
 Lets copy the file using the `cp` command. The `cp` command backs up the file. Navigate to the `rnaseq-1day/data` directory and enter:
 
-```
+```bash
 cp coldata.csv coldata.csv-backup
 ```
 
@@ -666,13 +666,13 @@ Let's make a `backup` directory where we can put this file.
 
 The `mkdir` command is used to make a directory. Just enter `mkdir` followed by a space, then the directory name.
 
-```
+```bash
 mkdir backup
 ```
 
 We can now move our backed up file in to this directory. We can move files around using the command `mv`. Enter this command:
 
-```
+```bash
 mv coldata.csv-backup backup
 ```
 
@@ -680,7 +680,7 @@ This moves `coldata.csv-backup` into the directory `backup/` or the full path wo
 
 The `mv` command is also how you rename files. Since this file is important, let's rename it:
 
-```
+```bash
 ls
 mv coldata.csv coldata-IMPORTANT.csv
 ls
@@ -688,7 +688,7 @@ ls
 
 Now let's delete the backup copy:
 
-```
+```bash
 ls
 ls backup
 rm backup/coldata.csv-backup
@@ -712,7 +712,7 @@ Do the following:
 
 By default, `rm`, will NOT delete directories. You can tell `rm` to delete a directory and everything in it *recursively* using the `-r` option. Let's delete that `new` directory we just made. Enter the following command:
 
-```
+```bash
 rm -r new
 ```
 
@@ -724,13 +724,13 @@ We've been able to do a lot of work with files that already exist, but what if w
 
 To write in files, we're going to use the program `nano`. We're going to create a file that contains the favorite grep command so you can remember it for later. We'll name this file 'awesome.sh'.
 
-```
+```bash
 nano awesome.sh
 ```
 
 Enter the following into the file:
 
-```
+```bash
 grep -B 1 -A 2 GATTACA *.fastq
 ```
 
@@ -753,13 +753,13 @@ We're going to come back and use this file in just a bit.
 
 Commands like `ls`, `rm`, `echo`, and `cd` are just ordinary programs on the computer. A program is just a file that you can *execute*. The program `which` tells you the location of a particular program. For example:
 
-```
+```bash
 which pwd
 ```
 
 Will return "/bin/pwd". Thus, we can see that `pwd` is a program that sits inside of the `/bin` directory. Now enter:
 
-```
+```bash
 which find
 ```
 
@@ -767,7 +767,7 @@ You will see that `find` is a program that sits inside of the`/usr/bin` director
 
 So ... when we enter a program name, like `ls`, and hit enter, how does the shell know where to look for that program? How does it know to run `/bin/ls` when we enter `ls`. The answer is that when we enter a program name and hit enter, there are a few standard places that the shell automatically looks. If it can't find the program in any of those places, it will print an error saying "command not found". Enter the command:
 
-```
+```bash
 echo $PATH
 ```
 
@@ -775,13 +775,13 @@ This will print out the value of the `PATH` environment variable. Notice that a 
 
 Remember that file where we wrote our favorite grep command in there? Since we like it so much, we might want to run it again, or even all the time. Instead of writing it out every time, we can just run it as a script. Let's try to run that script:
 
-```
+```bash
 awesome.sh
 ```
 
 You should get an error saying that awesome.sh cannot be found. That is because the directory `~/workshops/lessons/rnaseq-1day/data` is not in the`PATH`. You can try again to run the `awesome.sh` program by entering:
 
-```
+```bash
 ./awesome.sh
 ```
 
@@ -789,14 +789,14 @@ Alas, we get `-bash: ./awesome.sh: Permission denied`. This is because we haven'
 
 To run a program, you have to set the right permissions, make it executable rather than just a text file.
 
-```
+```bash
 chmod +x awesome.sh
 ls -l
 ```
 
 Now we can run the program
 
-```
+```bash
 ./awesome.sh
 ```
 
@@ -819,13 +819,13 @@ Now you should have seen some output, and of course, it's AWESOME! Congratulatio
 
 We've learned how to do a few things already using wildcards. For instance, we extracted all the fastq files with
 
-```
+```bash
 gunzip *.fastq
 ```
 
 which the shell interpreted the same as:
 
-```
+```bash
 gunzip ctl1.fastq  ctl2.fastq	ctl3.fastq  uvb1.fastq	uvb2.fastq  uvb3.fastq
 ```
 
@@ -833,7 +833,7 @@ But what if we wanted to do something more complicated on lots of files, and do 
 
 We can't just do something like:
 
-```
+```bash
 grep GATTACA *.fastq > gattacareads.txt
 ```
 
@@ -854,38 +854,76 @@ Now, for one, that's a lot of typing. What if you had 100 fastq files you wanted
 
 The UNIX `find` command is a simple program can be used to find files based on arbitrary criteria. Go back up to the parent `rnaseq-1day` directory, and type this command:
 
-```
+```bash
 find .
 ```
 
 That prints out all the files and directories, and everything in those directories, recursively. Let's print out only files with the `-type f` option:
 
-```
+```bash
 find . -type f
 ```
 
-Now, let's limit the search to find only fastq files with the `-name` option.
+Now, let's limit the search to find only fastq files with the `-name` option. Here, we just pass in quotes the pattern to match. Here it's anything that ends with `.fastq`.
 
-```
+```bash
 find . -name "*.fastq"
 ```
 
 That will find anything ending in `.fastq` living in any directory down from where we are currently standing on the filesystem.
 
-Now, what if we wanted to actually do something with those files? There are a few ways to do this, but one we're going to use today involves using a program called `parallel`. If you run the `find` command and pipe the output of `find` into `parallel`, you can run arbitrary commands on the input files you found. Let's run through an example and I'll explain it.
+Now, what if we wanted to actually do something with those files? There are a few ways to do this, but one we're going to use today involves using a program called `parallel`. If you run the `find` command and pipe the output of `find` into `parallel`, you can run arbitrary commands on the input files you found. Let's do a `--dry-run` so `parallel` will *only show us what would have been run*. Let's run a fake example:
+
+```bash
+#first find the files
+find . -name "*.fastq"
+# then pipe to parallel with dry run
+find . -name "*.fastq" | parallel --dry-run "dowhatever {}"
+```
 
 ```
-find . -name "*.fastq" | parallel --dry-run "grep GATTACA {} > {}.gattaca.txt"
+dowhatever ./data/ctl1.fastq
+dowhatever ./data/ctl2.fastq
+dowhatever ./data/ctl3.fastq
+dowhatever ./data/uvb1.fastq
+dowhatever ./data/uvb2.fastq
+dowhatever ./data/uvb3.fastq
 ```
 
 * First, we're running the same `find` command as before. Remember, this prints out the path for all the fastq files it found, with the path relative to where we ran the find command.
 * Next, we're calling the `parallel` program with the `--dry-run` option. This tells `parallel` to not actually run anything, but to just tell us what it _would_ do.
-* Next, we have the stuff we want to run in parallel inside the quotation marks.
-* The open/closed curly braces `{}` is a special placeholder for `parallel`, which assumes the values of whatever was passed in on the pipe.
+* Next, we have the stuff we want to run in parallel inside the quotes.
+* The open/closed curly braces `{}` is a special placeholder for `parallel`, which assumes the values of whatever was passed in on the pipe. In this example, each of the fastq files found by `find` will take the place of `{}` wherever it's found.
 
-This should make sense when you run it. You'll get something like that looks like this:
+Let's try one for real. Let's get the word count of all the fastq files in parallel.
 
+```bash
+# First find the files
+find . -name "*.fastq"
+
+# Next do a dry-run to see what would be run
+find . -name "*.fastq" | parallel --dry-run "wc {}"
+
+# Finally, run the commands in parallel
+find . -name "*.fastq" | parallel "wc {}"
 ```
+
+What if we wanted to do something like search for a particular nucleotide sequence like "GATTACA" inside of each file, pull out those sequences, and write those to a separate results file for each input?
+
+```bash
+# First find the files
+find . -name "*.fastq"
+
+# Next do a dry-run to see what would be run
+find . -name "*.fastq" | parallel --dry-run "grep GATTACA {} > {}.gattaca.txt"
+
+# Finally, run the commands in parallel
+find . -name "*.fastq" | parallel "grep GATTACA {} > {}.gattaca.txt"
+```
+
+When you do the dry run, you'll get something like that looks like this:
+
+```bash
 grep GATTACA ./data/ctl1.fastq > ./data/ctl1.fastq.gattaca.txt
 grep GATTACA ./data/ctl2.fastq > ./data/ctl2.fastq.gattaca.txt
 grep GATTACA ./data/ctl3.fastq > ./data/ctl3.fastq.gattaca.txt
@@ -894,7 +932,7 @@ grep GATTACA ./data/uvb2.fastq > ./data/uvb2.fastq.gattaca.txt
 grep GATTACA ./data/uvb3.fastq > ./data/uvb3.fastq.gattaca.txt
 ```
 
-These are the commands that _would be run_ in parallel if you didn't use the `--dry-run` flag. Now, if we go back and re-run that command without the `--dry-run` flag.
+These are the commands that _would be run_ in `parallel` if you didn't use the `--dry-run` flag. Now, if we go back and re-run that command without the `--dry-run` flag.
 
 ---
 
