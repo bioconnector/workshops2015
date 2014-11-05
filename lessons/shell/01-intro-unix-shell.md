@@ -850,7 +850,7 @@ grep GATTACA uvb3.fastq > uvb3.fastq.gattaca.txt
 
 Now, for one, that's a lot of typing. What if you had 100 fastq files you wanted to do this with? And secondly, while this is example data and things run pretty quickly, what if each of these files were 10s of gigabytes, having millions of reads in each? Each `grep` command would take a few minutes to run. But most modern computers have multiple processors or cores in them, and we should be able to take advantage of that and send out each of those processes to a separate core to be done in parallel.
 
-### `find`
+### find
 
 The UNIX `find` command is a simple program can be used to find files based on arbitrary criteria. Go back up to the parent `rnaseq-1day` directory, and type this command:
 
@@ -871,6 +871,8 @@ find . -name "*.fastq"
 ```
 
 That will find anything ending in `.fastq` living in any directory down from where we are currently standing on the filesystem.
+
+### find | parallel
 
 Now, what if we wanted to actually do something with those files? There are a few ways to do this, but one we're going to use today involves using a program called `parallel`. If you run the `find` command and pipe the output of `find` into `parallel`, you can run arbitrary commands on the input files you found. Let's do a `--dry-run` so `parallel` will *only show us what would have been run*. Let's run a fake example:
 
