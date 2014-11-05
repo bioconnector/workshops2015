@@ -90,7 +90,3 @@ Setup checklist:
 ### Software setup, part II: R and RStudio
 
 {% include setup-r.md %}
-
-## Take the pre-workshop survey
-
-TBA
