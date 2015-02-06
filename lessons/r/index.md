@@ -2,4 +2,7 @@
 layout: page
 ---
 
-{% include r-intro-lifesci.md %}
+[Introduction to R](r-intro)  
+[Advanced Visualization]()  
+[Advanced Manipulation]()  
+[RNA-seq demo]()  
