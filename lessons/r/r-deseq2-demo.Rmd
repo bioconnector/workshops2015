@@ -12,45 +12,12 @@ opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none", 
 
 # Demo: Using R and Bioconductor for RNA-seq data analysis
 
-*[back to course contents](..)*
+In this demo we'll analyze some publicly available RNA-seq gene expression data using R and bioinformatics-focused R packages in [Bioconductor](http://bioconductor.org/). This demo assumes some familiarity with R (functions, functions, vectors, creating variables, getting help, subsetting, data frames, plotting, and reading/writing files). The starting point for this analysis is a *count matrix* - RNA-seq data has already been cleaned, aligned, and counted to the gene level, and a *metadata file* with information about the samples. The `rownames` of the metadata must match the `colnames` of the count data.
 
-In this demo we'll analyze some publicly available RNA-seq gene expression data using R and bioinformatics-focused R packages in [Bioconductor](http://bioconductor.org/). This demo assumes some familiarity with R (functions, functions, vectors, creating variables, getting help, subsetting, data frames, plotting, and reading/writing files). The starting point for this analysis is a *count matrix* - RNA-seq data has already been cleaned, aligned, and counted to the gene level. 
-
-## Install and load packages
-
-First, we'll need to install some add-on packages. Most generic R packages are hosted on the Comprehensive R Archive Network (CRAN, <http://cran.us.r-project.org/>). To install one of these packages, you would use `install.packages("packagename")`. You only need to install a package once, then load it each time using `library(packagename)`. Let's install the **gplots** and **calibrate** packages.
-
-```{r install_packages, eval=FALSE, warning=FALSE}
-install.packages("gplots")
-install.packages("calibrate")
-```
-
-Bioconductor packages work a bit differently, and are not hosted on CRAN. Go to <http://bioconductor.org/> to learn more about the Bioconductor project. To use any Bioconductor package, you'll need a few "core" Bioconductor packages. Run the following commands to (1) download the installer script, and (2) install some core Bioconductor packages. You'll need internet connectivity to do this, and it'll take a few minutes, but it only needs to be done once.
-
-```{r bioclite, eval=FALSE}
-# Download the installer script
-source("http://bioconductor.org/biocLite.R")
-
-# biocLite() is the bioconductor installer function. Run it without any
-# arguments to install the core packages or update any installed packages. This
-# requires internet connectivity and will take some time!
-biocLite()
-```
-
-To install specific packages, first download the installer script if you haven't done so, and use `biocLite("packagename")`. This only needs to be done once then you can load the package like any other package. Let's download the [DESeq2 package](http://www.bioconductor.org/packages/release/bioc/html/DESeq2.html):
-
-```{r load_deseq2, eval=FALSE}
-# Do only once
-source("http://bioconductor.org/biocLite.R")
-biocLite("DESeq2")
-```
-
-Now let's load the packages we'll use:
+We'll be using the DESeq2 package that you've already installed (see the setup instructions). 
 
 ```{r load_pkgs, warning=FALSE}
 library(DESeq2)
-library(gplots)
-library(calibrate)
 ```
 
 Bioconductor packages usually have great documentation in the form of *vignettes*. For a great example, take a look at the [DESeq2 vignette for analyzing count data](http://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf).
@@ -62,6 +29,7 @@ data(pasillaGenes)
 write.csv(counts(pasillaGenes), file="pasilla_counts.csv")
 write.csv(pData(pasillaGenes)[, c("condition", "type")], file="pasilla_metadata.csv")
 ```
+
 
 ## Publicly available RNA-seq data
 
@@ -75,13 +43,15 @@ Note: much of this was adapted from the [DESeq2 package vignette](http://www.bio
 
 ## Load the data
 
-First, set your working directory (folder) to the `lessons/intro-r-lifesci` subdirectory wherever you saved and extracted the [code repository for this lesson](https://github.com/bioconnector/workshops/archive/master.zip). This way, you can reference the data using a *relative path* (e.g. `data/pasilla_counts.csv`) instead of an *absolute path* (e.g. `C:/Users/name/downloads/workshops/lessons/data/pasilla_counts.csv`). You can do this either through the RStudio graphical menu (Session, Set Working Directory, Choose...), or through the `setwd()` function. You can check where you are with `getwd()`.
+First, make sure your working directory (folder) is set to wherever you saved the data for this lesson. If you downloaded the [code repository for this lesson](https://github.com/bioconnector/workshops/archive/master.zip), that directory is `workshops/lessons/r`. This way, you can reference the data using a *relative path* (e.g. `data/pasilla_counts.csv`) instead of an *absolute path* (e.g. `C:/Users/name/downloads/workshops/lessons/data/pasilla_counts.csv`). You can check where you are with `getwd()`.
 
 ```{r getwd}
 getwd()
 ```
 
-Next, load two different datasets: one with the count data, and one with sample information. Take a look at the first few rows of the count dataset, as well as the entire metadata data frame.
+Let's look at the data we're about to load using Excel. The count data is stored in `data/pasilla_counts.csv` and the metadata is stored in `data/pasilla_metadata.csv`. 
+
+Notice how cell A1 is empty. The first row corresponds to the `colnames`, and the first column corresponds to the `rownames`. When we read this data into R we need to be explicit about telling R that file has a column header (`header=TRUE`) and that the `rownames` for the data frame come from the first column (`row.names=1`).
 
 ```{r load_counts_and_metadata}
 # Load the count data
@@ -93,11 +63,11 @@ pasillameta <- read.csv("data/pasilla_metadata.csv", header=TRUE, row.names=1)
 pasillameta
 ```
 
-Notice something here. The values that are printed across the top are the `colnames` and the values printed in the gutter to the side are the `rownames`. Notice how the **colnames of the countdata**, which are the names of our samples, match the **rownames of the metadata*.
+Notice something here. The values that are printed across the top are the `colnames` and the values printed in the gutter to the side are the `rownames`. Notice how the **colnames of the countdata**, which are the names of our samples, match the **rownames of the metadata*. This is required to set up the data in a way for DESeq to work with it.
 
 DESeq works on a particular type of object called a **DESeqDataSet**. The DESeqDataSet is a single object that contains input values, intermediate calculations like how things are normalized, and all results of a differential expression analysis. You can construct a DESeqDataSet from a count matrix, a metadata file, and a formula indicating the design of the experiment. The design formula expresses the variables which will be used in modeling. The formula should be a tilde (~) followed by the variables with plus signs between them. To do this, we run the `DESeqDataSetFromMatrix` function, giving it data frames containing the count matrix as well as the column (metadata) information, and the design formula.
 
-```{r}
+```{r create_dds_object}
 dds <- DESeqDataSetFromMatrix(countData=pasillacounts, colData=pasillameta, design = ~condition)
 dds
 ```
@@ -106,28 +76,25 @@ dds
 
 The standard differential expression analysis steps are wrapped into a single function, `DESeq`. This convenience function normalizes the library, estimates dispersion, and performs a statistical test under the negative binomial model.
 
-```{r}
+```{r run_deseq}
 # Normalize, estimate dispersion, fit model
 dds <- DESeq(dds)
 ```
 
 The results are accessed using the function `results()`. The `mcols` function gives you more information about what the columns in the results tell you. 
 
-```{r}
+```{r extract_results}
 # Extract results
 res <- results(dds)
 head(res)
 mcols(res)
 ```
 
-You can write the results to a file if you wish, or even write out only the statistically significant ones using the `subset()` command conditioning on the `padj` variable (adjusted p-value). Finally, let's create an MA-plot, showing the log2 fold change over the normalized counts for each gene, colored red if statistically significant (padj<0.1). Get more help with `?plotMA`.
+Let's write out the results to a file. Then, let's create an MA-plot, showing the log2 fold change over the normalized counts for each gene, colored red if statistically significant (padj<0.1). Get more help with `?plotMA`.
 
-```{r, eval=FALSE}
-# Write out all results
+```{r write_out_results_maplot, eval=FALSE}
+# Write out results
 write.csv(res, file="pasilla_results.csv")
-
-# Write out significant results
-write.csv(subset(res, padj<0.05), file="sig_pasilla_results.csv")
 
 # Create MA Plot
 plotMA(dds)
@@ -135,17 +102,14 @@ plotMA(dds)
 
 ## Data transformation and visualization
 
-The differential expression analysis above operates on the raw (normalized) count data. But for visualizing or clustering data as you would with a microarray experiment, you ned to work with transformed versions of the data. First, use a *regularlized log* transformation while re-estimating the dispersion ignoring any information you have about the samples (`blind=TRUE`). Perform a principal components analysis and hierarchical clustering.
+The differential expression analysis above operates on the raw (normalized) count data. But for visualizing or clustering data as you would with a microarray experiment, you ned to work with transformed versions of the data. First, use a *regularlized log* transformation then perform a principal components analysis.
 
-```{r}
+```{r transform_pca, eval=FALSE}
 # Transform
 rld <- rlogTransformation(dds)
 
 # Principal components analysis
 plotPCA(rld, intgroup=c("condition", "type"))
-
-# Hierarchical clustering analysis
-plot(hclust(dist(t(assay(rld)))))
 ```
 
 ## Multifactor design
@@ -156,6 +120,6 @@ See the [DESeq2 vignette](http://www.bioconductor.org/packages/release/bioc/vign
 
 The `sessionInfo()` prints version information about R and any attached packages. It's a good practice to always run this command at the end of your R session and record it for the sake of reproducibility in the future.
 
-```{r, results='markup'}
+```{r sessionInfo, results='markup'}
 sessionInfo()
 ```

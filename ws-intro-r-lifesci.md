@@ -6,9 +6,9 @@ layout: page
 
 This workshop is directed toward life scientists with little to no experience with statistical computing or bioinformatics. This interactive workshop will introduce the R statistical computing environment, including basic instruction in data types, variables, array manipulation, functions, data frames, data import/export, visualization, and using packages. At the end of the workshop, participants will see a live demonstration of a real biomedical application - analysis of publicly available RNA-seq data. This will demo (1) how to acquire publicly accessible data from NCBI Gene Expression Omnibus, and (2) how to use Bioconductor packages to import, process, QC, analyze, and visualize the results of the analysis. By the end of the workshop, participants will be able to use R for basic data manipulation and visualization, and will know where to look for further help and instruction. Participants will also be exposed to analyzing RNA-seq data. An advanced follow-on course will go through a gene expression data analysis in detail. This course is sponsored by the Claude Moore Health Sciences Library.
 
-**Date**: October 30, 2014  
+**Date**: Feb 17, 2015  
 **Time**: 2:00-5:00pm  
-**Location**: Brown Science & Engineering Library, Electronic Classroom
+**Location**: Health Sciences Library, Carter Classroom
 
 **Pre-requisites**:
 
@@ -19,11 +19,13 @@ This workshop is directed toward life scientists with little to no experience wi
 
 _Check back after course_
 
+<!-- Uncomment below to post course material -->
+
 <!--
 * [Slides](https://speakerdeck.com/stephenturner/introduction-to-r-for-life-scientists)
 * Code used in course:
-    * Part I: [Introduction to R](01-intro-r/)
-    * Part II: [RNA-seq data analysis](02-deseq-demo/)
+    * Part I: [Introduction to R](r/r-intro/)
+    * Part II: [RNA-seq data analysis](r-deseq2-demo/)
  -->
 
 ## Before coming

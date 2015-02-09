@@ -2,13 +2,17 @@
 layout: page
 ---
 
-
+```{r, echo=FALSE, message=FALSE, eval=TRUE}
+# Set eval=TRUE to hide all results and figures.
+# This sets defaults. Can change this manually in individual chunks.
+# Must load knitr so opts_chunk is in search path.
+library(knitr)
+opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none", tidy=TRUE)
+```
 
 # Introduction to R
 
-*[back to course contents](..)*
-
-The first part of this workshop will demonstrate very basic functionality in R, including functions, functions, vectors, creating variables, getting help, subsetting, data frames, plotting, and reading/writing files.
+The first part of this workshop will demonstrate very basic functionality in R, including functions, functions, vectors, creating variables, getting help, filtering, data frames, plotting, and reading/writing files.
 
 [Link to slides](https://speakerdeck.com/stephenturner/introduction-to-r-for-life-scientists).
 
@@ -30,25 +34,22 @@ Let's start by learning about RStudio. **R** is the underlying statistical compu
 
 R can be used as a glorified calculator. Try typing this in directly into the console. Make sure you're typing into into the editor, not the console, and save your script. Use the run button, or press `CMD`+`Enter` (`Ctrl`+`Enter` on Windows).
 
-
-```r
-2 + 2
-5 * 4
+```{r}
+2+2
+5*4
 2^3
 ```
 
 R Knows order of operations and scientific notation.
 
-
-```r
-2 + 3 * 4/(5 + 3) * 15/2^2 + 3 * 4^2
-50000
+```{r}
+2+3*4/(5+3)*15/2^2+3*4^2
+5e4
 ```
 
 However, to do useful and interesting things, we need to assign *values* to *objects*. To create objects, we need to give it a name followed by the assignment operator `<-` and the value we want to give it:
 
-
-```r
+```{r}
 weight_kg <- 55
 ```
 
@@ -58,37 +59,32 @@ Objects can be given any name such as `x`, `current_temperature`, or `subject_id
 
 When assigning a value to an object, R does not print anything. You can force to print the value by typing the name:
 
-
-```r
+```{r}
 weight_kg
 ```
 
 Now that R has `weight_kg` in memory, we can do arithmetic with it. For instance, we may want to convert this weight in pounds (weight in pounds is 2.2 times the weight in kg):
 
-
-```r
+```{r}
 2.2 * weight_kg
 ```
 
 We can also change a variable's value by assigning it a new one:
 
-
-```r
+```{r}
 weight_kg <- 57.5
 2.2 * weight_kg
 ```
 
 This means that assigning a value to one variable does not change the values of other variables. For example, let's store the animal's weight in pounds in a variable.
 
-
-```r
+```{r}
 weight_lb <- 2.2 * weight_kg
 ```
 
 and then change `weight_kg` to 100.
 
-
-```r
+```{r}
 weight_kg <- 100
 ```
 
@@ -96,12 +92,11 @@ What do you think is the current content of the object `weight_lb`? 126.5 or 220
 
 You can see what objects (variables) are stored by viewing the Environment tab in Rstudio. You can also use the `ls()` function. You can remove objects (variables) with the `rm()` function. You can do this one at a time or remove several objects at once.
 
-
-```r
+```{r, eval=FALSE}
 ls()
 rm(weight_lb, weight_kg)
 ls()
-weight_lb  # oops! you should get an error because weight_lb no longer exists!
+weight_lb # oops! you should get an error because weight_lb no longer exists!
 ```
 
 ---
@@ -110,12 +105,11 @@ weight_lb  # oops! you should get an error because weight_lb no longer exists!
 
 What are the values after each statement in the following?
 
-
-```r
-mass <- 50  # mass?
-age <- 30  # age?
-mass <- mass * 2  # mass?
-age <- age - 10  # age?
+```{r}
+mass <- 50              # mass?
+age  <- 30              # age?
+mass <- mass * 2        # mass?
+age  <- age - 10        # age?
 mass_index <- mass/age  # massIndex?
 ```
 
@@ -125,10 +119,9 @@ mass_index <- mass/age  # massIndex?
 
 R has built-in functions.
 
-
-```r
-# Notice that this is a comment.  Anything behind a # is 'commented out' and
-# is not run.
+```{r}
+# Notice that this is a comment.
+# Anything behind a # is "commented out" and is not run.
 sqrt(144)
 log(1000)
 ```
@@ -142,12 +135,11 @@ help(log)
 
 Note syntax highlighting when typing this into the editor. Also note how we pass *arguments* to functions. The `base=` part inside the parentheses is called an argument, and most functions use arguments. Arguments modify the behavior of the function. Functions some input (e.g., some data, an object) and other options to change what the function will return, or how to treat the data provided. Finally, see how you can *next* one function inside of another (here taking the square root of the log-base-10 of 1000).
 
-
-```r
+```{r}
 log(1000)
-log(1000, base = 10)
+log(1000, base=10)
 log(1000, 10)
-sqrt(log(1000, base = 10))
+sqrt(log(1000, base=10))
 ```
 
 ---
@@ -162,8 +154,7 @@ See `?abs` and calculate the square root of the log-base-10 of the absolute valu
 
 Let's create some numeric vectors. Vectors (aka "arrays" in Perl, "lists" in Python) are single *objects* containing an ordered collection of *elements*. A simple vector is a numeric vector, a single *object* containing several numbers. Here let's display a few vectors. We can also do vector arithmetic. When printing vectors to the screen that have lots of elements, notice that the bracketed number in the gutter of the output is just a counter indexing the number of elements in the vector.
 
-
-```r
+```{r, eval=FALSE}
 # Some simple numeric vectors:
 1:5
 6:10
@@ -173,53 +164,46 @@ Let's create some numeric vectors. Vectors (aka "arrays" in Perl, "lists" in Pyt
 
 We can also create arbitrary vectors with the `c()` function (short for "combine").
 
-
-```r
-c(1, 2, 5)
+```{r}
+c(1,2,5)
 c(1:5, 11:15)
 ```
 
 What if we wanted to create a vector from 2 to 10 by 2's? What about 2 to 200 by 4's? This might be useful for setting up an experiment where every other sample is an experimental group and every other is a control.
 
+```{r, eval=FALSE}
+c(2,4,6,8,10)
 
-```r
-c(2, 4, 6, 8, 10)
-
-# Get some help with the seq() function, then create a vector from 2 to 200
-# by 2s.  Notice how the seq() function works -- the `to` argument will
-# never be exceeded.
+# Get some help with the seq() function, then create a vector from 2 to 200 by 2s.
+# Notice how the seq() function works -- the `to` argument will never be exceeded.
 help(seq)
-seq(from = 2, to = 200, by = 4)
+seq(from=2, to=200, by=4)
 ```
 
 You can assign this vector of values to an object, just like you would for one item. For example we can create a vector of animal weights:
 
-
-```r
+```{r}
 weights <- c(50, 60, 65)
 weights
 ```
 
 A vector can also contain characters:
 
-
-```r
+```{r}
 animals <- c("mouse", "rat", "dog")
 animals
 ```
 
 There are many functions that allow you to inspect the content of a vector. `length()` tells you how many elements are in a particular vector:
 
-
-```r
+```{r}
 length(weights)
 length(animals)
 ```
 
 `class()` indicates the class (the type of element) of an object:
 
-
-```r
+```{r}
 class(weights)
 class(animals)
 ```
@@ -236,19 +220,17 @@ class(animals)
 
 The function `str()` provides an overview of the structure of an object and the elements it contains. It is a really useful function when working with large and complex objects:
 
-
-```r
+```{r}
 str(weights)
 str(animals)
 ```
 
 You can add elements to your vector simply by using the `c()` function:
 
-
-```r
+```{r}
 weights
-weights <- c(weights, 90)  # adding at the end
-weights <- c(30, weights)  # adding at the beginning
+weights <- c(weights, 90) # adding at the end
+weights <- c(30, weights) # adding at the beginning
 weights
 ```
 
@@ -256,8 +238,7 @@ What happens here is that we take the original vector `weights`, and we are addi
 
 Certain *functions* operate only on certain *classes* of object. Here, `weights` is a `numeric` vector. The built-in `sum()` function will operate on numeric objects, but not characters.
 
-
-```r
+```{r, eval=FALSE}
 sum(weights)
 sum(animals)
 ```
@@ -276,8 +257,7 @@ Let's create a vector of 50 integers going from 101 to 150. We can access certai
 
 *Special note: R indexes vectors starting at 1. This is different from many other languages, including Perl and Python, which index starting from zero.*
 
-
-```r
+```{r}
 # Create the vector.
 x <- 101:150
 
@@ -290,24 +270,32 @@ x[42]
 # Get the 20th through the 25th elements.
 x[20:25]
 
-# If you try to access elements that don't exist, you'll return missing
-# values.  Missing values are represented as NA
-x[45:55]  #NA is missing value!
+# If you try to access elements that don't exist, you'll return missing values.
+# Missing values are represented as NA
+x[45:55] #NA is missing value!
 ```
 
 ## Data Frames
 
 We use **data frames** to store heterogeneous tabular data in R: tabular, meaning that individuals or observations are typically represented in rows, while variables or features are represented as columns; heterogeneous, meaning that columns/features/variables can be different classes (on variable, e.g. age, can be numeric, while another, e.g., cause of death, can be text).
 
-Later on we'll read in data from a text file into a data frame object using one of the functions `read.table()` for text files or `read.csv()` for comma-separated tables. But for now, let's use a built-in data frame called `mtcars`. This data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models). We can load this built-in data with `data(mtcars)`. By the way, running `data()` without any arguments will list all the available built-in datasets included with R.
+Before coming, you should have downloaded the gapminder data. fixme where to download it now. This is an excerpt from the [Gapminder](http://www.gapminder.org/) data, that's [already been cleaned up to a degree](https://github.com/jennybc/gapminder). This particular dataset has 1704 observations on six variables:
 
-Let's load the data first. Type the name of the object itself (`mtcars`) to view the entire data frame. *Note: doing this with large data frames can cause you trouble.*
+* `country` a categorical variable (aka "factor") 142 levels
+* `continent`, a categorical variable with 5 levels
+* `year`: going from 1952 to 2007 in increments of 5 years
+* `pop`: population
+* `gdpPercap`: GDP per capita
+* `lifeExp`: life expectancy
 
+Let's load the data first. There are two ways to do this. You can use RStudio's menus to select a file from your computer (tools, import dataset, from text file). But that's not reproducible. The best way to do this is to save the data and the script you're using to the same place, and read in the data that way. 
 
-```r
-data(mtcars)
-class(mtcars)
-mtcars
+Once we've loaded it we can type the name of the object itself (`gm`) to view the entire data frame. *Note: doing this with large data frames can cause you trouble.*
+
+```{r}
+gm <- read.csv("data/gapminder.csv")
+class(gm)
+gm
 ```
 
 ### Inspecting data.frame objects
@@ -323,103 +311,136 @@ There are several built-in functions that are useful for working with data frame
     * `ncol()`: returns the number of columns
 * Summary:
     * `colnames()` (or just `names()`): returns the column names
-    * `rownames()`: returns the row names
     * `str()`: structure of the object and information about the class, length and content of each column
     * `summary()`: works differently depending on what kind of object you pass to it. Passing a data frame to the `summary()` function prints out some summary statistics about each column (min, max, median, mean, etc.)
+    
+```{r data_frame_functions}
+head(gm)
+tail(gm)
+dim(gm)
+nrow(gm)
+ncol(gm)
+colnames(gm)
+str(gm)
+summary(gm)
+```
 
-
-```r
-head(mtcars)
-tail(mtcars)
-dim(mtcars)
-nrow(mtcars)
-ncol(mtcars)
-colnames(mtcars)
-rownames(mtcars)
-str(mtcars)
-summary(mtcars)
+```{r View, eval=FALSE}
+View(gm)
 ```
 
 ### Accessing variables & subsetting data frames
 
-We can access individual variables within a data frame using the `$` operator, e.g., `mydataframe$specificVariable`. Let's print out the number of cylinders for every car, and calculate the average miles per gallon for ever car in the dataset (using the built-in `mean()` function).
+We can access individual variables within a data frame using the `$` operator, e.g., `mydataframe$specificVariable`. Let's print out the populations for every country. Then let's calculate the average life expectancy for every country for every year (using the built-in `mean()` function).
 
+```{r}
+# display all populations
+gm$pop
 
-```r
-# display the number of cylinders for each car.
-mtcars$cyl
-# first display MPG for all vehicles, then calculate the average.
-mtcars$mpg
-mean(mtcars$mpg)
+# we could have also taken a head of the population:
+head(gm$pop)
+
+#mean life expectancy
+mean(gm$lifeExp)
 ```
 
-We can also use the `subset()` function to return a subset of the data frame that meets a specific condition. 
+Now that's not too interesting. This is the average life expectancy across all countries across all years. We might be interested in something like the  life expectancy for a particular country, and how that changes over time. Or maybe the average life expectancy across all countries, separately for each year. Or maybe the average life expectancy for different continents. So the natural next step here is to filter the data according to some criterion (that is, we'll limit the _rows_ that are returned by restricting the value of some variable stored in a _column_). 
 
-1. The first argument is the data frame you want to subset, e.g. `subset(mtcars...`.
-2. The second argument is a condition you must satisfy, e.g. `subset(mtcars, cyl==6)`. If you want to satisfy *all* of multiple conditions, you can use the "and" operator, `&`. The "or" operator `|` (the pipe character, usually shift-backslash) will return a subset that meet *any* of the conditions.
+There's a built-in function called `subset()` that does this but we're going to use a function called `filter()` that's part of a package called **dplyr**, because we're going to use other stuff from the **dplyr** package in a more advanced class to do some advanced data manipulation and analysis. The `filter()` function takes two arguments.
+
+1. The first argument is the data frame you want to filter, e.g. `filter(gm...`.
+2. The second argument is a condition you must satisfy, e.g. `filter(gm, year==1982)`. If you want to satisfy *all* of multiple conditions, you can use the "and" operator, `&`. The "or" operator `|` (the pipe character, usually shift-backslash) will return a subset that meet *any* of the conditions.
     * `==`: Equal to
     * `!=`: Not equal to
     * `>`, `>=`: Greater than, greater than or equal to
     * `<`, `<=`: Less than, less than or equal to
 
-Try it out:
+Let's try it out. But first we have to load the package that has the function we want. It's called **dplyr**. You should have already installed it.
 
+```{r}
+# Load the dplyr package
+library(dplyr)
 
-```r
-# Return only cars with 6 cylinder engines.
-subset(mtcars, cyl == 6)
-# Return only cars having more than 6 cylinders **and** an engine
-# displacement volume less than 300cc.
-subset(mtcars, cyl > 6 & disp < 300)
-# Return only the cars that get at least 20 miles per gallon or have a
-# displacement volume of less than 100cc.
-subset(mtcars, mpg >= 20 | disp < 100)
+# Show only stats for the year 1982
+filter(gm, year==1982)
+
+# Show only stats for the US
+filter(gm, country=="United States")
+
+# Show only stats for American contries in 1997
+filter(gm, continent=="Americas" & year==1997)
+
+# Show only stats for countries with per-capita GDP of less than 300 OR a life expectancy of less than 30. What happened those years? 
+filter(gm, gdpPercap<300 | lifeExp<30)
 ```
 
-Finally, take a look at the class of what's returned by a `subset()` function. The `subset()` function takes a data.frame and returns a data.frame. You can operate on this new data.frame just as you would any other data.frame using the `$` operator. E.g., print the MPG for all the 6 cylinder vehicles:
+Finally, take a look at the class of what's returned by a `filter()` function. The `filter()` function takes a data.frame and returns a data.frame. You can operate on this new data.frame just as you would any other data.frame using the `$` operator. E.g., print out the GDP for the two oceanic countries in 2002, and take the mean of that.
 
-
-```r
-subset(mtcars, cyl == 6)$mpg
+```{r}
+filter(gm, continent=="Oceania" & year==2002)
+filter(gm, continent=="Oceania" & year==2002)$gdpPercap
+mean(filter(gm, continent=="Oceania" & year==2002)$gdpPercap)
 ```
 
 ---
 
 **EXERCISE**
 
-1. Print out the part of the mtcars dataset only for cars that have greater than or equal to 6 cylinders *and* get at least 15 miles per gallon.
-2. What's the mean engine displacement of these vehicles?
+1. What country and what years had a low GDP (<500) but high life expectancy (>50)?
+2. What's the average GDP for Asian countries in 2002? How does that compare to European countries in the same year? To the Americas?
 
+```{r, echo=FALSE}
+filter(gm, gdpPercap<500 & lifeExp>50)
+mean(filter(gm, year==2002 & continent=="Asia")$gdpPercap)
+mean(filter(gm, year==2002 & continent=="Europe")$gdpPercap)
+mean(filter(gm, year==2002 & continent=="Americas")$gdpPercap)
+```
 
+---
+
+---
+
+**BONUS: Preview to advanced class**
+
+What if we wanted to compute the mean population size and mean GDP for each country for each year? We have 12 different years, times 5 continents is 60, times 2 calculations (mean GDP and population), gives us 120 operations total. In the advanced class I'll show you how to do this in a single line.
+
+```{r advanced, echo=FALSE, eval=FALSE}
+gm %>% group_by(continent,year) %>% summarize(mean(pop), mean(gdpPercap)) %>% View
+```
 
 ---
 
 ### with()
 
-The `with()` function is particularly helpful. Let's say you wanted to compute some (senseless) value by computing the MPG times the number of cylinders divided by the car's displacement. You could access the dataset's variables using the `$` notation, or you could use `with()` to temporarily *attach* the data frame, and call the variables directly, as if they were just vectors hanging out in your workspace. The first argument to `with()` is the name of the data frame, and the second argument is all the stuff you'd like to do with the particular features in that data frame.
+The `with()` function is particularly helpful. Let's say you wanted to compute some (senseless) value by computing the population size divided by the life expectancy. You could access the dataset's variables using the `$` notation, or you could use `with()` to temporarily *attach* the data frame, and call the variables directly, as if they were just vectors hanging out in your workspace. The first argument to `with()` is the name of the data frame, and the second argument is all the stuff you'd like to do with the particular features in that data frame.
 
 Try typing the following commands:
 
-
-```r
+```{r}
 # Display the number of cylinders.
-mtcars$cyl
-with(mtcars, cyl)
+gm$pop
+with(gm, pop)
 
 # Compute the senseless value described above. Both return the same results.
-mtcars$mpg * mtcars$cyl/mtcars$disp
-with(mtcars, mpg * cyl/disp)
+gm$pop/gm$lifeExp
+with(gm, pop/lifeExp)
 ```
 
 ---
 
 **EXERCISE**
 
-Using the `with()` and `subset()` functions, compute the average value of the ratio of the engine displacement (`disp`) divided by the engine's horsepower (`hp`) for all the 8-cylinder vehicles.
+Using the `with()` and `filter()` functions: 
 
+1. Compute the average GDP in billions for all Asian countries in 2007. 
+2. Do the same for Europe in 2007.
+3. Do the same for Asia and europe for 1977.
 
-```
-## [1] "Answer: 1.754801425962"
+_Hint:_ GDP per capita is the GDP divided by the population size. So to get GDP, you'd multiple `gdpPercap*pop`. To get that in billions, divide by 1,000,000, or more easily expressed in R using scientific notation: `1e9`.
+
+```{r, echo=FALSE, results='hide'}
+with(filter(gm, continent=="Asia", year==2007), mean(gdpPercap*pop/1e9))
+with(filter(gm, continent=="Europe", year==2007), mean(gdpPercap*pop/1e9))
 ```
 
 ---
@@ -428,37 +449,36 @@ Using the `with()` and `subset()` functions, compute the average value of the ra
 
 Plotting a single numeric variable goes down the rows and plots a value on the y-axis for each observation (index) in the data frame.
 
-
-```r
-plot(mtcars$mpg)
+```{r}
+plot(gm$lifeExp)
 ```
 
-This isn't a very useful figure. More appropriate might be a histogram. We can try to let R decide how many breaks to insert in the histogram, or we can set that manually. We can also set the color of the bars.
+This isn't a very useful figure. But you can start to see something in this data. Look at the diagonal pattern that pops up? Why is this?
 
+More appropriate might be a histogram. We can try to let R decide how many breaks to insert in the histogram, or we can set that manually. We can also set the color of the bars.
 
-```r
-hist(mtcars$mpg)
-hist(mtcars$mpg, breaks = 10)
-hist(mtcars$mpg, breaks = 10, col = "black")
+```{r}
+hist(gm$lifeExp)
+hist(gm$lifeExp, breaks=100)
+hist(gm$lifeExp, breaks=100, col="black")
 ```
+
+But keep in mind, this is over all the years in the dataset. It might make more sense to look at the distribution of life expectancies and how those distributions change from year to year. I'll teach an advanced visualization class later on where we'll show how to do that. But at least this lets you look at the integrity of your data. If you saw a bump in the distribution at a negative value or at 150 years, you'd know you have a problem.
 
 We can create a scatterplot between two variables with `plot(varX, varY)`.
 
-
-```r
-# This would also work, but let's use with().  plot(mtcars$disp, mtcars$mpg)
-with(mtcars, plot(disp, mpg))
+```{r}
+with(gm, plot(gdpPercap, lifeExp))
 ```
 
 There are hundreds of plotting parameters you can use to make your plot look exactly like you want. Let's use a solid-filled point instead of an open circle with the `pch=` argument (point character), color the points red with the `col=` argument, give it a title by passing a character object to the `main=` argument, and change the x and y axis titles with the `xlab=` and `ylab=` arguments, respectively. Let's go through this one step at a time.
 
-
-```r
-with(mtcars, plot(disp, mpg, pch = 16))
-with(mtcars, plot(disp, mpg, pch = 16, col = "red"))
-with(mtcars, plot(disp, mpg, pch = 16, col = "red", main = "MPG vs Displacement"))
-with(mtcars, plot(disp, mpg, pch = 16, col = "red", main = "MPG vs Displacement", 
-    ylab = "Fuel Economy (MPG)", xlab = "Displacement (cu. in.)"))
+```{r}
+with(gm, plot(gdpPercap, lifeExp, pch=16))
+with(gm, plot(gdpPercap, lifeExp, pch=16, col="red"))
+with(gm, plot(gdpPercap, lifeExp, pch=16, col="red", main="Life Exp vs GDP"))
+with(gm, plot(gdpPercap, lifeExp, pch=16, col="red", main="Life Exp vs GDP", 
+              ylab="Life Expectancy (years)", xlab="Per-capita GDP ($)"))
 ```
 
 Notice how on that last line I broke the command up into two lines for better readability. I broke the command at the comma separating arguments, and indented the following line for readability.
@@ -473,63 +493,57 @@ With plotting parameters, **Google is your friend.**
 
 **EXERCISE**
 
-Plot horsepower (y-axis) vs displacement (x-axis) for vehicles with more than 4 cylinders. Give the graph a title and label the axes. Make the points solid (hint, `pch=16`) blue (hint, `col="blue"`) circles.
+Plot GDP in trillions (`gdpPercap*pop/1e9`) on the y-axis versus population size in millions on the x-axis for all countries in the Americas. Use solid (`pch=16`) "blue" points, and give the plot a title and legends.
 
+```{r, echo=FALSE}
+with(filter(gm, continent=="Americas"), plot(pop/1e6, gdpPercap*pop/1e12,
+                                             pch=16, col="blue",
+                                             main="GDP vs population size",
+                                             ylab="GDP ($bil)",
+                                             xlab="Population size"))
+```
 
-
+```{r bonus_viz, echo=FALSE, eval=FALSE}
+library(ggplot2)
+load("data/country_colors.rd")
+# same as above, but separate line for each country
+ggplot(filter(gm, continent=="Americas"), aes(pop, gdpPercap*pop, colour=country)) + geom_line(lwd=1)
+# violin plots of life expectancy by year
+ggplot(gm, aes(factor(year), lifeExp)) + geom_violin()
+# life exp vs gdppercap, faceting by year
+ggplot(gm, aes(gdpPercap, lifeExp)) + geom_point() + facet_wrap(~year)
+# From github.com/jennybc/gapminder, thanks Jenny!
+# life expectancy increases yearly coloring by country faceting by continent
+ggplot(subset(gm, continent != "Oceania"),
+  aes(x = year, y = lifeExp, group = country, color = country)) +
+  geom_line(lwd = 1, show_guide = FALSE) + facet_wrap(~ continent) +
+  scale_color_manual(values = country_colors) +
+  theme_bw() + theme(strip.text = element_text(size = rel(1.1)))
+```
 ---
 
 ## Reading in / writing out data
 
-First, lets create a small dataset consisting of only 8 cylinder cars.
+First, lets create a small dataset that only has the data for 1997 in it.
 
-
-```r
-mtcars_8cyl <- subset(mtcars, cyl == 8)
-mtcars_8cyl
+```{r}
+gm97 <- filter(gm, year==1997)
 ```
 
 Next, check what your working directory is with `getwd()` with no arguments, and look up some help for `write.table()` and `write.csv()`.
 
-
-```r
+```{r, eval=FALSE}
 getwd()
 help(write.table)
 help(write.csv)
 ```
 
-Using RStudio, go to the Session menu, and select the directory (folder) you want to work from under the "Set Working Directory" menu. You can also do this manually with the `setwd()` command.
+Using RStudio, go to the Session menu, and select the directory (folder) you want to work from under the "Set Working Directory" menu. You can also do this manually with the `setwd()` command, but you should really be working in the same directory as wherever you have your script and data stored.
 
+Now you can save the new reduced data frame to a comma-separated file called `gm97.csv` using the `write.csv()` function.
 
-```r
-getwd()
-setwd("~/Desktop/R")
+```{r, eval=FALSE}
+write.csv(gm97, file="data/gm97.csv")
 ```
 
-Once you've set your working directory either using RStudio or on the command line, save the new reduced data frame to a comma-separated file called `cars8.csv` using the `write.csv()` function.
-
-
-```r
-write.csv(mtcars_8cyl, file = "cars8.csv")
-```
-
-Data can be loaded using the Tools -- Import Dataset -- From text file menu in R studio. Or you can also load a dataset manually using `read.table()` or `read.csv()`. First, read the help on these functions:
-
-
-```r
-help(read.table)
-help(read.csv)
-```
-
-Here let's remove the dataset, and re-import it into an object called cars8 from the file we just saved.
-
-
-```r
-rm(mtcars_8cyl)
-mtcars_8cyl
-cars8 <- read.table(file = "cars8.csv", header = TRUE, sep = ",", row.names = 1)
-cars8
-rm(cars8)
-cars8 <- read.csv(file = "cars8.csv", header = TRUE, row.names = 1)
-cars8
-```
+Later on you can load this particular dataset again either using the menus (Tools -- Import Dataset) or using `read.csv()`.

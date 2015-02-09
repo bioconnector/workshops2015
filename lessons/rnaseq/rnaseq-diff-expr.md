@@ -6,8 +6,6 @@ layout: page
 
 # RNA-seq: differential gene expression analysis
 
-*[back to course contents](..)*
-
 This is an introduction to RNAseq analysis involving reading in count data from an RNAseq experiment, exploring the data using base R functions and then analysis with the DESeq2 package.
 
 ## Install and load packages
@@ -408,34 +406,44 @@ sessionInfo()
 ```
 
 ```
-## R version 3.1.0 (2014-04-10)
-## Platform: x86_64-apple-darwin13.1.0 (64-bit)
+## R version 3.1.2 (2014-10-31)
+## Platform: x86_64-apple-darwin13.4.0 (64-bit)
 ## 
 ## locale:
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
-## [1] parallel  methods   stats     graphics  grDevices utils     datasets 
-## [8] base     
+## [1] parallel  stats4    methods   stats     graphics  grDevices utils    
+## [8] datasets  base     
 ## 
 ## other attached packages:
-##  [1] calibrate_1.7.2         MASS_7.3-33            
-##  [3] gplots_2.14.1           DESeq2_1.4.5           
-##  [5] RcppArmadillo_0.4.320.0 Rcpp_0.11.2            
-##  [7] GenomicRanges_1.16.3    GenomeInfoDb_1.0.2     
-##  [9] IRanges_1.22.9          BiocGenerics_0.10.0    
-## [11] knitr_1.6               BiocInstaller_1.14.2   
+##  [1] calibrate_1.7.2           MASS_7.3-37              
+##  [3] gplots_2.16.0             DESeq2_1.6.3             
+##  [5] RcppArmadillo_0.4.600.4.0 Rcpp_0.11.4              
+##  [7] GenomicRanges_1.18.4      GenomeInfoDb_1.2.4       
+##  [9] IRanges_2.0.1             S4Vectors_0.4.0          
+## [11] BiocGenerics_0.12.1       knitr_1.9                
+## [13] BiocInstaller_1.16.1     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] annotate_1.42.1      AnnotationDbi_1.26.0 Biobase_2.24.0      
-##  [4] bitops_1.0-6         caTools_1.17         DBI_0.3.1           
-##  [7] evaluate_0.5.5       formatR_0.10         gdata_2.13.3        
-## [10] genefilter_1.46.1    geneplotter_1.42.0   grid_3.1.0          
-## [13] gtools_3.4.1         KernSmooth_2.23-12   lattice_0.20-29     
-## [16] locfit_1.5-9.1       RColorBrewer_1.0-5   RSQLite_0.11.4      
-## [19] splines_3.1.0        stats4_3.1.0         stringr_0.6.2       
-## [22] survival_2.37-7      tools_3.1.0          XML_3.98-1.1        
-## [25] xtable_1.7-3         XVector_0.4.0
+##  [1] acepack_1.3-3.3      annotate_1.44.0      AnnotationDbi_1.28.1
+##  [4] base64enc_0.1-2      BatchJobs_1.5        BBmisc_1.8          
+##  [7] Biobase_2.26.0       BiocParallel_1.0.2   bitops_1.0-6        
+## [10] brew_1.0-6           caTools_1.17.1       checkmate_1.5.1     
+## [13] cluster_2.0.1        codetools_0.2-10     colorspace_1.2-4    
+## [16] DBI_0.3.1            digest_0.6.8         evaluate_0.5.5      
+## [19] fail_1.2             foreach_1.4.2        foreign_0.8-62      
+## [22] formatR_1.0          Formula_1.2-0        gdata_2.13.3        
+## [25] genefilter_1.48.1    geneplotter_1.44.0   ggplot2_1.0.0       
+## [28] grid_3.1.2           gtable_0.1.2         gtools_3.4.1        
+## [31] Hmisc_3.14-6         iterators_1.0.7      KernSmooth_2.23-13  
+## [34] labeling_0.3         lattice_0.20-29      latticeExtra_0.6-26 
+## [37] locfit_1.5-9.1       munsell_0.4.2        nnet_7.3-8          
+## [40] plyr_1.8.1           proto_0.3-10         RColorBrewer_1.1-2  
+## [43] reshape2_1.4.1       rpart_4.1-8          RSQLite_1.0.0       
+## [46] scales_0.2.4         sendmailR_1.2-1      splines_3.1.2       
+## [49] stringr_0.6.2        survival_2.37-7      tools_3.1.2         
+## [52] XML_3.98-1.1         xtable_1.7-4         XVector_0.6.0
 ```
 
 

@@ -4,8 +4,6 @@ layout: page
 
 # RNA-seq: reads to counts
 
-*[back to course contents](..)*
-
 In this section of the workshop we will start with raw RNA-seq reads and do everything that we need to do to get a *count matrix* - a table or "spreadsheet" in a single file containing the the number of reads mapping to each gene for each sample. This count matrix is the input into R for differential gene expression analysis. A count matrix is a table in a single file with a row for every gene and a column for every sample. Cell<sub>i,j</sub> will contain the number of genes mapping to the <em>i</em>th gene for the <em>j</em>th sample. For example, in the table below, 865 reads mapped to GeneB for sample ctl2.
 
 |       | ctl1 | ctl2 | ctl3 | uvb1 | uvb2 | uvb3 |
