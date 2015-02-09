@@ -34,7 +34,7 @@ Let's start by learning about RStudio. **R** is the underlying statistical compu
 
 R can be used as a glorified calculator. Try typing this in directly into the console. Make sure you're typing into into the editor, not the console, and save your script. Use the run button, or press `CMD`+`Enter` (`Ctrl`+`Enter` on Windows).
 
-```{r}
+```{r calculator}
 2+2
 5*4
 2^3
@@ -42,14 +42,14 @@ R can be used as a glorified calculator. Try typing this in directly into the co
 
 R Knows order of operations and scientific notation.
 
-```{r}
+```{r calculator2}
 2+3*4/(5+3)*15/2^2+3*4^2
 5e4
 ```
 
 However, to do useful and interesting things, we need to assign *values* to *objects*. To create objects, we need to give it a name followed by the assignment operator `<-` and the value we want to give it:
 
-```{r}
+```{r assignment}
 weight_kg <- 55
 ```
 
@@ -59,32 +59,32 @@ Objects can be given any name such as `x`, `current_temperature`, or `subject_id
 
 When assigning a value to an object, R does not print anything. You can force to print the value by typing the name:
 
-```{r}
+```{r printAssignment}
 weight_kg
 ```
 
 Now that R has `weight_kg` in memory, we can do arithmetic with it. For instance, we may want to convert this weight in pounds (weight in pounds is 2.2 times the weight in kg):
 
-```{r}
+```{r modAssignment}
 2.2 * weight_kg
 ```
 
 We can also change a variable's value by assigning it a new one:
 
-```{r}
+```{r newAssignment}
 weight_kg <- 57.5
 2.2 * weight_kg
 ```
 
 This means that assigning a value to one variable does not change the values of other variables. For example, let's store the animal's weight in pounds in a variable.
 
-```{r}
+```{r calculationWithVar}
 weight_lb <- 2.2 * weight_kg
 ```
 
 and then change `weight_kg` to 100.
 
-```{r}
+```{r modAssignment2}
 weight_kg <- 100
 ```
 
@@ -92,7 +92,7 @@ What do you think is the current content of the object `weight_lb`? 126.5 or 220
 
 You can see what objects (variables) are stored by viewing the Environment tab in Rstudio. You can also use the `ls()` function. You can remove objects (variables) with the `rm()` function. You can do this one at a time or remove several objects at once.
 
-```{r, eval=FALSE}
+```{r rm, eval=FALSE}
 ls()
 rm(weight_lb, weight_kg)
 ls()
@@ -105,7 +105,7 @@ weight_lb # oops! you should get an error because weight_lb no longer exists!
 
 What are the values after each statement in the following?
 
-```{r}
+```{r ex1}
 mass <- 50              # mass?
 age  <- 30              # age?
 mass <- mass * 2        # mass?
@@ -119,7 +119,7 @@ mass_index <- mass/age  # massIndex?
 
 R has built-in functions.
 
-```{r}
+```{r fns}
 # Notice that this is a comment.
 # Anything behind a # is "commented out" and is not run.
 sqrt(144)
@@ -135,7 +135,7 @@ help(log)
 
 Note syntax highlighting when typing this into the editor. Also note how we pass *arguments* to functions. The `base=` part inside the parentheses is called an argument, and most functions use arguments. Arguments modify the behavior of the function. Functions some input (e.g., some data, an object) and other options to change what the function will return, or how to treat the data provided. Finally, see how you can *next* one function inside of another (here taking the square root of the log-base-10 of 1000).
 
-```{r}
+```{r log}
 log(1000)
 log(1000, base=10)
 log(1000, 10)
@@ -154,7 +154,7 @@ See `?abs` and calculate the square root of the log-base-10 of the absolute valu
 
 Let's create some numeric vectors. Vectors (aka "arrays" in Perl, "lists" in Python) are single *objects* containing an ordered collection of *elements*. A simple vector is a numeric vector, a single *object* containing several numbers. Here let's display a few vectors. We can also do vector arithmetic. When printing vectors to the screen that have lots of elements, notice that the bracketed number in the gutter of the output is just a counter indexing the number of elements in the vector.
 
-```{r, eval=FALSE}
+```{r vectors, eval=FALSE}
 # Some simple numeric vectors:
 1:5
 6:10
@@ -164,14 +164,14 @@ Let's create some numeric vectors. Vectors (aka "arrays" in Perl, "lists" in Pyt
 
 We can also create arbitrary vectors with the `c()` function (short for "combine").
 
-```{r}
+```{r combine}
 c(1,2,5)
 c(1:5, 11:15)
 ```
 
 What if we wanted to create a vector from 2 to 10 by 2's? What about 2 to 200 by 4's? This might be useful for setting up an experiment where every other sample is an experimental group and every other is a control.
 
-```{r, eval=FALSE}
+```{r seq, eval=FALSE}
 c(2,4,6,8,10)
 
 # Get some help with the seq() function, then create a vector from 2 to 200 by 2s.
@@ -182,28 +182,28 @@ seq(from=2, to=200, by=4)
 
 You can assign this vector of values to an object, just like you would for one item. For example we can create a vector of animal weights:
 
-```{r}
+```{r cToObject}
 weights <- c(50, 60, 65)
 weights
 ```
 
 A vector can also contain characters:
 
-```{r}
+```{r charVec}
 animals <- c("mouse", "rat", "dog")
 animals
 ```
 
 There are many functions that allow you to inspect the content of a vector. `length()` tells you how many elements are in a particular vector:
 
-```{r}
+```{r length}
 length(weights)
 length(animals)
 ```
 
 `class()` indicates the class (the type of element) of an object:
 
-```{r}
+```{r class}
 class(weights)
 class(animals)
 ```
@@ -220,14 +220,14 @@ class(animals)
 
 The function `str()` provides an overview of the structure of an object and the elements it contains. It is a really useful function when working with large and complex objects:
 
-```{r}
+```{r str}
 str(weights)
 str(animals)
 ```
 
 You can add elements to your vector simply by using the `c()` function:
 
-```{r}
+```{r append}
 weights
 weights <- c(weights, 90) # adding at the end
 weights <- c(30, weights) # adding at the beginning
@@ -238,7 +238,7 @@ What happens here is that we take the original vector `weights`, and we are addi
 
 Certain *functions* operate only on certain *classes* of object. Here, `weights` is a `numeric` vector. The built-in `sum()` function will operate on numeric objects, but not characters.
 
-```{r, eval=FALSE}
+```{r sum, eval=FALSE}
 sum(weights)
 sum(animals)
 ```
@@ -257,7 +257,7 @@ Let's create a vector of 50 integers going from 101 to 150. We can access certai
 
 *Special note: R indexes vectors starting at 1. This is different from many other languages, including Perl and Python, which index starting from zero.*
 
-```{r}
+```{r slicing}
 # Create the vector.
 x <- 101:150
 
@@ -279,7 +279,7 @@ x[45:55] #NA is missing value!
 
 We use **data frames** to store heterogeneous tabular data in R: tabular, meaning that individuals or observations are typically represented in rows, while variables or features are represented as columns; heterogeneous, meaning that columns/features/variables can be different classes (on variable, e.g. age, can be numeric, while another, e.g., cause of death, can be text).
 
-Before coming, you should have downloaded the gapminder data. fixme where to download it now. This is an excerpt from the [Gapminder](http://www.gapminder.org/) data, that's [already been cleaned up to a degree](https://github.com/jennybc/gapminder). This particular dataset has 1704 observations on six variables:
+Before coming, you should have downloaded the gapminder data. If you [downloaded this entire lesson repository](https://github.com/bioconnector/workshops/archive/master.zip), once you extract it you'll find it in `workshops/lessons/r/data/gapminder.csv`. Alternatively you can download it directly from <http://bioconnector.org/data/>. This dataset is an excerpt from the [Gapminder](http://www.gapminder.org/) data, that's [already been cleaned up to a degree](https://github.com/jennybc/gapminder). This particular dataset has 1704 observations on six variables:
 
 * `country` a categorical variable (aka "factor") 142 levels
 * `continent`, a categorical variable with 5 levels
@@ -288,12 +288,16 @@ Before coming, you should have downloaded the gapminder data. fixme where to dow
 * `gdpPercap`: GDP per capita
 * `lifeExp`: life expectancy
 
-Let's load the data first. There are two ways to do this. You can use RStudio's menus to select a file from your computer (tools, import dataset, from text file). But that's not reproducible. The best way to do this is to save the data and the script you're using to the same place, and read in the data that way. 
+Let's load the data first. There are two ways to do this. You can use RStudio's menus to select a file from your computer (tools, import dataset, from text file). But that's not reproducible. The best way to do this is to save the data and the script you're using to the same place, and read in the data in using `read.csv`. It's important to tell R that the file has a header, which tells R the names of the columns. We tell this to R with the `header=TRUE` argument. 
 
 Once we've loaded it we can type the name of the object itself (`gm`) to view the entire data frame. *Note: doing this with large data frames can cause you trouble.*
 
-```{r}
-gm <- read.csv("data/gapminder.csv")
+```{r readGapminder}
+gm <- read.csv("data/gapminder.csv", header=TRUE)
+
+# Alternatively, read directly from the web:
+# gm <- read.csv(url("http://bioconnector.org/data/gapminder.csv"), header=TRUE)
+
 class(gm)
 gm
 ```

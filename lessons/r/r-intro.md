@@ -297,7 +297,7 @@ x[45:55]  #NA is missing value!
 
 We use **data frames** to store heterogeneous tabular data in R: tabular, meaning that individuals or observations are typically represented in rows, while variables or features are represented as columns; heterogeneous, meaning that columns/features/variables can be different classes (on variable, e.g. age, can be numeric, while another, e.g., cause of death, can be text).
 
-Before coming, you should have downloaded the gapminder data. fixme where to download it now. This is an excerpt from the [Gapminder](http://www.gapminder.org/) data, that's [already been cleaned up to a degree](https://github.com/jennybc/gapminder). This particular dataset has 1704 observations on six variables:
+Before coming, you should have downloaded the gapminder data. If you [downloaded this entire lesson repository](https://github.com/bioconnector/workshops/archive/master.zip), once you extract it you'll find it in `workshops/lessons/r/data/gapminder.csv`. Alternatively you can download it directly from <http://bioconnector.org/data/>. This dataset is an excerpt from the [Gapminder](http://www.gapminder.org/) data, that's [already been cleaned up to a degree](https://github.com/jennybc/gapminder). This particular dataset has 1704 observations on six variables:
 
 * `country` a categorical variable (aka "factor") 142 levels
 * `continent`, a categorical variable with 5 levels
@@ -306,13 +306,17 @@ Before coming, you should have downloaded the gapminder data. fixme where to dow
 * `gdpPercap`: GDP per capita
 * `lifeExp`: life expectancy
 
-Let's load the data first. There are two ways to do this. You can use RStudio's menus to select a file from your computer (tools, import dataset, from text file). But that's not reproducible. The best way to do this is to save the data and the script you're using to the same place, and read in the data that way. 
+Let's load the data first. There are two ways to do this. You can use RStudio's menus to select a file from your computer (tools, import dataset, from text file). But that's not reproducible. The best way to do this is to save the data and the script you're using to the same place, and read in the data in using `read.csv`. It's important to tell R that the file has a header, which tells R the names of the columns. We tell this to R with the `header=TRUE` argument. 
 
 Once we've loaded it we can type the name of the object itself (`gm`) to view the entire data frame. *Note: doing this with large data frames can cause you trouble.*
 
 
 ```r
-gm <- read.csv("data/gapminder.csv")
+gm <- read.csv("data/gapminder.csv", header = TRUE)
+
+# Alternatively, read directly from the web: gm <-
+# read.csv(url('http://bioconnector.org/data/gapminder.csv'), header=TRUE)
+
 class(gm)
 gm
 ```
