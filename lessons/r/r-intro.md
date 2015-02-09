@@ -6,8 +6,6 @@ layout: page
 
 # Introduction to R
 
-*[back to course contents](..)*
-
 The first part of this workshop will demonstrate very basic functionality in R, including functions, functions, vectors, creating variables, getting help, filtering, data frames, plotting, and reading/writing files.
 
 [Link to slides](https://speakerdeck.com/stephenturner/introduction-to-r-for-life-scientists).

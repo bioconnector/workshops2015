@@ -12,8 +12,6 @@ opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none", 
 
 # RNA-seq: differential gene expression analysis
 
-*[back to course contents](..)*
-
 This is an introduction to RNAseq analysis involving reading in count data from an RNAseq experiment, exploring the data using base R functions and then analysis with the DESeq2 package.
 
 ## Install and load packages

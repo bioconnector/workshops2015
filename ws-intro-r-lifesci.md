@@ -24,8 +24,8 @@ _Check back after course_
 <!--
 * [Slides](https://speakerdeck.com/stephenturner/introduction-to-r-for-life-scientists)
 * Code used in course:
-    * Part I: [Introduction to R](01-intro-r/)
-    * Part II: [RNA-seq data analysis](02-deseq-demo/)
+    * Part I: [Introduction to R](r/r-intro/)
+    * Part II: [RNA-seq data analysis](r-deseq2-demo/)
  -->
 
 ## Before coming

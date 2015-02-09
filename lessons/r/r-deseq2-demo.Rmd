@@ -12,8 +12,6 @@ opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none", 
 
 # Demo: Using R and Bioconductor for RNA-seq data analysis
 
-*[back to course contents](..)*
-
 In this demo we'll analyze some publicly available RNA-seq gene expression data using R and bioinformatics-focused R packages in [Bioconductor](http://bioconductor.org/). This demo assumes some familiarity with R (functions, functions, vectors, creating variables, getting help, subsetting, data frames, plotting, and reading/writing files). The starting point for this analysis is a *count matrix* - RNA-seq data has already been cleaned, aligned, and counted to the gene level, and a *metadata file* with information about the samples. The `rownames` of the metadata must match the `colnames` of the count data.
 
 We'll be using the DESeq2 package that you've already installed (see the setup instructions). 

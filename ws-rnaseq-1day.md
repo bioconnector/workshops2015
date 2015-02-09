@@ -35,11 +35,11 @@ Participants will also be exposed to operating in a virtual environment and/or p
 
 ## Course Material
 
-* [Introduction to Unix](../shell/01-intro-unix-shell/)
-* [NGS data analysis: QC, Alignment, Quantitation](01-alignment-counting/)
+* [Introduction to Unix](../lessons/shell/shell-intro/)
+* [NGS data analysis: QC, Alignment, Quantitation](../lessons/rnaseq/rnaseq-align-count/)
 * [R Slides](https://speakerdeck.com/stephenturner/introduction-to-r-for-life-scientists)
-* [Introduction to R](../intro-r-lifesci/01-intro-r/)
-* [RNA-seq data analysis with DESeq2](03-differential-expression/)
+* [Introduction to R](../lessons/r/r-intro/)
+* [RNA-seq data analysis with DESeq2](../lessons/rnaseq/rnaseq-diff-expr/)
 
 ## Registration
 
