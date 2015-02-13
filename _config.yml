@@ -13,6 +13,6 @@ baseurl: "/workshops"
 # Build settings
 markdown: redcarpet
 redcarpet:
-  extensions: ["tables", "no_intra_emphasis", "autolink"]
+  extensions: ["tables", "no_intra_emphasis", "autolink", "footnotes"]
 permalink: pretty
 exclude: [pdf]
