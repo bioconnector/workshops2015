@@ -2,7 +2,7 @@
 layout: page
 ---
 
-# Course Material
+# Workshops
 
 * [Introduction to R for Life Scientists](ws-intro-r-lifesci/)
 * [RNA-seq workshop](ws-rnaseq-1day/)
