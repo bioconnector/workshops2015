@@ -7,7 +7,7 @@ layout: page
 This workshop will cover fundamental concepts for creating effective data visualization and will introduce tools and techniques for visualizing large, high-dimensional data using R. We will review fundamental concepts for visually displaying quantitative information, such as using series of small multiples, avoiding "chart-junk," and maximizing the data-ink ratio. After briefly covering data visualization using base R graphics, we will introduce the ggplot2 package for advanced high-dimensional visualization. We will cover the grammar of graphics (geoms, aesthetics, stats, and faceting), and using ggplot2 to create plots layer-by-layer. Upon completing this lesson, learners will be able to use ggplot2 to explore a high-dimensional dataset by faceting and scaling scatter plots in small multiples.
 
 **Date**: March 2, 2015  
-**Time**: 2:00pm - 4:00pm
+**Time**: 2:00pm - 4:00pm  
 **Location**: Health Sciences Library, Carter Classroom
 
 **Pre-requisites**:
