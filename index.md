@@ -8,6 +8,7 @@ layout: page
 * [RNA-seq workshop](ws-rnaseq-1day/)
 * Advanced data manipulation with R and dplyr (*coming soon*)
 * Advanced R graphics with R and ggplot2 (*coming soon*)
+* [Workshop Series: Workshop Series: Data Analysis, Manipulation, and Visualization with R](ws-r-series/)
 
 
 # Updates
