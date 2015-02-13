@@ -9,6 +9,7 @@
 # Install packages from CRAN
 install.packages("dplyr")
 install.packages("ggplot2")
+install.packages("tidyr")
 
 # Install Bioconductor packages
 source("http://bioconductor.org/biocLite.R")
@@ -21,6 +22,7 @@ You can check that you've installed everything correctly by closing and reopenin
 ```r
 library(dplyr)
 library(ggplot2)
+library(tidyr)
 library(DESeq2)
 ```
 
