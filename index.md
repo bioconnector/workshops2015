@@ -10,7 +10,7 @@ layout: page
 * [Advanced Data Visualization with R and ggplot2](ws-r-advanced-visualization/)
 * [Workshop Series: Workshop Series: Data Analysis, Manipulation, and Visualization with R](ws-r-series/)
 
-<!--
+
 # Updates
 
 {% for post in site.posts %}
@@ -18,4 +18,3 @@ layout: page
 {% endfor %}
 
 [Subscribe to updates via RSS]({{ "/feed.xml" | prepend: site.baseurl }})
- -->
