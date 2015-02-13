@@ -6,11 +6,11 @@ layout: page
 
 * [Introduction to R for Life Scientists](ws-intro-r-lifesci/)
 * [RNA-seq workshop](ws-rnaseq-1day/)
-* Advanced data manipulation with R and dplyr (*coming soon*)
-* Advanced R graphics with R and ggplot2 (*coming soon*)
+* [Advanced data manipulation with R and dplyr](ws-r-advanced-manipulation/)
+* [Advanced Data Visualization with R and ggplot2](ws-r-advanced-visualization/)
 * [Workshop Series: Workshop Series: Data Analysis, Manipulation, and Visualization with R](ws-r-series/)
 
-
+<!--
 # Updates
 
 {% for post in site.posts %}
@@ -18,3 +18,4 @@ layout: page
 {% endfor %}
 
 [Subscribe to updates via RSS]({{ "/feed.xml" | prepend: site.baseurl }})
+ -->
