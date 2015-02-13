@@ -7,7 +7,7 @@ layout: page
 Data analysis involves a large amount of [janitor work](http://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html) - munging and cleaning data to facilitate downstream data analysis. This workshop is designed for those with a basic familiarity with R who want to learn tools and techniques for advanced data manipulation. It will cover data cleaning and "tidy data," and will introduce participants to R packages that enable data manipulation, analysis, and visualization using split-apply-combine strategies. Upon completing this lesson, participants will be able to use the dplyr package in R to effectively manipulate and conditionally compute summary statistics over subsets of a "big" dataset containing many observations.
 
 **Date**: Feb 26, 2015  
-**Time**: 9:00-11:00am  
+**Time**: 9:00am - 11:00am  
 **Location**: Health Sciences Library, Carter Classroom
 
 **Pre-requisites**:
