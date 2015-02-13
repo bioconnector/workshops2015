@@ -16,7 +16,9 @@ Participants will also be exposed to operating in a virtual environment and/or p
 
 **Pre-requisites**: [See the setup requirements below](#setup). Set aside an hour to create the necessary accounts and install the software *prior to* the workshop. *We will not have time to do this during the workshop*.
 
-**Registration**: Registration opens Monday February 23, 2015 at 9:00am. [See below](#registration) for registration instructions.
+**Registration**: Registration opens Monday February 23, 2015 at 9:00am. [See below](#registration) for registration instructions. The workshop is free[^free], but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation.
+
+[^free]: The workshop is free, but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation. We do this to protect _you_, the person who's truly interested in taking this workshop, from those who would otherwise sign up to hold their spot. You will receive a refund for your registration after attending all parts of the workshop and after you submit an evaluation.
 
 **Instructor / Technical contact**: Stephen Turner  (<a href="http://www.google.com/recaptcha/mailhide/d?k=01uXi4zl-bIdygzSeXF4649A==&amp;c=_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501uXi4zl-bIdygzSeXF4649A\75\75\46c\75_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">s...</a>@virginia.edu)  
 **Logistics / registration contact**: Bart Ragon (<a href="http://www.google.com/recaptcha/mailhide/d?k=01uXi4zl-bIdygzSeXF4649A==&amp;c=Vsnuy3VwvY13wVeE0K2DFU5Cf-2n-YnO3260iwqa1RA=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501uXi4zl-bIdygzSeXF4649A\75\75\46c\75Vsnuy3VwvY13wVeE0K2DFU5Cf-2n-YnO3260iwqa1RA\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">b...</a>@virginia.edu)
@@ -83,7 +85,7 @@ Setup checklist:
 
 ## Registration
 
-[Register here](http://www.eventbrite.com/e/rna-seq-boot-camp-tickets-15712713148) or use the form below. The registration fee is $10, and that covers both parts. Registration is non-refundable, and part I and II cannot be split and attended individually.
+[Register here](http://www.eventbrite.com/e/rna-seq-boot-camp-tickets-15712713148) or use the form below. The workshop is free[^free], but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation.
 
 Registration opens Monday February 23, 2015 at 9:00am.
 

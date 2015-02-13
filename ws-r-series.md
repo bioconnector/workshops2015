@@ -3,7 +3,7 @@ layout: page
 eventbrite: 15761896256
 ---
 
-# Workshop Series: Data analysis, manipulation, and visualization with R
+# Workshop Series: Data Analysis, Manipulation, and Visualization with R
 
 This is a three-part series. The first session will introduce participants to the R environment and a dataset to be used for the remainder of the series. The two latter sessions will introduce participants to advanced data manipulation and visualization, using the same dataset introduced in the first session. This three-part workshop series will use a consistent example dataset for answering questions and completing exercises across all three sessions, culminating with a "capstone" analysis that integrates all covered material.
 
@@ -13,7 +13,9 @@ This is a three-part series. The first session will introduce participants to th
 * Bring a laptop to the course with the software installed [as detailed below](#setup).
 * Print and bring this [R Cheat Sheet](http://dx.doi.org/10.6084/m9.figshare.1080756) created specifically for this workshop.
 
-**Registration**: Registration opens Friday, March 6, 2015 at 9:00am. [See below](#registration) for registration instructions.
+**Registration**: Registration opens Friday, March 6, 2015 at 9:00am. [See below](#registration) for registration instructions. The workshop is free[^free], but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation.
+
+[^free]: The workshop is free, but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation. We do this to protect _you_, the person who's truly interested in taking this workshop, from those who would otherwise sign up to hold their spot. You will receive a refund for your registration after attending all parts of the workshop and after you submit an evaluation.
 
 **Instructor / Technical contact**: Stephen Turner  (<a href="http://www.google.com/recaptcha/mailhide/d?k=01uXi4zl-bIdygzSeXF4649A==&amp;c=_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501uXi4zl-bIdygzSeXF4649A\75\75\46c\75_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">s...</a>@virginia.edu)  
 **Logistics / registration contact**: Bart Ragon (<a href="http://www.google.com/recaptcha/mailhide/d?k=01uXi4zl-bIdygzSeXF4649A==&amp;c=Vsnuy3VwvY13wVeE0K2DFU5Cf-2n-YnO3260iwqa1RA=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501uXi4zl-bIdygzSeXF4649A\75\75\46c\75Vsnuy3VwvY13wVeE0K2DFU5Cf-2n-YnO3260iwqa1RA\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">b...</a>@virginia.edu)
@@ -59,13 +61,15 @@ _Check back after course_.
 
 ## Setup
 
+You must bring a laptop with the necessary software installed to the course. Please install the software below *prior to the course* - we will not have time during the workshop to troubleshoot installation issues. Please email me (<a href="http://www.google.com/recaptcha/mailhide/d?k=01uXi4zl-bIdygzSeXF4649A==&amp;c=_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501uXi4zl-bIdygzSeXF4649A\75\75\46c\75_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">sd...</a>@virginia.edu) if you have any trouble.
+
 {% include setup-r.md %}
 
 <a name="registration"></a>
 
 ## Registration
 
-[Register here](https://www.eventbrite.com/e/workshop-series-data-analysis-manipulation-and-visualization-with-r-tickets-15761896256) or use the form below. The registration fee is $10, and that covers both parts. Registration is non-refundable, and the different parts of this series cannot be split and attended individually.
+[Register here](https://www.eventbrite.com/e/workshop-series-data-analysis-manipulation-and-visualization-with-r-tickets-15761896256) or use the form below. The workshop is free[^free], but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation.
 
 Registration opens Friday, March 6, 2015 at 9:00am.
 
