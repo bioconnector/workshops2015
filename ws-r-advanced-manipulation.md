@@ -10,10 +10,12 @@ Data analysis involves a large amount of [janitor work](http://www.nytimes.com/2
 **Time**: 9:00am - 11:00am  
 **Location**: Health Sciences Library, Carter Classroom
 
-**Pre-requisites**:
+**Pre-requisites:**
 
 * This is not a beginner course. This workshop requires basic familiarity with R: data types including vectors and data frames, importing/exporting data, and plotting. You can refresh your R knowledge with [DataCamp's Intro to R](https://www.datacamp.com/courses/introduction-to-r) or [TryR from CodeSchool](http://tryr.codeschool.com/).
 * Bring a laptop to the course with the software installed as detailed below.
+
+**Registration:** [Click here](https://www.bioconnector.virginia.edu/events).
 
 **Course material:**
 

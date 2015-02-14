@@ -10,10 +10,12 @@ This workshop is directed toward life scientists with little to no experience wi
 **Time**: 2:00-5:00pm  
 **Location**: Health Sciences Library, Carter Classroom
 
-**Pre-requisites**:
+**Pre-requisites:**
 
 * Bring a laptop to the course with the software installed as detailed below.
 * Print and bring this [R Cheat Sheet](http://dx.doi.org/10.6084/m9.figshare.1080756) created specifically for this workshop.
+
+**Registration:** [Click here](https://www.bioconnector.virginia.edu/events).
 
 **Course material:**
 

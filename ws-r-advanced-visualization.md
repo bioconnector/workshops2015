@@ -10,11 +10,13 @@ This workshop will cover fundamental concepts for creating effective data visual
 **Time**: 2:00pm - 4:00pm  
 **Location**: Health Sciences Library, Carter Classroom
 
-**Pre-requisites**:
+**Pre-requisites:**
 
 * This is not a beginner course. This workshop requires basic familiarity with R: data types including vectors and data frames, importing/exporting data, and plotting. You can refresh your R knowledge with [DataCamp's Intro to R](https://www.datacamp.com/courses/introduction-to-r) or [TryR from CodeSchool](http://tryr.codeschool.com/).
 * This course also requires some experience with data manipulation using dplyr functions. If you already know some R, you can learn the basics of dplyr by spending 10 minutes with [the dplyr vignette](http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html).
 * Bring a laptop to the course with the software installed as detailed below.
+
+**Registration:** [Click here](https://www.bioconnector.virginia.edu/events).
 
 **Course material:**
 
