@@ -113,12 +113,13 @@ xx download new gapminder data, BMI? turn it into a data frame, and store it as 
 
 The dplyr package gives you a handful of useful **verbs** for managing data. On their own they don't do anything that base R can't do. 
 
-1. filter
-2. select
-3. mutate
-4. summarize
-5. group_by
-6. _more later..._
+0. filter
+0. select
+0. mutate
+0. arrange
+0. summarize
+0. group_by
+0. _more later..._
 
 They all take a data.frame or tbl_df as their input for the first argument.
 
@@ -166,6 +167,17 @@ Mutate has a nice little feature too in that it's "lazy." You can mutate and add
 ```r
 mutate(gm, gdp=pop*gdpPercap, gdpBil=gdp/1e9)
 ```
+
+#### arrange()
+
+The `arrange()` function does what it sounds like. It takes a data frame or tbl and arranges (or sorts) by column(s) of interest. The first argument is the data, and subsequent arguments are columns to sort on. Use the `desc()` function to arrange by descending.
+
+
+```r
+arrange(gm, lifeExp)
+arrange(gm, year, desc(lifeExp))
+```
+
 
 #### summarize()
 
@@ -296,3 +308,20 @@ gm %>%
   summarize(mean(lifeExp), mean(gdp))
 ```
 
+---
+
+**EXERCISE**
+
+xx - easy
+
+---
+
+That was easy, right? How about some tougher ones.
+
+---
+
+**EXERCISE**
+
+xx - hard
+
+---
