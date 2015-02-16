@@ -71,7 +71,7 @@ You must bring a laptop with the necessary software installed to the course. Ple
 
 [Register here](https://www.eventbrite.com/e/workshop-series-data-analysis-manipulation-and-visualization-with-r-tickets-15761896256) or use the form below. The workshop is free[^free], but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation.
 
-Registration opens Friday, March 6, 2015 at 9:00am.
+Registration opens Friday, February 20, 2015 at 9:00am.
 
 <!--
     This block includes the Eventbrite registration widget if 'eventbrite' has been set in the header.

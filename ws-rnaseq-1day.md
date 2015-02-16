@@ -87,7 +87,7 @@ Setup checklist:
 
 [Register here](http://www.eventbrite.com/e/rna-seq-boot-camp-tickets-15712713148) or use the form below. The workshop is free[^free], but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation.
 
-Registration opens Monday February 23, 2015 at 9:00am.
+Registration opens Friday, February 20, 2015 at 9:00am.
 
 <!--
     This block includes the Eventbrite registration widget if 'eventbrite' has been set in the header.
