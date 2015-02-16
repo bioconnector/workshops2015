@@ -2,13 +2,7 @@
 layout: page
 ---
 
-```{r, echo=FALSE, message=FALSE, eval=TRUE}
-# Set eval=TRUE to hide all results and figures.
-# This sets defaults. Can change this manually in individual chunks.
-# Must load knitr so opts_chunk is in search path.
-library(knitr)
-opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none")
-```
+
 
 # Advanced Data Manipulation with R
 
@@ -39,7 +33,8 @@ Let's load the data first. There are two ways to do this. You can use RStudio's 
 
 Once we've loaded it we can type the name of the object itself (`gm`) to view the entire data frame. *Note: doing this with large data frames can cause you trouble.*
 
-```{r readGapminder}
+
+```r
 gm <- read.csv("data/gapminder.csv", header=TRUE)
 
 # Alternatively, read directly from the web:
@@ -63,7 +58,8 @@ There are several built-in functions that are useful for working with data frame
     * `str()`: structure of the object and information about the class, length and content of each column
     * `summary()`: works differently depending on what kind of object you pass to it. Passing a data frame to the `summary()` function prints out some summary statistics about each column (min, max, median, mean, etc.)
     
-```{r data_frame_functions}
+
+```r
 head(gm)
 tail(gm)
 dim(gm)
@@ -74,7 +70,8 @@ str(gm)
 summary(gm)
 ```
 
-```{r View, eval=FALSE}
+
+```r
 View(gm)
 ```
 
@@ -86,14 +83,16 @@ The [dplyr package](https://github.com/hadley/dplyr) is a relatively new R packa
 
 Let's go back to our gapminder data. It's currently stored in an object called `gm`. Remember that `gm` is a `data.frame` object if we look at its `class()`. Also, remember what happens if we try to display `gm` on the screen? It's too big to show us and it fills up our console.
 
-```{r review_gm, eval=FALSE}
+
+```r
 class(gm)
 gm
 ```
 
 The first really nice thing about the dplyr package is the `tbl_df` class. A `tbl_df` is basically an improved version of the `data.frame` object. The main advantage to using a `tbl_df` over a regular data frame is the printing: `tbl` objects only print a few rows and all the columns that fit on one screen, describing the rest of it as text. We can turn our gm data frame into a `tbl_df` using the `tbl_df()` function. Let's do that, and reassign the result back to gm. Now, if we take a look at gm's class, we'll see that it's still a data frame, but it's also now a tbl_df. If we now type the name of the object, it will by default only print out a few lines. If this was a "wide" dataset with many columns, it would also not try to show us everything.
 
-```{r tbl_df}
+
+```r
 library(dplyr)
 gm <- tbl_df(gm)
 class(gm)
@@ -127,7 +126,8 @@ They all take a data.frame or tbl_df as their input for the first argument.
 
 First, this is from the introduction lecture, if you want to filter **rows** of the data where some condition is true, use the `filter()` function. The first argument is the data frame or tbl, and the second argument is the condition you want to satisfy.
 
-```{r filter}
+
+```r
 # Show only stats for the year 1982
 filter(gm, year==1982)
 
@@ -146,7 +146,8 @@ filter(gm, gdpPercap<300 | lifeExp<30)
 
 The `filter()` function allows you to return only certain rows matching a condition. The `select()` function lets you subset the data and restrict to a number of columns. The first argument is the data, and subsequent arguments are the columns you want. Let's just get the year and the population variables.
 
-```{r select}
+
+```r
 select(gm, year, pop)
 ```
 
@@ -154,13 +155,15 @@ select(gm, year, pop)
 
 The `mutate()` function adds new columns to the data. Remember, the variable in our dataset is GDP per capita, which is the total GDP divided by the population size for that country, for that year. Let's mutate this dataset and add a column called gdp:
 
-```{r mutate}
+
+```r
 mutate(gm, gdp=pop*gdpPercap)
 ```
 
 Mutate has a nice little feature too in that it's "lazy." You can mutate and add one variable, then continue mutating to add more variables based on that variable. Let's make another column that's GDP in billions.
 
-```{r mutatelazy}
+
+```r
 mutate(gm, gdp=pop*gdpPercap, gdpBil=gdp/1e9)
 ```
 
@@ -168,7 +171,8 @@ mutate(gm, gdp=pop*gdpPercap, gdpBil=gdp/1e9)
 
 The `summarize()` function summarizes multiple values to a single value. On its own the `summarize()` function doesn't seem to be all that useful.
 
-```{r summarize}
+
+```r
 summarize(gm, mean(pop))
 summarize(gm, meanpop=mean(pop))
 summarize(gm, n())
@@ -179,7 +183,8 @@ summarize(gm, n_distinct(country))
 
 We saw that `summarize()` isn't that useful on its own. Neither is `group_by()` All this does is takes an existing tbl and coverts it into a grouped tbl where operations are performed by group.
 
-```{r groupby}
+
+```r
 gm
 group_by(gm, continent)
 class(group_by(gm, continent))
@@ -187,7 +192,8 @@ class(group_by(gm, continent))
 
 The real power comes in where `group_by()` and `summarize()` are used together. Let's take the same grouped tbl from last time, and pass all that as an input to summarize, where we get the mean population size. We can also group by more than one variable.
 
-```{r gby_nopipe}
+
+```r
 summarize(group_by(gm, continent), mean(pop))
 
 group_by(gm, continent, year)
@@ -200,9 +206,35 @@ This is where things get awesome. The dplyr package imports functionality from t
 
 Here's the simplest way to use it. Think of the `head()` function. It expects a data frame as input, and the next argument is the number of lines to print. These two commands are identical:
 
-```{r, results='markup'}
+
+```r
 head(gm, 5)
+```
+
+```
+## Source: local data frame [5 x 6]
+## 
+##       country continent year lifeExp      pop gdpPercap
+## 1 Afghanistan      Asia 1952  28.801  8425333  779.4453
+## 2 Afghanistan      Asia 1957  30.332  9240934  820.8530
+## 3 Afghanistan      Asia 1962  31.997 10267083  853.1007
+## 4 Afghanistan      Asia 1967  34.020 11537966  836.1971
+## 5 Afghanistan      Asia 1972  36.088 13079460  739.9811
+```
+
+```r
 gm %>% head(5)
+```
+
+```
+## Source: local data frame [5 x 6]
+## 
+##       country continent year lifeExp      pop gdpPercap
+## 1 Afghanistan      Asia 1952  28.801  8425333  779.4453
+## 2 Afghanistan      Asia 1957  30.332  9240934  820.8530
+## 3 Afghanistan      Asia 1962  31.997 10267083  853.1007
+## 4 Afghanistan      Asia 1967  34.020 11537966  836.1971
+## 5 Afghanistan      Asia 1972  36.088 13079460  739.9811
 ```
 
 So what? 
@@ -217,25 +249,29 @@ Now, think abou this about this for a minute. What if we wanted to get the life 
 
 But in code, it gets ugly. First, `mutate` the data to add GDP.
 
-```{r}
+
+```r
 mutate(gm, gdp=gdpPercap*pop)
 ```
 
 Wrap that whole command with `filter()`.
 
-```{r}
+
+```r
 filter(mutate(gm, gdp=gdpPercap*pop), continent=="Asia")
 ```
 
 Wrap that again with `group_by()`:
 
-```{r}
+
+```r
 group_by(filter(mutate(gm, gdp=gdpPercap*pop), continent=="Asia"), year)
 ```
 
 Finally, wrap everything with `summarize()`:
 
-```{r nopipemess}
+
+```r
 summarize(
   group_by(
     filter(
@@ -251,7 +287,8 @@ Now compare that with the mental process of what you're actually trying to accom
 
 This is how we would do that in code. It's as simple as replacing the word "then" in words to the symbol `%>%` in code.
 
-```{r pipe}
+
+```r
 gm %>%
   mutate(gdp=gdpPercap*pop) %>%
   filter(continent=="Asia") %>%
@@ -259,10 +296,3 @@ gm %>%
   summarize(mean(lifeExp), mean(gdp))
 ```
 
----
-
-**EXERCISE**
-
-xx
-
----
