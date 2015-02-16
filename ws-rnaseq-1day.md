@@ -16,7 +16,7 @@ Participants will also be exposed to operating in a virtual environment and/or p
 
 **Pre-requisites**: [See the setup requirements below](#setup). Set aside an hour to create the necessary accounts and install the software *prior to* the workshop. *We will not have time to do this during the workshop*.
 
-**Registration**: Registration opens Monday February 23, 2015 at 9:00am. [See below](#registration) for registration instructions. The workshop is free[^free], but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation.
+**Registration**: Registration opens Friday, February 20, 2015 at 9:00am. [See below](#registration) for registration instructions. The workshop is free[^free], but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation.
 
 [^free]: The workshop is free, but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation. We do this to protect _you_, the person who's truly interested in taking this workshop, from those who would otherwise sign up to hold their spot. You will receive a refund for your registration after attending all parts of the workshop and after you submit an evaluation.
 

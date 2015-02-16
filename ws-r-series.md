@@ -13,7 +13,7 @@ This is a three-part series. The first session will introduce participants to th
 * Bring a laptop to the course with the software installed [as detailed below](#setup).
 * Print and bring this [R Cheat Sheet](http://dx.doi.org/10.6084/m9.figshare.1080756) created specifically for this workshop.
 
-**Registration**: Registration opens Friday, March 6, 2015 at 9:00am. [See below](#registration) for registration instructions. The workshop is free[^free], but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation.
+**Registration**: Registration opens Friday, February 20, 2015 at 9:00am. [See below](#registration) for registration instructions. The workshop is free[^free], but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation.
 
 [^free]: The workshop is free, but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation. We do this to protect _you_, the person who's truly interested in taking this workshop, from those who would otherwise sign up to hold their spot. You will receive a refund for your registration after attending all parts of the workshop and after you submit an evaluation.
 
