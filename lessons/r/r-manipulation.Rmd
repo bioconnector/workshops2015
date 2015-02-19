@@ -8,6 +8,9 @@ layout: page
 # Must load knitr so opts_chunk is in search path.
 library(knitr)
 opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none")
+options(digits=3)
+# Keep track of the exercise numbers with a hidden variable. Update each exercise.
+.ex <- 1
 ```
 
 # Advanced Data Manipulation with R
@@ -104,7 +107,7 @@ You don't have to turn all your data.frame objects into tbl_df objects, but it d
 
 ---
 
-**EXERCISE**
+**EXERCISE `r .ex``r .ex=.ex+1`**
 
 xx download new gapminder data, BMI? turn it into a data frame, and store it as a tbl_df. How many rows? Columns? Save it because we're going to use it later for joins.
 
@@ -205,7 +208,7 @@ group_by(gm, continent, year)
 summarize(group_by(gm, continent, year), mean(pop))
 ```
 
-## The almighty pipe: **%>%**
+### The almighty pipe: **%>%**
 
 This is where things get awesome. The dplyr package imports functionality from the [magrittr](https://github.com/smbache/magrittr) package that lets you _pipe_ the output of one function to the input of another, so you can avoid nesting functions. It looks like this: `%>%`. You don't have to load the magrittr package to use it since dplyr imports its functionality when you load the dplyr package.
 
@@ -272,9 +275,31 @@ gm %>%
 
 ---
 
-**EXERCISE**
+**EXERCISE `r .ex``r .ex=.ex+1`**
 
-xx - easy
+Here's a warm-up round. Try the following.
+
+What was the population of Peru in 1992? Show only the population variable. _Hint: 2 pipes; use filter and select._
+
+```{r, echo=FALSE, results='markup'}
+gm %>% filter(country=="Peru", year==1992) %>% select(pop)
+```
+
+Which countries and which years had the worst five GDP per capita measurements? _Hint: 2 pipes; use arrange and head._
+
+```{r, echo=FALSE, results='markup'}
+gm %>%
+  arrange(gdpPercap) %>%
+  head(5)
+```
+
+What was the average life expectancy across all contries for each year in the dataset? _Hint: 2 pipes; group by and summarize._
+
+```{r, echo=FALSE, results='markup'}
+gm %>% 
+  group_by(year) %>% 
+  summarize(mean(lifeExp))
+```
 
 ---
 
@@ -282,8 +307,47 @@ That was easy, right? How about some tougher ones.
 
 ---
 
-**EXERCISE**
+**EXERCISE `r .ex``r .ex=.ex+1`**
 
-xx - hard
+Which five Asian countries had the highest life expectancy in 2007? _Hint: 3 pipes._
+
+```{r, echo=FALSE, results='markup'}
+gm %>%
+  filter(continent=="Asia", year==2007) %>%
+  arrange(desc(lifeExp)) %>%
+  head(5)
+```
+
+How many countries are on each continent? _Hint: 2 pipes._
+
+```{r, echo=FALSE, results='markup'}
+gm %>%
+  group_by(continent) %>%
+  summarize(n_distinct(country))
+```
+
+Separately for each year, compute the correlation coefficients (e.g., `cor(x,y)`) for life expectancy (y) against both log<sub>10</sub> of the population size and log<sub>10</sub> of the per capita GDP. What do these trends mean? _Hint: 2 pipes._
+
+```{r, echo=FALSE, results='markup'}
+gm %>%
+  group_by(year) %>%
+  summarize(cor(log10(pop), lifeExp), cor(log10(gdpPercap), lifeExp))
+```
+
+Compute the average GDP (not per-capita) in billions averaged across all contries separately for each continent separately for each year. What continents/years had the top 5 overall GDP? _Hint: 6 pipes. If you want to arrange a dataset by a value computed on grouped data, you first have to pass that resulting dataset to a funcion called `ungroup()` before continuing to operate._ 
+
+```{r, echo=FALSE, results='markup'}
+gm %>%
+  mutate(gdp=pop*gdpPercap/1e9) %>%
+  group_by(continent, year) %>%
+  summarize(meangdp=mean(gdp)) %>%
+  ungroup() %>%
+  arrange(desc(meangdp)) %>%
+  head(5)
+```
 
 ---
+
+### Two-table verbs
+
+
