@@ -438,7 +438,6 @@ Using the `with()` and `filter()` functions:
 
 1. Compute the average GDP in billions for all Asian countries in 2007. 
 2. Do the same for Europe in 2007.
-3. Do the same for Asia and europe for 1977.
 
 _Hint:_ GDP per capita is the GDP divided by the population size. So to get GDP, you'd multiple `gdpPercap*pop`. To get that in billions, divide by 1,000,000, or more easily expressed in R using scientific notation: `1e9`.
 
