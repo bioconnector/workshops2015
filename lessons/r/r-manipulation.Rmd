@@ -348,6 +348,36 @@ gm %>%
 
 ---
 
+
 ### Two-table verbs
 
+
+
+
+```{r tidydata}
+library(tidyr)
+d <- data.frame(
+  name=c("stephen", "sam", "joe"),
+  a=c(60, 50, 70),
+  b=c(65, 55, 75))
+d %>%
+  gather(key=drug, value=heartreate, a:b)
+
+```
+
+
+```{r}
+bmi <- read.csv("~/Downloads//malebmi.csv")
+bmi
+head(bmi)
+bmi <- read.csv("~/Downloads//malebmi.csv", check.names=FALSE) %>% tbl_df()
+bmi
+names(bmi)
+
+tidybmi <- bmi %>% gather(key=year, value=bmi, -country, convert=TRUE)
+tidybmi
+
+gm %>%
+  inner_join(tidybmi, by=c("country", "year")) %>% View
+```
 
