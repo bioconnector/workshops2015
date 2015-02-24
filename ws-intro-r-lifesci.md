@@ -19,16 +19,16 @@ This workshop is directed toward life scientists with little to no experience wi
 
 **Course material:**
 
-_Check back after course_
+<!-- _Check back after course_ -->
 
 <!-- Uncomment below to post course material -->
 
-<!--
+
 * [Slides](https://speakerdeck.com/stephenturner/introduction-to-r-for-life-scientists)
 * Code used in course:
-    * Part I: [Introduction to R](r/r-intro/)
-    * Part II: [RNA-seq data analysis](r-deseq2-demo/)
- -->
+    * Part I: [Introduction to R](../lessons/r/r-intro/)
+    * Part II: [RNA-seq data analysis](../lessons//r/r-deseq2-demo/)
+
 
 ## Before coming
 
