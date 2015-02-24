@@ -27,6 +27,10 @@ You'll need to bring a laptop to the course with the software installed as detai
 
 ## Review
 
+First, a little review about our data and using dplyr verbs and chaining.
+
+### The gapminder data
+
 We use **data frames** to store heterogeneous tabular data in R: tabular, meaning that individuals or observations are typically represented in rows, while variables or features are represented as columns; heterogeneous, meaning that columns/features/variables can be different classes (on variable, e.g. age, can be numeric, while another, e.g., cause of death, can be text).
 
 Before coming, you should have downloaded the gapminder data. If you [downloaded this entire lesson repository](https://github.com/bioconnector/workshops/archive/master.zip), once you extract it you'll find it in `workshops/lessons/r/data/gapminder.csv`. Alternatively you can download it directly from <http://bioconnector.org/data/>. This dataset is an excerpt from the [Gapminder](http://www.gapminder.org/) data, that's [already been cleaned up to a degree](https://github.com/jennybc/gapminder). This particular dataset has 1704 observations on six variables:
@@ -40,15 +44,21 @@ Before coming, you should have downloaded the gapminder data. If you [downloaded
 
 Let's load the data first. There are two ways to do this. You can use RStudio's menus to select a file from your computer (tools, import dataset, from text file). But that's not reproducible. The best way to do this is to save the data and the script you're using to the same place, and read in the data in using `read.csv`. It's important to tell R that the file has a header, which tells R the names of the columns. We tell this to R with the `header=TRUE` argument. 
 
-Once we've loaded it we can type the name of the object itself (`gm`) to view the entire data frame. *Note: doing this with large data frames can cause you trouble.*
+While we're at it, let's go ahead and turn this dataset into a tbl_df.
+
+Once we've loaded it we can type the name of the object itself (`gm`) to view the entire data frame.
 
 ```{r readGapminder}
+# Read the data from file
 gm <- read.csv("data/gapminder.csv", header=TRUE)
 
 # Alternatively, read directly from the web:
 # gm <- read.csv(url("http://bioconnector.org/data/gapminder.csv"), header=TRUE)
 
-class(gm)
+# Convert to a tbl_df
+library(dplyr)
+gm <- tbl_df(gm)
+
 gm
 ```
 
@@ -77,51 +87,9 @@ str(gm)
 summary(gm)
 ```
 
-```{r View, eval=FALSE}
-View(gm)
-```
+### dplyr verbs and chaining with **%>%**
 
-## The dplyr package
-
-The [dplyr package](https://github.com/hadley/dplyr) is a relatively new R package that makes data manipulation fast and easy. It imports functionality from another package called magrittr that allows you to chain commands together into a pipeline that will completely change the way you write R code such that you're writing code the way you're thinking about the problem.
-
-### tbl_df
-
-Let's go back to our gapminder data. It's currently stored in an object called `gm`. Remember that `gm` is a `data.frame` object if we look at its `class()`. Also, remember what happens if we try to display `gm` on the screen? It's too big to show us and it fills up our console.
-
-```{r review_gm, eval=FALSE}
-class(gm)
-gm
-```
-
-The first really nice thing about the dplyr package is the `tbl_df` class. A `tbl_df` is basically an improved version of the `data.frame` object. The main advantage to using a `tbl_df` over a regular data frame is the printing: `tbl` objects only print a few rows and all the columns that fit on one screen, describing the rest of it as text. We can turn our gm data frame into a `tbl_df` using the `tbl_df()` function. Let's do that, and reassign the result back to gm. Now, if we take a look at gm's class, we'll see that it's still a data frame, but it's also now a tbl_df. If we now type the name of the object, it will by default only print out a few lines. If this was a "wide" dataset with many columns, it would also not try to show us everything.
-
-```{r tbl_df}
-library(dplyr)
-gm <- tbl_df(gm)
-class(gm)
-gm
-```
-
-You don't have to turn all your data.frame objects into tbl_df objects, but it does make working with large datasets a bit easier.
-
----
-
-**EXERCISE `r .ex``r .ex=.ex+1`**
-
-Load the `malebmi.csv` data. This is male BMI data from 1980 through 2008 from the gapminder project. If you downloaded the zip file from the repository, it's located in `workshops/lessons/r/data`. Alternatively you can donload it directly from <http://bioconnector.org/data/>.
-
-1. Load this into a data frame object called `bmi`.
-2. Turn it into a `tbl_df`.
-3. How many rows and columns does it have?
-
-Don't remove it -- we're going to use it later on.
-
----
-
-### dplyr verbs
-
-The dplyr package gives you a handful of useful **verbs** for managing data. On their own they don't do anything that base R can't do. 
+Recall the dplyr verbs and the chain or pipe operator `%>%`.
 
 0. filter
 0. select
@@ -129,27 +97,23 @@ The dplyr package gives you a handful of useful **verbs** for managing data. On 
 0. arrange
 0. summarize
 0. group_by
-0. _more later..._
-
-They all take a data.frame or tbl_df as their input for the first argument.
 
 #### filter()
 
-First, this is from the introduction lecture, if you want to filter **rows** of the data where some condition is true, use the `filter()` function. The first argument is the data frame or tbl, and the second argument is the condition you want to satisfy.
+The `filter()` function allows you to select out only particular rows that match a condition. 
 
 ```{r filter}
 # Show only stats for the year 1982
 filter(gm, year==1982)
 
+# Alternatively,
+gm %>% filter(year==1982)
+
 # Show only stats for the US
-filter(gm, country=="United States")
+gm %>% filter(country=="United States")
 
 # Show only stats for American contries in 1997
-filter(gm, continent=="Americas" & year==1997)
-
-# Show only stats for countries with per-capita GDP of less than 300 OR a 
-# life expectancy of less than 30. What happened those years? 
-filter(gm, gdpPercap<300 | lifeExp<30)
+gm %>% filter(continent=="Americas" & year==1997)
 ```
 
 #### select()
@@ -157,301 +121,245 @@ filter(gm, gdpPercap<300 | lifeExp<30)
 The `filter()` function allows you to return only certain rows matching a condition. The `select()` function lets you subset the data and restrict to a number of columns. The first argument is the data, and subsequent arguments are the columns you want. Let's just get the year and the population variables.
 
 ```{r select}
-select(gm, year, pop)
+gm %>% select(year, pop)
 ```
 
 #### mutate()
 
-The `mutate()` function adds new columns to the data. Remember, the variable in our dataset is GDP per capita, which is the total GDP divided by the population size for that country, for that year. Let's mutate this dataset and add a column called gdp:
+The `mutate()` function adds new columns to the data. Remember, the variable in our dataset is GDP per capita, which is the total GDP divided by the population size for that country, for that year. Let's mutate this dataset and add a column called gdpBil that is the raw GDP in billions:
 
 ```{r mutate}
-mutate(gm, gdp=pop*gdpPercap)
+gm %>% mutate(gdpBil=pop*gdpPercap/1e9)
 ```
 
-Mutate has a nice little feature too in that it's "lazy." You can mutate and add one variable, then continue mutating to add more variables based on that variable. Let's make another column that's GDP in billions.
-
-```{r mutatelazy}
-mutate(gm, gdp=pop*gdpPercap, gdpBil=gdp/1e9)
-```
 
 #### arrange()
 
 The `arrange()` function does what it sounds like. It takes a data frame or tbl and arranges (or sorts) by column(s) of interest. The first argument is the data, and subsequent arguments are columns to sort on. Use the `desc()` function to arrange by descending.
 
 ```{r arrange}
-arrange(gm, lifeExp)
-arrange(gm, year, desc(lifeExp))
+gm %>% arrange(lifeExp)
+gm %>% arrange(year, desc(lifeExp))
 ```
 
 
-#### summarize()
+#### group_by() %>% summarize()
 
-The `summarize()` function summarizes multiple values to a single value. On its own the `summarize()` function doesn't seem to be all that useful.
-
-```{r summarize}
-summarize(gm, mean(pop))
-summarize(gm, meanpop=mean(pop))
-summarize(gm, n())
-summarize(gm, n_distinct(country))
-```
-
-#### group_by()
-
-We saw that `summarize()` isn't that useful on its own. Neither is `group_by()` All this does is takes an existing tbl and coverts it into a grouped tbl where operations are performed by group.
+Combining `group_by()` with `summarize()` can be very powerful. 
 
 ```{r groupby}
-gm
-group_by(gm, continent)
-class(group_by(gm, continent))
-```
-
-The real power comes in where `group_by()` and `summarize()` are used together. Let's take the same grouped tbl from last time, and pass all that as an input to summarize, where we get the mean population size. We can also group by more than one variable.
-
-```{r gby_nopipe}
-summarize(group_by(gm, continent), mean(pop))
-
-group_by(gm, continent, year)
-summarize(group_by(gm, continent, year), mean(pop))
-```
-
-### The almighty pipe: **%>%**
-
-This is where things get awesome. The dplyr package imports functionality from the [magrittr](https://github.com/smbache/magrittr) package that lets you _pipe_ the output of one function to the input of another, so you can avoid nesting functions. It looks like this: `%>%`. You don't have to load the magrittr package to use it since dplyr imports its functionality when you load the dplyr package.
-
-Here's the simplest way to use it. Think of the `head()` function. It expects a data frame as input, and the next argument is the number of lines to print. These two commands are identical:
-
-```{r, results='markup'}
-head(gm, 5)
-gm %>% head(5)
-```
-
-So what? 
-
-Now, think abou this about this for a minute. What if we wanted to get the life expectancy and GDP averaged across all Asian countries for each year? (See top of image). Mentally we would do something like this:
-
-0. Take the `gm` dataset
-0. `mutate()` it to add raw GDP
-0. `filter()` it to restrict to Asian countries only
-0. `group_by()` year
-0. and `summarize()` it to get the mean life expectancy and mean GDP.
-
-But in code, it gets ugly. First, `mutate` the data to add GDP.
-
-```{r}
-mutate(gm, gdp=gdpPercap*pop)
-```
-
-Wrap that whole command with `filter()`.
-
-```{r}
-filter(mutate(gm, gdp=gdpPercap*pop), continent=="Asia")
-```
-
-Wrap that again with `group_by()`:
-
-```{r}
-group_by(filter(mutate(gm, gdp=gdpPercap*pop), continent=="Asia"), year)
-```
-
-Finally, wrap everything with `summarize()`:
-
-```{r nopipemess}
-summarize(
-  group_by(
-    filter(
-      mutate(gm, gdp=gdpPercap*pop), 
-    continent=="Asia"), 
-  year), 
-mean(lifeExp), mean(gdp))
-```
-
-Now compare that with the mental process of what you're actually trying to accomplish. The way you would do this without pipes is completely inside-out and backwards from the way you express in words and in thought what you want to do. The pipe operator `%>%` allows you to pass data frame or tbl objects from one function to another, so long as those functions expect data frames or tables as input.
-
-<img src="{{site.baseurl}}/assets/gmdplyr.png", width=750>
-
-This is how we would do that in code. It's as simple as replacing the word "then" in words to the symbol `%>%` in code.
-
-```{r pipe}
+gm %>% summarize(mean(lifeExp))
 gm %>%
-  mutate(gdp=gdpPercap*pop) %>%
-  filter(continent=="Asia") %>%
-  group_by(year) %>%
-  summarize(mean(lifeExp), mean(gdp))
-```
-
----
-
-**EXERCISE `r .ex``r .ex=.ex+1`**
-
-Here's a warm-up round. Try the following.
-
-What was the population of Peru in 1992? Show only the population variable. _Hint: 2 pipes; use filter and select._
-
-```{r, echo=FALSE, results='markup'}
-gm %>% filter(country=="Peru", year==1992) %>% select(pop)
-```
-
-Which countries and which years had the worst five GDP per capita measurements? _Hint: 2 pipes; use arrange and head._
-
-```{r, echo=FALSE, results='markup'}
-gm %>%
-  arrange(gdpPercap) %>%
-  head(5)
-```
-
-What was the average life expectancy across all contries for each year in the dataset? _Hint: 2 pipes; group by and summarize._
-
-```{r, echo=FALSE, results='markup'}
-gm %>% 
-  group_by(year) %>% 
+  group_by(continent, year) %>%
   summarize(mean(lifeExp))
 ```
 
----
+## ggplot2 
 
-That was easy, right? How about some tougher ones.
+xx - start here
 
----
+### The Diamonds dataset
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+Now let's look at a bigger dataset. We're going to be using a data visualization package called **ggplot2** for drawing the plots, and the **ggplot2** package comes with some data we're going to use for this example. 
 
-Which five Asian countries had the highest life expectancy in 2007? _Hint: 3 pipes._
+Recall how to install and load packages. Install the package if you haven't already:
 
-```{r, echo=FALSE, results='markup'}
-gm %>%
-  filter(continent=="Asia", year==2007) %>%
-  arrange(desc(lifeExp)) %>%
-  head(5)
+```{r installggplot2, eval=FALSE}
+# Only need to do this once
+install.packages("ggplot2")
 ```
 
-How many countries are on each continent? _Hint: 2 pipes._
+Then load it:
 
-```{r, echo=FALSE, results='markup'}
-gm %>%
-  group_by(continent) %>%
-  summarize(n_distinct(country))
-```
-
-Separately for each year, compute the correlation coefficients (e.g., `cor(x,y)`) for life expectancy (y) against both log<sub>10</sub> of the population size and log<sub>10</sub> of the per capita GDP. What do these trends mean? _Hint: 2 pipes._
-
-```{r, echo=FALSE, results='markup'}
-gm %>%
-  group_by(year) %>%
-  summarize(cor(log10(pop), lifeExp), cor(log10(gdpPercap), lifeExp))
-```
-
-Compute the average GDP (not per-capita) in billions averaged across all contries separately for each continent separately for each year. What continents/years had the top 5 overall GDP? _Hint: 6 pipes. If you want to arrange a dataset by a value computed on grouped data, you first have to pass that resulting dataset to a funcion called `ungroup()` before continuing to operate._ 
-
-```{r, echo=FALSE, results='markup'}
-gm %>%
-  mutate(gdp=pop*gdpPercap/1e9) %>%
-  group_by(continent, year) %>%
-  summarize(meangdp=mean(gdp)) %>%
-  ungroup() %>%
-  arrange(desc(meangdp)) %>%
-  head(5)
-```
-
----
-
-## Tidy data
-
-So far we've dealt exclusively with tidy data - data that's easy to work with, manipulate, and visualize. That's because our gapminder dataset has two key properties:
-
-1. Each column is a variable.
-2. Each row is an observation.
-
-You can read a lot more about tidy data [in this paper](http://www.jstatsoft.org/v59/i10/paper). Let's load some untidy data and see if we can see the difference. This is some made-up data for five different patients (Jon, Ann, Bill, Kate, and Joe) given three different drugs (A, B, and C), and measuring their heart rate. If you didn't download the entire lesson repository from GitHub, you can download the [heartrate.csv](http://bioconnector.org/data/heartrate.csv) file directly from <http://bioconnector.org/data/>.
-
-```{r untidy}
-hr <- read.csv("data/heartrate.csv")
-hr
-```
-
-Notice how with the gapminder data each variable, country, continent, year, lifeExp, pop, and gdpPercap, were each in their own column. In the heart rate data, we have three variables: name, drug, and heart rate. Name is in a column, But drug is in the top row, and heart rate is scattered around the entire table. If we wanted to do things like `filter` the dataset where `drug=="a"` or `heartrate>=80` we couldn't do it because these variables aren't in columns.
-
-The **tidyr** package helps with this. There are other functions in the tidyr package but one particularly handy one is the `gather()` function, which takes multiple columns, and gathers them into key-value pairs: it makes "wide" data longer. We can get a little help with `?gather`.
-
-```{r tidydata}
-library(tidyr)
-hr %>% gather(key=drug, value=heartreate, a,b,c)
-hr %>% gather(key=drug, value=heartreate, -name)
-```
-
-If we create a new data frame that's a tidy version of hr, we can do those kinds of manipulations we talked about before
-
-```{r hrtidy}
-# Create a new data.frame
-hrtidy <- hr %>%
-  gather(key=drug, value=heartrate, -name)
-hrtidy
-
-# filter
-hrtidy %>% filter(drug=="a")
-hrtidy %>% filter(heartrate>=80)
-
-# analyze
-hrtidy %>%
-  group_by(drug) %>%
-  summarize(mean(heartrate))
-```
-
-## Two-table verbs
-
-It's rare that a data analysis involves only a single table of data. You normally have many tables that contribute to an analysis, and you need flexible tools to combine them. The dplyr package has several tools that let you work with multiple tables at once. The most straightforward one is the `inner_join`.
-
-First, let's read in some BMI data from the gapminder project. This is the average body mass index for men only for the years 1980-2008. Now, if we look at the data we'll immediately see that it's in wide format: we've got three variables (Country, year, and BMI), but just like the heart rate data we looked at before, the year variable is stuck in the column header while all the BMI variables are spread out throughout the table. 
-
-```{r, results='asis', echo=FALSE}
-kable(read.csv("data/malebmi.csv", check.names=F)[1:5,1:6])
-```
-
-There's also another problem here. Let's read in the data to see what happens. Let's make it a tbl_df while we're at it.
-
-```{r}
-bmi <- read.csv("data/malebmi.csv") %>% tbl_df()
-bmi
-```
-
-Look at that. R decides to put an "X" in front of each year name because you can't have column names or variables in R that start with a number. You can see where we're going with this though. We want to "gather" this data into a long format, and join it together with our original gapminder data by year and by country, but to do this, we'll first need to have this in a tidy format, and the year variable can't have those X's in front.
-
-There's a function called `gsub()` that takes three arguments: a pattern to replace, what you want to replace it with, and a character vector. For example:
-
-```{r gsub}
-tmp <- c("id1", "id2", "id3")
-gsub("id", "", tmp)
-```
-
-Notice that what we're left with is a character vector instead of numbers. The last thing we'll have to do is pass that whole thing through `as.numeric()` to coerce it back to a numeric vector:
-
-```{r gsubasnum}
-gsub("id", "", tmp) %>% as.numeric
-```
-
-So let's tidy up our BMI data.
-
-```{r}
-bmi
-bmitidy <- bmi %>%
-  gather(key=year, value=bmi, -country) %>%
-  mutate(year=gsub("X", "", year) %>% as.numeric)
-bmitidy
-```
-
-Now, look up some help for `?inner_join`. There are many different kinds of two-table joins in dplyr. Inner join will return a table with all rows from the first table where there are matching rows in the second table, and returns all columns from both tables.
-
-```{r, warning=FALSE}
-gmbmi <- inner_join(gm, bmitidy, by=c("country", "year"))
-gmbmi
-```
-
-Now we can do all sorts of things that we were doing before, but now with BMI as well.
-
-```{r}
+```{r loadggplot2, message=FALSE}
 library(ggplot2)
-gmbmi %>%
-  group_by(continent, year) %>%
-  summarize(bmi=mean(bmi)) %>%
-  ggplot(aes(year, bmi, colour=continent)) + geom_line()
 ```
 
+Now let's load the diamonds dataset and take a look at the first few rows and it's structure with commands we learned previously. To learn more about this dataset you can also run `?diamonds`. 
+
+```{r diamondshead}
+data(diamonds)
+head(diamonds)
+str(diamonds)
+```
+
+From this we can see this dataset has prices of nearly 54,000 diamonds along with various features about the diamonds, such as the weight, the quality of the cut, the color, the clarity, and measurements of various dimensions. 
+
+### Plotting with ggplot2 using `qplot`
+
+If we wanted to do some exploratory data analysis we might start by plotting the price versus the weight of the diamond.
+
+```{r basediamond}
+with(diamonds, plot(carat, price))
+```
+
+As we would expect there is definitely a relationship between the size of the diamond and its cost, but how do the other variables (cut, color, clarity) affect the price? We could examine the interrelationships of all these variables using base R graphics, but it could become extremely cumbersome. 
+
+**ggplot2** is a widely used R package that extends R's visualization capabilities. It takes the hassle out of things like creating legends, mapping other variables to scales like color, or faceting plots into small multiples. We'll learn about what all these things mean shortly. To start with, let's produce the same plot as before, but this time using **ggplot2**'s `qplot` function. The `qplot` function is a quick and dirty convenience function to use **ggplot2**, and its syntax will be familiar if you're used to the base `plot` function. We'll cover advanced usage with the `ggplot` function later on.
+
+```{r qplot1}
+qplot(carat, price, data = diamonds)
+```
+
+The syntax is very similar to R's base graphics where you specify what's on the x and y axes, then give it the name of the data frame you want to use. We see again the strong relationship between the size of the diamond and its price, but the relationship doesn't appear linear. How does the diamond's clarity affect the weight-price relationship? 
+
+#### Faceting and scaling
+
+One option we could use is to color-code the points by their clarity. Here, we pass another `col=` argument with the variable we'd like to use for color-coding:
+
+```{r clarcolor}
+qplot(carat, price, data = diamonds, col = clarity)
+```
+
+Examining the plot you can see that poor-clarity diamonds (included, small inclusions, etc) fetch a lower price per carat relative to more clear diamonds (very small inclusions, internally flawless, etc). We can see that **ggplot2** color-codes the points using a sensible default color scheme, and automatically draws a legend on the side for us. This requires a good deal of extra error-prone coding using base graphics.
+
+However, with 54,000 points on this plot, there is a good deal of overplotting that obscures how clarity affects the nature of the weight-price relationship. How else might we visualize this data? This is where a *series of small multiples* is helpful. The idea of *small multiples* was popularized by data visualization expert Edward Tufte. The idea is that you create a large grid of small plots, where each plot shows a particular *facet* of the data. Here, each plot in the grid might be price vs. carat for each particular clarity level. You explain to your audience the axes and how to interpret each plot only once, and the audience will immediately understand the rest of the plots.
+
+This can be accomplished easily using **ggplot2**:
+
+```{r facetclar}
+qplot(carat, price, data = diamonds, facets = ~ clarity)
+```
+
+Here, the `facets` argument expects a forumla object that's constructed with the `~` operator. Here, we've plotted the price vs. weight separately for each level of clarity. We can see what we suspected before. With dirty diamonds (included, and perhaps small inclusions), the weight-price relationship is linear or slightly quadratic. Large diamonds can be purchased rather cheaply. But for very clear diamonds (internally flawless), the relationship is quadratic or even exponential.
+
+Let's examine the weight-price relationship for various color ratings:
+
+```{r facetcol}
+qplot(carat, price, data = diamonds, facets = ~ color)
+```
+
+Here we see that for whiter diamonds (D, E, F) the price rises more quickly with increasing weight than for yellower diamonds (H, I, J).
+
+We can further facet the plot across two different categorical variables using the same syntax:
+
+```{r facetclarcol, fig.height=10, fig.width=10}
+qplot(carat, price, data = diamonds, facets = clarity ~ color)
+```
+
+Here we see that the price per carat rises very steeply for very white, very clear diamonds, while the relationship is nearly linear for yellower, more flawed diamonds. We can see that a perfect white diamond averages around $15,000 while a yellow included diamond can be had for only around $2,000.
+
+Finally, we can combind both color-coding and faceting in the same plot. Let's use the same faceting scheme as last time, but color the points by the quality of the diamond's cut.
+
+```{r facetclarcol_colcut, fig.height=10, fig.width=10}
+qplot(carat, price, data = diamonds, facets = clarity ~ color, col = cut)
+```
+
+This color-coding reveals that clearer, whiter diamonds *generally* have higher quality cuts, but the relationship doesn't appear strong, visually. Looking down the plot toward clearer diamonds you start to see more "Ideal" cuts than at the top, which are the more included diamonds. 
+
+What we've done here in addition to faceting is map a feature of the data (here, the cut quality) onto a scale (here, color). This behavior will work differently depending on whether you're looking at categorical or continuous variables. We can also map features to other *scales* such as `size=`, `shape=`, `linetype=`, or even transparency using `alpha=`. All of these different scales can be combined with each other or with facets, and give you an extremely powerful and easy-to-use graphical toolbox for exploratory data analysis. 
+
+#### Exercise
+
+FIXME: Now, install the `xx` package, and load the `xx` dataset. Using the techniques we've learned here, use faceting and scaling options to explore how xx, xx, and xx affect the relationship between xx and xx.
+
+***Note:** This is where the *Teaching Software Carpentry* exercise ends, and where the future expansion begins.*
+
+### ggplot2 and the *Grammar of Graphics*
+
+The **ggplot2** package provides an R implementation of Leland Wilkinson's *Grammar of Graphics* (1999). The *Grammar of Graphics* challenges data analysts to think beyond the garden variety plot types (e.g. scatter-plot, barplot) and the consider the components that make up a plot or graphic, such as how data are represented on the plot (as lines, points, etc.), how variables are mapped to coordinates or plotting shape or colour, what transformation or statistical summary is required, and so on. Specifically, **ggplot2** allows users to build a plot layer-by-layer by specifying:
+
+ * a *geom**, which specifies how the data are represented on the plot (points, lines, bars, etc.),
+ * *aesthetics* that map variables in the data to axes on the plot or to plotting size, shape, color, etc.,
+ * a *stat*, a statistical transformation or summary of the data applied prior to plotting,
+ * *facets*, which we've already seen above, that allow the data to be divided into chunks on the basis of other categorical or continuous variables and the same plot drawn for each chunk.
+
+Because **ggplot2** implements a *layered* grammar of graphics, data points and additional information (scatterplot smoothers, confidence bands, etc.) can be added to the plot via additional layers, each of which utilize further geoms, aesthetics, and stats.
+
+To make the best use of **ggplot2** it helps to understand the grammar and how it affects how plots are produced. In addition, it is important to note that **ggplot2** is not a general-purpose plotting tool-kit; you may not be able to achieve certain plots or additions to a figure of they do not map onto concepts included in the layered grammar.
+
+In the examples above, we used **ggplot2**'s convenience function, `qplot`, because it's syntax should be familiar if you've already used base graphics. The `qplot` function did a lot of stuff for us: it created the plot object, added layers, plotted geoms, mapped features to aesthetics, created facets, and displayed the result. From here out, we'll use the `ggplot` function to build everything ourselves. 
+
+The `ggplot` function has two required arguments: the *data* used for creating the plot, and an *aesthetic* mapping to describe how variables in said data are mapped to things we can see on the plot. Let's use `ggplot` to recreate some of the same plots we produced above. First, the simple scatterplot:
+
+```{r ggdiamonds}
+# Using the qplot convenience function:
+# qplot(carat, price, data = diamonds)
+
+# Using ggplot:
+ggplot(diamonds, aes(carat, price)) + geom_point()
+```
+
+Here, we've built our plot in layers. First, we create a canvas for plotting layers to come using the `ggplot` function, specifying which **data** to use (here, the *diamonds* data frame), and an **aesthetic mapping** of *carat* to the x-axis and *price* to the y-axis. We next add a layer to the plot, specifying a **geom**, or a way of visually representing the aesthetic mapping. Here we're using a point. Instead of using a point, we could use a different geom. Here, let's use [hexagonal binning](http://cran.r-project.org/web/packages/hexbin/vignettes/hexagon_binning.pdf) instead of a point.
+
+```{r gghexbin}
+ggplot(diamonds, aes(carat, price)) + geom_hex()
+```
+
+Here, each bin represents a segment of the plotting surface with lighter blue colors representing more density in that segment. The number of bins can be adjusted as an argument to the `geom_hex()` function. This is one method of solving the overplotting problem we have in this plot without doing any faceting. Another method, here using points again, is to lower the opacity of each point. Here, `alpha=1/5` sets the opacity of each point to 20%. In other words, 5 points would have to overlap to result in a completely solid point. Note that in this case we're not *mapping* the alpha level aesthetic to some other variable as we did above with color -- we're setting it to a static value of 0.20 for all points in the layer.
+
+```{r gghexbin2}
+ggplot(diamonds, aes(carat, price)) + geom_point(alpha=1/5)
+```
+
+We can easily add more layers to the plot. For instance, we could add another layer displaying a smoothed conditional mean using the `geom_smooth()` function.
+
+```{r smoothgam}
+ggplot(diamonds, aes(carat, price)) + geom_point() + geom_smooth()
+```
+
+We'll get a message telling us that because we have >1,000 observations we will default to using a generalized additive model. We could easily plot a straight line by specifying that we want a linear model (`method="lm"`) instead of a generalized additive model, the default for large datasets.
+
+```{r smoothlinear}
+ggplot(diamonds, aes(carat, price)) + geom_point() + geom_smooth(method="lm")
+```
+
+Getting back to our examples above, using the `ggplot` syntax we can map the color of the points (an aesthetic) onto one of the variables in our dataset.
+
+```{r ggclarcol}
+# Using the qplot convenience function:
+# qplot(carat, price, data = diamonds, col = clarity) 
+# Using ggplot:
+ggplot(diamonds, aes(carat, price, col=clarity)) + geom_point()
+```
+
+We can also create a faceted plot as we did above using the `ggplot` function adding another layer with `facet_grid`.
+
+```{r ggfacet, fig.height=10, fig.width=10}
+# Using the qplot convenience function:  
+# qplot(carat, price, data = diamonds, facets = clarity ~ color)   
+# Using ggplot:
+ggplot(diamonds, aes(carat, price)) + geom_point() + facet_grid(clarity ~ color)
+```
+
+By combining multiple layers with aesthetic mappings to different scales, **ggplot2** provides a foundation for producing a wide range of statistical graphics beyond simple "named" plots like scatter plots, histograms, bar plots, etc.
+
+How about a stacked histogram, mapping the fill color of the stacked histogram to levels of the *clarity* variable:
+
+```{r ggfillhisto}
+ggplot(diamonds, aes(price, fill=clarity)) + geom_histogram(position="fill", binwidth=200)
+```
+
+Or what about box plots of the price grouped separately by the quality of the cut, color-coded by the color of the diamond, with the price on the y-axis being on the log (base 10) scale? Simple:
+
+```{r ggboxplots, fig.width=12}
+ggplot(diamonds, aes(cut, price)) + geom_boxplot(aes(fill=color)) + scale_y_log10()
+```
+
+Or what about a kernel density plot (think about a smooth histogram) of the diamond's table depth in different semitransparent curves with the color fill mapped to each level of *cut*, all on the same facet limited to depths between 55 and 70, with a title and a proper axis labels? This also shows the syntax of building up a plot one step at a time. We first initialize the plot with `ggplot`, giving it the data we're working with, and aesthetic mappings. We then add a `geom_density` layer, limit the x-axis displayed, and finally give it a title and axis labels. The plot is in the **g** object here; we can simply enter `g` and the plot will be displayed.
+
+```{r ggdepthdensity, warning=FALSE}
+g <- ggplot(diamonds, aes(depth, fill=cut)) 
+g <- g + geom_density(alpha=1/4) 
+g <- g + xlim(55, 70)
+g <- g + ggtitle("Table Depths by Cut Quality")
+g <- g + xlab("Table Depth") + ylab("Density")
+g
+```
+
+Finally, we can save the plot created using the `ggsave` function:
+
+```{r ggsave, eval=FALSE}
+ggsave(filename="~/Desktop/table-depth-density.png", plot=g)
+```
+
+There are endless ways to combine aesthetic mappings with different geoms and multiple layers. Read about other **geom**s, mappings, scales, and other layer options at the links below.
+
+## Further **ggplot2** resources
+
+* <http://docs.ggplot2.org/current/>: The official **ggplot2** documentation.
+* <http://www.amazon.com/o/ASIN/0387981403/ref=nosim/gettgenedone-20>: The **ggplot2** book, by the developer, Hadley Wickham.
+* <https://groups.google.com/forum/#!forum/ggplot2>: The **ggplot2** Google Group (mailing list, discussion forum).
+* <https://github.com/swcarpentry/bc/tree/master/intermediate/r/data-visualization>: Intermediate Software Carpentry lesson on data visualization with **ggplot2**.
+* <http://learnr.wordpress.com/>: A blog with a good number of posts describing how to reproduce various kind of plots using **ggplot2**.
+* <http://stackoverflow.com/questions/tagged/ggplot2>: Thousands of questions and answers tagged with "ggplot2" on Stack Overflow, a programming Q&A site.
