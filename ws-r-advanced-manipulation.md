@@ -14,6 +14,8 @@ Data analysis involves a large amount of [janitor work](http://www.nytimes.com/2
 
 * This is not a beginner course. This workshop requires basic familiarity with R: data types including vectors and data frames, importing/exporting data, and plotting. You can refresh your R knowledge with [DataCamp's Intro to R](https://www.datacamp.com/courses/introduction-to-r) or [TryR from CodeSchool](http://tryr.codeschool.com/).
 * Bring a laptop to the course with the software installed as detailed below.
+* Print and bring this [R Cheat Sheet](http://dx.doi.org/10.6084/m9.figshare.1080756) as a refresher from the intro R course.
+* Print and bring the [Data Wrangling Cheat Sheet from this link](http://www.rstudio.com/resources/cheatsheets/).
 
 **Registration:** [Click here](https://www.bioconnector.virginia.edu/events).
 
