@@ -2,16 +2,7 @@
 layout: page
 ---
 
-```{r, echo=FALSE, message=FALSE, eval=TRUE}
-# Set eval=TRUE to hide all results and figures.
-# This sets defaults. Can change this manually in individual chunks.
-# Must load knitr so opts_chunk is in search path.
-library(knitr)
-opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none", eval=TRUE)
-options(digits=3)
-# Keep track of the exercise numbers with a hidden variable. Update each exercise using: `r .ex``r .ex=.ex+1`
-.ex <- 1
-```
+
 
 # Advanced Data Visualization with R
 
@@ -52,7 +43,8 @@ Let's load the data first. There are two ways to do this. You can use RStudio's 
 
 Once we've loaded it we can type the name of the object itself (`gm`) to view the entire data frame. Alternatively, we can use some of the functions below to look at bits and pieces of the data frame.
 
-```{r readGapminder, eval=TRUE}
+
+```r
 # Read the data from file
 gm <- read.csv("data/gapminder.csv", header=TRUE)
 
@@ -74,7 +66,8 @@ There are several built-in functions that are useful for working with data frame
     * `str()`: structure of the object and information about the class, length and content of each column
     * `summary()`: works differently depending on what kind of object you pass to it. Passing a data frame to the `summary()` function prints out some summary statistics about each column (min, max, median, mean, etc.)
     
-```{r data_frame_functions}
+
+```r
 head(gm)
 tail(gm)
 dim(gm)
@@ -91,7 +84,8 @@ summary(gm)
 
 First, let's turn gm into a tbl_df.
 
-```{r gm_to_tbl}
+
+```r
 library(dplyr)
 gm <- tbl_df(gm)
 
@@ -111,7 +105,8 @@ Recall the dplyr verbs and the chain or pipe operator `%>%`.
 
 The `filter()` function allows you to select out only particular rows that match a condition. 
 
-```{r filter}
+
+```r
 # Show only stats for the year 1982
 filter(gm, year==1982)
 
@@ -129,7 +124,8 @@ gm %>% filter(continent=="Americas" & year==1997)
 
 The `filter()` function allows you to return only certain rows matching a condition. The `select()` function lets you subset the data and restrict to a number of columns. The first argument is the data, and subsequent arguments are the columns you want. Let's just get the year and the population variables.
 
-```{r select}
+
+```r
 gm %>% select(year, pop)
 ```
 
@@ -137,7 +133,8 @@ gm %>% select(year, pop)
 
 The `mutate()` function adds new columns to the data. Remember, the variable in our dataset is GDP per capita, which is the total GDP divided by the population size for that country, for that year. Let's mutate this dataset and add a column called gdpBil that is the raw GDP in billions:
 
-```{r mutate}
+
+```r
 gm %>% mutate(gdpBil=pop*gdpPercap/1e9)
 ```
 
@@ -146,7 +143,8 @@ gm %>% mutate(gdpBil=pop*gdpPercap/1e9)
 
 The `arrange()` function does what it sounds like. It takes a data frame or tbl and arranges (or sorts) by column(s) of interest. The first argument is the data, and subsequent arguments are columns to sort on. Use the `desc()` function to arrange by descending.
 
-```{r arrange}
+
+```r
 gm %>% arrange(lifeExp)
 gm %>% arrange(year, desc(lifeExp))
 ```
@@ -156,7 +154,8 @@ gm %>% arrange(year, desc(lifeExp))
 
 Combining `group_by()` with `summarize()` can be very powerful. 
 
-```{r groupby}
+
+```r
 gm %>% summarize(mean(lifeExp))
 gm %>%
   group_by(continent, year) %>%
@@ -186,19 +185,26 @@ The `ggplot` function has two required arguments: the *data* used for creating t
 
 First let's load the package:
 
-```{r loadggplot2, eval=TRUE}
+
+```r
 library(ggplot2)
 ```
 
 Now, let's lay out the plot. If we want to plot a continuous Y variable by a continuous X variable we're probably most interested in a scatter plot. Here, we're telling ggplot that we want to use the `gm` dataset, and the aesthetic mapping will map `gdpPercap` onto the x-axis and `lifeExp` onto the y-axis.
 
-```{r}
+
+```r
 ggplot(gm, aes(x = gdpPercap, y = lifeExp))
+```
+
+```
+## Error: No layers in plot
 ```
 
 Look at that, we get an error, and it's pretty clear from the message what the problem is. We've laid out a two-dimensional plot specifying what goes on the x and y axes, but we haven't told it what kind of geometric object to plot. The obvious choice here is a point. Check out [docs.ggplot2.org](http://docs.ggplot2.org/) to see what kind of geoms are available.
 
-```{r}
+
+```r
 ggplot(gm, aes(x = gdpPercap, y = lifeExp)) + geom_point()
 ```
 
@@ -208,13 +214,15 @@ Now, the typical workflow for building up a ggplot2 plot is to first construct t
 
 First, let's construct the graphic. Notice that we don't have to specify `x=` and `y=` if we specify the arguments in the correct order (x is first, y is second).
 
-```{r, eval=TRUE}
+
+```r
 p <- ggplot(gm, aes(gdpPercap, lifeExp))
 ```
 
 Now, if we tried to display p here alone we'd get another error because we don't have any layers in the plot. Let's experiment with adding points and a different scale to the x-axis.
 
-```{r}
+
+```r
 # Experiment with adding poings
 p + geom_point()
 
@@ -224,13 +232,15 @@ p + geom_point() + scale_x_log10()
 
 I like the look of using a log scale for the x-axis. Let's make that stick.
 
-```{r, eval=TRUE}
+
+```r
 p <- p + scale_x_log10()
 ```
 
 Then re-plot again with a layer of points:
 
-```{r}
+
+```r
 p + geom_point()
 ```
 
@@ -238,31 +248,35 @@ Now notice what I've saved to `p` at this point: only the basic plot layout and 
 
 Above we implied the aesthetic mappings for the x- and y- axis should be `gdpPercap` and `lifeExp`, but we can also add aesthetic mappings to the geoms themselves. For instance, what if we wanted to color the points by the value of another variable in the dataset, say, continent?
 
-```{r}
+
+```r
 p + geom_point(aes(color=continent))
 ```
 
 Notice the difference here. If I wanted the colors to be some static value, I wouldn't wrap that in a call to `aes()`. I would just specify it outright. Same thing with other features of the points. For example, lets make all the points huge (`size=8`) blue (`color="blue"`) semitransparent (`alpha=(1/4)`) triangles (`pch=17`):
 
-```{r}
+
+```r
 p + geom_point(color="blue", pch=17, size=8, alpha=(1/4))
 ```
 
 Now, this time, let's map the aesthetics of the point character to certain features of the data. For instance, let's give the points different colors and character shapes according to the continent, and map the size of the point onto the life Expectancy:
 
-```{r}
+
+```r
 p + geom_point(aes(col=continent, pch=continent, size=lifeExp))
 ```
 
 Now, this isn't a great plot because there are several aesthetic mappings that are redundant. Life expectancy is mapped to both the y-axis and the size of the points -- the size mapping is superfluous. Similarly, continent is mapped to both the color and the point character (the point character is superfluous). Let's get rid of that, but let's make the points a little bigger outsize of an aesthetic mapping.
 
-```{r}
+
+```r
 p + geom_point(aes(col=continent), size=3)
 ```
 
 ---
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE 1**
 
 Re-create this same plot from scratch without saving anything to a variable. That is, start from the `ggplot` call. 
 
@@ -274,11 +288,7 @@ Re-create this same plot from scratch without saving anything to a variable. Tha
   * Map continent onto the aesthetics of the point
 * Use a log<sub>10</sub> scale for the x-axis.
 
-```{r, echo=FALSE}
-ggplot(gm, aes(gdpPercap, lifeExp)) + 
-  geom_point(aes(col=continent), size=3) + 
-  scale_x_log10()
-```
+
 
 ---
 
@@ -286,25 +296,29 @@ ggplot(gm, aes(gdpPercap, lifeExp)) +
 
 Let's add a fitted curve to the points. 
 
-```{r}
+
+```r
 p + geom_point() + geom_smooth()
 ```
 
 By default `geom_smooth()` will try to lowess for data with n<1000 or generalized additive models for data with n>1000. We can change that behavior by tweaking the parameters to use a thick red line, use a linear model instead of a GAM, and to turn off the standard error stripes.
 
-```{r}
+
+```r
 p + geom_point() + geom_smooth(lwd=2, se=FALSE, method="lm", col="red")
 ```
 
 But let's add back in our aesthetic mapping to the continents. Notice what happens here. We're mapping continent as an aesthetic mapping _to the color of the points only_ -- so `geom_smooth()` still works only on the entire data. 
 
-```{r}
+
+```r
 p + geom_point(aes(color = continent)) + geom_smooth()
 ```
 
 But notice what happens here: we make the call to `aes()` outside of the `geom_point()` call, and the continent variable gets mapped as an aesthetic to any further geoms. So here, we get separate smoothing lines for each continent. Let's do it again but remove the standard error stripes and make the lines a bit thicker.
 
-```{r}
+
+```r
 p + aes(color = continent) + geom_point() + geom_smooth()
 p + aes(color = continent) + geom_point() + geom_smooth(se=F, lwd=2)
 ```
@@ -313,7 +327,8 @@ p + aes(color = continent) + geom_point() + geom_smooth(se=F, lwd=2)
 
 Facets display subsets of the data in different panels. There are a couple ways to do this, but `facet_wrap()` tries to sensibly wrap a series of facets into a 2-dimensional grid of small multiples. Just give it a formula specifying which variables to facet by. We can continue adding more layers, such as smoothing. If you have a look at the help for `?facet_wrap()` you'll see that we can control how the wrapping is laid out.
 
-```{r}
+
+```r
 p + geom_point() + facet_wrap(~continent)
 p + geom_point() + geom_smooth() + facet_wrap(~continent)
 p + geom_point() + geom_smooth() + facet_wrap(~continent, ncol=1)
@@ -323,37 +338,30 @@ p + geom_point() + geom_smooth() + facet_wrap(~continent, ncol=1)
 
 There are a few ways to save ggplots. The quickest way, that works in an interactive session, is to use the `ggsave()` function. You give it a file name and by default it saves the last plot that was printed to the screen. 
 
-```{r, eval=FALSE}
+
+```r
 p + geom_point()
 ggsave(file="myplot.png")
 ```
 
 But if you're running this through a script, the best way to do it is to pass `ggsave()` the object containing the plot that is meant to be saved. We can also adjust things like the width, height, and resolution. `ggsave()` also recognizes the name of the file extension and saves the appropriate kind of file. Let's save a PDF.
 
-```{r, eval=FALSE}
+
+```r
 pfinal <- p + geom_point() + geom_smooth() + facet_wrap(~continent, ncol=1)
 ggsave(pfinal, file="myplot.pdf", width=5, height=15)
 ```
 
 ---
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE 2**
 
 0. Make a scatter plot of `lifeExp` on the y-axis against `year` on the x.
 0. Make a series of small multiples faceting on continent.
 0. Add a fitted curve, smooth or lm, with and without facets.
 0. **Bonus**: using `geom_line()` and and aesthetic mapping `country` to `group=`, make a "spaghetti plot", showing _semitransparent_ lines connected for each country, faceted by continent. Add a smoothed loess curve with a thick (`lwd=3`) line with no standard error stripe.
 
-```{r, echo=FALSE}
-p <- ggplot(gm, aes(year, lifeExp))
-p + geom_point()
-p + geom_point() + geom_smooth()
-p + geom_point() + geom_smooth() + facet_wrap(~continent)
 
-p + facet_wrap(~continent) + geom_line()
-p + facet_wrap(~continent) + geom_line(aes(group=country))
-p + facet_wrap(~continent) + geom_line(aes(group=country), alpha=.5) + geom_smooth(lwd=3, se=FALSE)
-```
 
 ---
 
@@ -363,55 +371,64 @@ With the last example we examined the relationship between a continuous Y variab
 
 First, let's set up the basic plot:
 
-```{r, eval=TRUE}
+
+```r
 p <- ggplot(gm, aes(continent, lifeExp)) 
 ```
 
 Then add points:
 
-```{r}
+
+```r
 p + geom_point()
 ```
 
 That's not terribly useful. There's a big overplotting problem. We can try to solve with transparency:
 
-```{r}
+
+```r
 p + geom_point(alpha=1/4)
 ```
 
 But that really only gets us so far. What if we spread things out by adding a little bit of horizontal noise (aka "jitter") to the data.
 
-```{r}
+
+```r
 p + geom_jitter()
 ```
 
 Note that the little bit of horizontal noise that's added to the jitter is random. If you run that command over and over again, each time it will look slightly different. The idea is to visualize the density at each vertical position, and spreading out the points horizontally allows you to do that. If there were still lots of over-plotting you might think about adding some transparency by setting the `alpha=` value for the jitter.
 
-```{r}
+
+```r
 p + geom_jitter(alpha=1/2)
 ```
 
 Probably a more common visualization is to show a box plot:
 
-```{r}
+
+```r
 p + geom_boxplot()
 ```
 
 But why not show the summary and the raw data?
 
-```{r}
+
+```r
 p + geom_jitter() + geom_boxplot()
 ```
 
 Notice how in that example we first added the jitter layer then added the boxplot layer. But the boxplot is now superimposed over the jitter layer. Let's make the jitter layer go on top. Also, go back to just the boxplots. Notice that the outliers are represented as points. But there's no distinction between the outlier point from the boxplot geom and all the other points from the jitter geom. Let's change that.
 
-```{r}
+
+```r
 p + geom_boxplot(outlier.colour = "red") + geom_jitter(alpha=1/2)
 ```
 
 There's another geom that's useful here, called a voilin plot.
 
-```{r}
+
+```r
 p + geom_violin()
 
 p + geom_violin() + geom_jitter(alpha=1/2)
@@ -419,45 +436,33 @@ p + geom_violin() + geom_jitter(alpha=1/2)
 
 Let's go back to our boxplot for a moment.
 
-```{r}
+
+```r
 p + geom_boxplot()
 ```
 
 This plot would be a lot more effective if the continents were shown in some sort of order other than alphabetical. To do that, we'll have to go back to our basic build of the plot again and use the `reorder` function in our original aesthetic mapping. Here, reorder is taking the first variable, which is some categorical variable, and ordering it by the level of the mean of the second variable, which is a continuous variable. It looks like this
 
-```{r, eval=TRUE}
+
+```r
 p <- ggplot(gm, aes(reorder(continent, lifeExp), lifeExp))
 ```
 
-```{r}
+
+```r
 p + geom_boxplot()
 ```
 
 ---
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE 3**
 
 0. Make a jittered strip plot of GDP per capita against continent.
 0. Make a box plot of GDP per capita against continent.
 0. Using a log<sub>10</sub> y-axis scale, overlay semitransparent jittered points on top of box plots, where outlying points are colored. 
 0. **BONUS**: Try to reorder the continents on the x-axis by GDP per capita. Why isn't this working as expected? See `?reorder` for clues.
 
-```{r, echo=FALSE}
-p <- ggplot(gm, aes(continent, gdpPercap))
-p + geom_jitter()
-p + geom_boxplot()
 
-p <- ggplot(gm, aes(reorder(continent, gdpPercap), gdpPercap))
-p <- p + scale_y_log10()
-p + geom_boxplot(outlier.colour="red") + geom_jitter(alpha=1/2)
-
-library(dplyr)
-gm %>% group_by(continent) %>% summarize(mean(gdpPercap))
-gm %>% group_by(continent) %>% summarize(mean(log10(gdpPercap)))
-p <- ggplot(gm, aes(reorder(continent, gdpPercap, FUN=function(x) mean(log10(x))), gdpPercap))
-p <- p + scale_y_log10()
-p + geom_boxplot(outlier.colour="red") + geom_jitter(alpha=1/2)
-```
 
 ---
 
@@ -465,14 +470,16 @@ p + geom_boxplot(outlier.colour="red") + geom_jitter(alpha=1/2)
 
 What if we just wanted to visualize distribution of a single continuous variable? A histogram is the usual go-to visualization. Here we only have one aesthetic mapping instead of two.
 
-```{r histogram}
+
+```r
 p <- ggplot(gm, aes(lifeExp))
 p + geom_histogram()
 ```
 
 When we do this ggplot lets us know that we're automatically selecting the width of the bins, and we might want to think about this a little further.
 
-```{r}
+
+```r
 p + geom_histogram(binwidth=5)
 p + geom_histogram(binwidth=1)
 p + geom_histogram(binwidth=.25)
@@ -480,50 +487,57 @@ p + geom_histogram(binwidth=.25)
 
 Alternative we could plot a smoothed density curve instead of a histogram:
 
-```{r}
+
+```r
 p + geom_density()
 ```
 
 Back to histograms. What if we wanted to color this by continent?
 
-```{r}
+
+```r
 p + geom_histogram(aes(color=continent))
 ```
 
 That's not what we had in mind. That's just the outline of the bars. We want to change the fill color of the bars.
 
-```{r}
+
+```r
 p + geom_histogram(aes(fill=continent))
 ```
 
 Well, that's not exactly what we want either. If you look at the help for `?geom_histogram` you'll see that by default it stacks overlapping points. This isn't really an effective visualization. Let's change the position argument.
 
-```{r}
+
+```r
 p + geom_histogram(aes(fill=continent), position="identity")
 ```
 
 But the problem there is that the histograms are blocking each other. What if we tried transparency?
 
-```{r}
+
+```r
 p + geom_histogram(aes(fill=continent), position="identity", alpha=1/3)
 ```
 
 That's somewhat helpful, and might work for two distributions, but it gets cumbersome with 5. Let's go back and try this with density plots, first changing the color of the line:
 
-```{r}
+
+```r
 p + geom_density(aes(color=continent))
 ```
 
 Then by changing the color of the fill and setting the transparency to 25%:
 
-```{r}
+
+```r
 p + geom_density(aes(fill=continent), alpha=1/4)
 ```
 
 
 ---
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE 4**
 
 0. Plot a histogram of GDP Per Capita.
 0. Do the same but use a log<sub>10</sub> x-axis.
@@ -531,16 +545,7 @@ p + geom_density(aes(fill=continent), alpha=1/4)
 0. Still on the log<sub>10</sub> x-axis scale, make a histogram faceted by continent _and_ filled by continent. Facet with a single column (see `?facet_wrap` for help). Save this to a 6x10 PDF file.
 
 
-```{r, echo=FALSE, eval=FALSE}
-p <- ggplot(gm, aes(gdpPercap))
-p + geom_histogram()
 
-p <- p + scale_x_log10()
-p + geom_histogram()
-p + geom_density(aes(fill=continent), alpha=1/4)
-p + geom_histogram(aes(fill=continent)) + facet_wrap(~continent, ncol=1)
-ggsave("myplot.pdf", width=6, height=10)
-```
 
 ---
 
@@ -548,7 +553,8 @@ ggsave("myplot.pdf", width=6, height=10)
 
 Let's make a plot we made earlier:
 
-```{r}
+
+```r
 p <- ggplot(gm, aes(gdpPercap, lifeExp)) 
 p <- p + scale_x_log10()
 p <- p + aes(col=continent) + geom_point() + geom_smooth(lwd=2, se=FALSE)
@@ -557,7 +563,8 @@ p
 
 Give the plot a title and axis labels:
 
-```{r}
+
+```r
 p <- p + ggtitle("Life expectancy vs GDP by Continent")
 p <- p + xlab("GDP Per Capita (USD)") + ylab("Life Expectancy (years)")
 p
@@ -565,30 +572,35 @@ p
 
 They "gray" theme is the usual background.
 
-```{r}
+
+```r
 p + theme_gray()
 ```
 
 We could also get a black and white background:
 
-```{r}
+
+```r
 p + theme_bw()
 ```
 
 Or go a step further and remove the gridlines:
 
-```{r}
+
+```r
 p + theme_classic()
 ```
 
 Finally, there's another package that gives us lots of different themes. This package isn't on CRAN, so you'll have to use devtools to install it directly from the source code on github.
 
-```{r, eval=FALSE}
+
+```r
 install.packages("devtools")
 devtools::install_github("jrnold/ggthemes")
 ```
 
-```{r themes, eval=FALSE}
+
+```r
 library(ggthemes)
 p + theme_excel()
 p + theme_excel() + scale_colour_excel()
@@ -606,11 +618,9 @@ p + theme_tufte()
 
 ---
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE 5**
 
-```{r, echo=FALSE}
 
-```
 
 ---
 
