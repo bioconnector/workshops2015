@@ -21,15 +21,7 @@ Data analysis involves a large amount of [janitor work](http://www.nytimes.com/2
 
 **Course material:**
 
-_Check back after course_
-
-<!-- Uncomment below to post course material -->
-<!--
-* [Slides](https://speakerdeck.com/stephenturner/introduction-to-r-for-life-scientists)
-* Code used in course:
-    * Part I: [Introduction to R](r/r-intro/)
-    * Part II: [RNA-seq data analysis](r-deseq2-demo/)
- -->
+[Click here](../lessons/r/r-manipulation/)
 
 ## Before coming
 
