@@ -257,7 +257,7 @@ Notice the difference here. If I wanted the colors to be some static value, I wo
 
 
 ```r
-p + geom_point(color="blue", pch=17, size=8, alpha=(1/4))
+p + geom_point(color="blue", pch=17, size=8, alpha=1/4)
 ```
 
 Now, this time, let's map the aesthetics of the point character to certain features of the data. For instance, let's give the points different colors and character shapes according to the continent, and map the size of the point onto the life Expectancy:
@@ -271,7 +271,7 @@ Now, this isn't a great plot because there are several aesthetic mappings that a
 
 
 ```r
-p + geom_point(aes(col=continent), size=3)
+p + geom_point(aes(col=continent), size=4)
 ```
 
 ---
@@ -284,7 +284,7 @@ Re-create this same plot from scratch without saving anything to a variable. Tha
 * Use the gm data.
 * Map `gdpPercap` to the x-axis and `lifeExp` to the y-axis.
 * Add points to the plot
-  * Make the points size 3
+  * Make the points size 4
   * Map continent onto the aesthetics of the point
 * Use a log<sub>10</sub> scale for the x-axis.
 
@@ -298,6 +298,7 @@ Let's add a fitted curve to the points.
 
 
 ```r
+p <- ggplot(gm, aes(gdpPercap, lifeExp)) + scale_x_log10()
 p + geom_point() + geom_smooth()
 ```
 
@@ -359,7 +360,7 @@ ggsave(pfinal, file="myplot.pdf", width=5, height=15)
 0. Make a scatter plot of `lifeExp` on the y-axis against `year` on the x.
 0. Make a series of small multiples faceting on continent.
 0. Add a fitted curve, smooth or lm, with and without facets.
-0. **Bonus**: using `geom_line()` and and aesthetic mapping `country` to `group=`, make a "spaghetti plot", showing _semitransparent_ lines connected for each country, faceted by continent. Add a smoothed loess curve with a thick (`lwd=3`) line with no standard error stripe.
+0. **Bonus**: using `geom_line()` and and aesthetic mapping `country` to `group=`, make a "spaghetti plot", showing _semitransparent_ lines connected for each country, faceted by continent. Add a smoothed loess curve with a thick (`lwd=3`) line with no standard error stripe. Reduce the opacity (`alpha=`) of the individual black lines.
 
 
 
@@ -418,7 +419,7 @@ But why not show the summary and the raw data?
 p + geom_jitter() + geom_boxplot()
 ```
 
-Notice how in that example we first added the jitter layer then added the boxplot layer. But the boxplot is now superimposed over the jitter layer. Let's make the jitter layer go on top. Also, go back to just the boxplots. Notice that the outliers are represented as points. But there's no distinction between the outlier point from the boxplot geom and all the other points from the jitter geom. Let's change that.
+Notice how in that example we first added the jitter layer then added the boxplot layer. But the boxplot is now superimposed over the jitter layer. Let's make the jitter layer go on top. Also, go back to just the boxplots. Notice that the outliers are represented as points. But there's no distinction between the outlier point from the boxplot geom and all the other points from the jitter geom. Let's change that. Notice the British spelling.
 
 
 ```r
@@ -445,7 +446,7 @@ This plot would be a lot more effective if the continents were shown in some sor
 
 
 ```r
-p <- ggplot(gm, aes(reorder(continent, lifeExp), lifeExp))
+p <- ggplot(gm, aes(x=reorder(continent, lifeExp), y=lifeExp))
 ```
 
 
@@ -551,7 +552,7 @@ p + geom_density(aes(fill=continent), alpha=1/4)
 
 ## Themes
 
-Let's make a plot we made earlier:
+Let's make a plot we made earlier (life expectancy versus the log of GDP per capita with points colored by continent with lowess smooth curves overlaid without the standard error ribbon):
 
 
 ```r
@@ -607,8 +608,8 @@ p + theme_excel() + scale_colour_excel()
 p + theme_gdocs() + scale_colour_gdocs()
 p + theme_stata() + scale_colour_stata()
 p + theme_wsj() + scale_colour_wsj()
-p + theme_fivethirtyeight()
 p + theme_economist() 
+p + theme_fivethirtyeight()
 p + theme_tufte()
 ```
 

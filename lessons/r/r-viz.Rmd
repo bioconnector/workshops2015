@@ -245,7 +245,7 @@ p + geom_point(aes(color=continent))
 Notice the difference here. If I wanted the colors to be some static value, I wouldn't wrap that in a call to `aes()`. I would just specify it outright. Same thing with other features of the points. For example, lets make all the points huge (`size=8`) blue (`color="blue"`) semitransparent (`alpha=(1/4)`) triangles (`pch=17`):
 
 ```{r}
-p + geom_point(color="blue", pch=17, size=8, alpha=(1/4))
+p + geom_point(color="blue", pch=17, size=8, alpha=1/4)
 ```
 
 Now, this time, let's map the aesthetics of the point character to certain features of the data. For instance, let's give the points different colors and character shapes according to the continent, and map the size of the point onto the life Expectancy:
@@ -257,7 +257,7 @@ p + geom_point(aes(col=continent, pch=continent, size=lifeExp))
 Now, this isn't a great plot because there are several aesthetic mappings that are redundant. Life expectancy is mapped to both the y-axis and the size of the points -- the size mapping is superfluous. Similarly, continent is mapped to both the color and the point character (the point character is superfluous). Let's get rid of that, but let's make the points a little bigger outsize of an aesthetic mapping.
 
 ```{r}
-p + geom_point(aes(col=continent), size=3)
+p + geom_point(aes(col=continent), size=4)
 ```
 
 ---
@@ -270,13 +270,13 @@ Re-create this same plot from scratch without saving anything to a variable. Tha
 * Use the gm data.
 * Map `gdpPercap` to the x-axis and `lifeExp` to the y-axis.
 * Add points to the plot
-  * Make the points size 3
+  * Make the points size 4
   * Map continent onto the aesthetics of the point
 * Use a log<sub>10</sub> scale for the x-axis.
 
 ```{r, echo=FALSE}
 ggplot(gm, aes(gdpPercap, lifeExp)) + 
-  geom_point(aes(col=continent), size=3) + 
+  geom_point(aes(col=continent), size=4) + 
   scale_x_log10()
 ```
 
@@ -287,6 +287,7 @@ ggplot(gm, aes(gdpPercap, lifeExp)) +
 Let's add a fitted curve to the points. 
 
 ```{r}
+p <- ggplot(gm, aes(gdpPercap, lifeExp)) + scale_x_log10()
 p + geom_point() + geom_smooth()
 ```
 
@@ -342,7 +343,7 @@ ggsave(pfinal, file="myplot.pdf", width=5, height=15)
 0. Make a scatter plot of `lifeExp` on the y-axis against `year` on the x.
 0. Make a series of small multiples faceting on continent.
 0. Add a fitted curve, smooth or lm, with and without facets.
-0. **Bonus**: using `geom_line()` and and aesthetic mapping `country` to `group=`, make a "spaghetti plot", showing _semitransparent_ lines connected for each country, faceted by continent. Add a smoothed loess curve with a thick (`lwd=3`) line with no standard error stripe.
+0. **Bonus**: using `geom_line()` and and aesthetic mapping `country` to `group=`, make a "spaghetti plot", showing _semitransparent_ lines connected for each country, faceted by continent. Add a smoothed loess curve with a thick (`lwd=3`) line with no standard error stripe. Reduce the opacity (`alpha=`) of the individual black lines.
 
 ```{r, echo=FALSE}
 p <- ggplot(gm, aes(year, lifeExp))
@@ -403,7 +404,7 @@ But why not show the summary and the raw data?
 p + geom_jitter() + geom_boxplot()
 ```
 
-Notice how in that example we first added the jitter layer then added the boxplot layer. But the boxplot is now superimposed over the jitter layer. Let's make the jitter layer go on top. Also, go back to just the boxplots. Notice that the outliers are represented as points. But there's no distinction between the outlier point from the boxplot geom and all the other points from the jitter geom. Let's change that.
+Notice how in that example we first added the jitter layer then added the boxplot layer. But the boxplot is now superimposed over the jitter layer. Let's make the jitter layer go on top. Also, go back to just the boxplots. Notice that the outliers are represented as points. But there's no distinction between the outlier point from the boxplot geom and all the other points from the jitter geom. Let's change that. Notice the British spelling.
 
 ```{r}
 p + geom_boxplot(outlier.colour = "red") + geom_jitter(alpha=1/2)
@@ -426,7 +427,7 @@ p + geom_boxplot()
 This plot would be a lot more effective if the continents were shown in some sort of order other than alphabetical. To do that, we'll have to go back to our basic build of the plot again and use the `reorder` function in our original aesthetic mapping. Here, reorder is taking the first variable, which is some categorical variable, and ordering it by the level of the mean of the second variable, which is a continuous variable. It looks like this
 
 ```{r, eval=TRUE}
-p <- ggplot(gm, aes(reorder(continent, lifeExp), lifeExp))
+p <- ggplot(gm, aes(x=reorder(continent, lifeExp), y=lifeExp))
 ```
 
 ```{r}
@@ -546,7 +547,7 @@ ggsave("myplot.pdf", width=6, height=10)
 
 ## Themes
 
-Let's make a plot we made earlier:
+Let's make a plot we made earlier (life expectancy versus the log of GDP per capita with points colored by continent with lowess smooth curves overlaid without the standard error ribbon):
 
 ```{r}
 p <- ggplot(gm, aes(gdpPercap, lifeExp)) 
@@ -595,8 +596,8 @@ p + theme_excel() + scale_colour_excel()
 p + theme_gdocs() + scale_colour_gdocs()
 p + theme_stata() + scale_colour_stata()
 p + theme_wsj() + scale_colour_wsj()
-p + theme_fivethirtyeight()
 p + theme_economist() 
+p + theme_fivethirtyeight()
 p + theme_tufte()
 ```
 
