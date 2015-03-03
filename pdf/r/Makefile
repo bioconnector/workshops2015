@@ -6,7 +6,7 @@ all: $(FILENAME).pdf
 # include the markdown files for all the lessons here.
 # note, you cannot include the preface because the foreach loop below will process it, and you don't want this.
 # if you change the preface, you need to make rebuild.
-$(FILENAME).pdf $(FILENAME).epub: ../../lessons/r/r-intro.md ../../lessons/r/r-deseq2-demo.md
+$(FILENAME).pdf $(FILENAME).epub: ../../lessons/r/r-intro.md ../../lessons/r/r-manipulation.md ../../lessons/r/r-viz.md ../../lessons/r/r-deseq2-demo.md
 
 	# Use a make foreach loop to iterate through $^ (contains all pre-requisites).
 	# On each file, run `sed '1,3d' $^ >> tmp.md` to remove the first three lines (front matter).
