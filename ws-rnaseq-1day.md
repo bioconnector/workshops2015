@@ -36,8 +36,9 @@ The boot camp is a two-part series.
 **Part I:**
 
 * 0800-0830: *(Optional)* Help with setup
-* 0830-1030: Introduction to Linux
-* 1045-1230: QC, alignment and expression quantitation
+* 0830-0900: Using AWS EC2
+* 0900-1045: Introduction to Linux
+* 1100-1230: QC, alignment and expression quantitation
 
 **Part II:**
 
