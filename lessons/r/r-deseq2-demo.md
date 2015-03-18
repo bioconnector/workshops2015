@@ -134,28 +134,28 @@ sessionInfo()
 ## [8] datasets  base     
 ## 
 ## other attached packages:
-##  [1] DESeq2_1.6.3              RcppArmadillo_0.4.600.4.0
-##  [3] Rcpp_0.11.4               GenomicRanges_1.18.4     
+##  [1] DESeq2_1.6.3              RcppArmadillo_0.4.650.1.1
+##  [3] Rcpp_0.11.5               GenomicRanges_1.18.4     
 ##  [5] GenomeInfoDb_1.2.4        IRanges_2.0.1            
 ##  [7] S4Vectors_0.4.0           BiocGenerics_0.12.1      
 ##  [9] knitr_1.9                 BiocInstaller_1.16.1     
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] acepack_1.3-3.3      annotate_1.44.0      AnnotationDbi_1.28.1
-##  [4] base64enc_0.1-2      BatchJobs_1.5        BBmisc_1.8          
+##  [4] base64enc_0.1-2      BatchJobs_1.5        BBmisc_1.9          
 ##  [7] Biobase_2.26.0       BiocParallel_1.0.2   brew_1.0-6          
 ## [10] checkmate_1.5.1      cluster_2.0.1        codetools_0.2-10    
 ## [13] colorspace_1.2-4     DBI_0.3.1            digest_0.6.8        
 ## [16] evaluate_0.5.5       fail_1.2             foreach_1.4.2       
-## [19] foreign_0.8-62       formatR_1.0          Formula_1.2-0       
+## [19] foreign_0.8-63       formatR_1.0          Formula_1.2-0       
 ## [22] genefilter_1.48.1    geneplotter_1.44.0   ggplot2_1.0.0       
-## [25] grid_3.1.2           gtable_0.1.2         Hmisc_3.14-6        
-## [28] iterators_1.0.7      lattice_0.20-29      latticeExtra_0.6-26 
-## [31] locfit_1.5-9.1       MASS_7.3-37          munsell_0.4.2       
-## [34] nnet_7.3-8           plyr_1.8.1           proto_0.3-10        
-## [37] RColorBrewer_1.1-2   reshape2_1.4.1       rpart_4.1-8         
+## [25] grid_3.1.2           gtable_0.1.2         Hmisc_3.15-0        
+## [28] iterators_1.0.7      lattice_0.20-30      latticeExtra_0.6-26 
+## [31] locfit_1.5-9.1       MASS_7.3-39          munsell_0.4.2       
+## [34] nnet_7.3-9           plyr_1.8.1           proto_0.3-10        
+## [37] RColorBrewer_1.1-2   reshape2_1.4.1       rpart_4.1-9         
 ## [40] RSQLite_1.0.0        scales_0.2.4         sendmailR_1.2-1     
-## [43] splines_3.1.2        stringr_0.6.2        survival_2.37-7     
+## [43] splines_3.1.2        stringr_0.6.2        survival_2.38-1     
 ## [46] tools_3.1.2          XML_3.98-1.1         xtable_1.7-4        
 ## [49] XVector_0.6.0
 ```

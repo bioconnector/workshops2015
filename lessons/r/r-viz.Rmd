@@ -23,7 +23,7 @@ This is not a beginner course. This workshop requires basic familiarity with R: 
 This course also requires some experience with data manipulation using dplyr functions. If you already know some R, you can learn the basics of dplyr by spending 10 minutes with [the dplyr vignette](http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html).
 -->
 
-_Attribution:_ This course material is modified from lesson material from [Software Carpentry](http://software-carpentry.org/), [Data Carpentry](http://datacarpentry.org/), and Jenny Bryan's [Stat 545 course at UBC](http://stat545-ubc.github.io/).
+_Attribution:_ This course material is modified from lesson material from Jenny Bryan's [Stat 545 course at UBC](http://stat545-ubc.github.io/), [Software Carpentry](http://software-carpentry.org/), and [Data Carpentry](http://datacarpentry.org/).
 
 ## Before coming
 
