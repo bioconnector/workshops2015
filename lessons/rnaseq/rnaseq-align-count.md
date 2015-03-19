@@ -89,7 +89,7 @@ head -n 4 ctl1.fastq trimmed_ctl1.fastq
 wc ctl1.fastq trimmed_ctl1.fastq
 ```
 
----
+----
 
 **EXERCISE**
 
@@ -100,7 +100,7 @@ Run `ls` on the current directory. We need to clean things up before they get ou
 - Move all the fastqc output directories and zip files into the QC directory (hint, you can do this all with a wildcard and a single `mv` command)
 - Use `find ... | parallel ...` to run `wc` on all the fastq files in parallel
 
----
+----
 
 ### Trimming: all samples in parallel
 
@@ -165,7 +165,7 @@ head -n 40000 trimmed_ctl1.fastq > test10k.fastq
 tophat --no-coverage-search -o test10k_tophat chr4 test10k.fastq
 ```
 
----
+----
 
 **EXERCISE**
 
@@ -188,7 +188,7 @@ tophat --no-coverage-search -o trimmed_uvb3.fastq_tophat chr4 trimmed_uvb3.fastq
 
 **But, don't launch the jobs just yet**
 
----
+----
 
 Now, before we launch those jobs, let's take a look at the help for GNU parallel. We can specify an upper limit to the number of jobs run in parallel using the -j option. Let's only run three jobs in parallel so we don't crash our system. Tophat consumes quite a bit of memory, and we only have 15GB available to us.
 
@@ -197,14 +197,14 @@ parallel -h
 find trimmed_*.fastq | parallel -j 3 --dry-run "tophat --no-coverage-search -o {}_tophat chr4 {}"
 ```
 
----
+----
 
 **EXERCISE**
 
 - When that's done, from the main data directory, look at all the `align_summary.txt` files with one command.
 - Using `grep`, pull out the line that shows you the number of mapped reads.
 
----
+----
 
 ### View the alignment
 
