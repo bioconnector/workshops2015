@@ -205,7 +205,7 @@ This puts you in your home directory. That's **/home/username**
 
 **EXERCISE 1**
 
--	Using `cd` and `ls`, go in to the 'workshops/shell/data' directory and list its contents.
+-	Using `cd` and `ls`, go in to the `workshops/shell/data` directory and list its contents.
 -	How many files, how many directories and how many programs are there?
 
 ----
@@ -234,7 +234,7 @@ Now do `ls` and `pwd`. See now that we went back up in to the 'shell' directory.
 
 **EXERCISE 2**
 
-Let's go on a file hunt. Move around in the "shell/data/hidden" directory and try to find the file "youfoundit.txt."
+Let's go on a file hunt. Move around in the `shell/data/hidden` directory and try to find the file `youfoundit.txt`.
 
 ----
 
@@ -263,7 +263,7 @@ and you will jump directly to `hidden` without having to go through the intermed
 
 **EXERCISE 3**
 
-Try finding the 'anotherfile.txt' file without changing directories.
+Try finding the `anotherfile.txt` file without changing directories.
 
 ----
 
@@ -328,7 +328,7 @@ Over time, it will become easier for you to keep a mental note of the structure 
 
 **EXERCISE 4**
 
--	List the contents of the /bin directory. Do you see anything familiar in there?
+-	List the contents of the `/bin` directory. Do you see anything familiar in there?
 
 ----
 
@@ -417,7 +417,7 @@ Now, time for some more practice with wildcards.
 **EXERCISE 5**
 
 Do each of the following using a single `ls` command without navigating to a different directory.
-  -	List all of the files in `/bin` that start with the letter 'c
+  -	List all of the files in `/bin` that start with the letter 'c'
   -	List all of the files in `/bin` that contain the letter 'a'
   -	List all of the files in `/bin` that end with the letter 'o'
 
@@ -454,7 +454,7 @@ then you could repeat command `#260` by simply entering:
 
 **EXERCISE 6**
 
-Find the line number in your history for the last exercise (listing files in /bin) and reissue that command.
+Find the line number in your history for the last exercise (listing files in `/bin`) and reissue that command.
 
 ----
 
@@ -743,7 +743,7 @@ Now you've written a file. You can take a look at it with less or cat, or open i
 
 **EXERCISE 10**
 
-Open 'awesome.sh' and add "echo AWESOME!" (no quotes) after the grep command and save the file.
+Open `awesome.sh` and add `echo AWESOME!` after the grep command and save the file.
 
 We're going to come back and use this file in just a bit.
 
