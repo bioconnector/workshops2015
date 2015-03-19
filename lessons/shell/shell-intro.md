@@ -476,7 +476,7 @@ This prints out the contents of the `ctl1.fastq` file.
 **EXERCISE**
 
 -	Print out the contents of the `workshops/lessons/rnaseq/data/coldata.csv` file. What does this file contain?
--	Without changing directories, use one short command to print the contents of all of the files in the `~/workshops/posts/` directory.
+-	Without changing directories, use one short command to print the contents of all of the files in the `~/workshops/posts_/` directory.
 
 ---
 
