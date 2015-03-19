@@ -203,7 +203,7 @@ This puts you in your home directory. That's **/home/username**
 
 ----
 
-**EXERCISE**
+**EXERCISE 1**
 
 -	Using `cd` and `ls`, go in to the 'workshops/shell/data' directory and list its contents.
 -	How many files, how many directories and how many programs are there?
@@ -232,7 +232,7 @@ Now do `ls` and `pwd`. See now that we went back up in to the 'shell' directory.
 
 ----
 
-**EXERCISE**
+**EXERCISE 2**
 
 Let's go on a file hunt. Move around in the "shell/data/hidden" directory and try to find the file "youfoundit.txt."
 
@@ -261,7 +261,7 @@ and you will jump directly to `hidden` without having to go through the intermed
 
 ----
 
-**EXERCISE**
+**EXERCISE 3**
 
 Try finding the 'anotherfile.txt' file without changing directories.
 
@@ -326,7 +326,7 @@ Over time, it will become easier for you to keep a mental note of the structure 
 
 ----
 
-**EXERCISE**
+**EXERCISE 4**
 
 -	List the contents of the /bin directory. Do you see anything familiar in there?
 
@@ -414,7 +414,7 @@ Now, time for some more practice with wildcards.
 
 ----
 
-**EXERCISE**
+**EXERCISE 5**
 
 Do each of the following using a single `ls` command without navigating to a different directory.
   -	List all of the files in `/bin` that start with the letter 'c
@@ -452,7 +452,7 @@ then you could repeat command `#260` by simply entering:
 
 ----
 
-**EXERCISE**
+**EXERCISE 6**
 
 Find the line number in your history for the last exercise (listing files in /bin) and reissue that command.
 
@@ -473,7 +473,7 @@ This prints out the contents of the `ctl1.fastq` file.
 
 ----
 
-**EXERCISE**
+**EXERCISE 7**
 
 -	Print out the contents of the `workshops/lessons/rnaseq/data/coldata.csv` file. What does this file contain?
 -	Without changing directories, use one short command to print the contents of all of the files in the `~/workshops/posts_/` directory.
@@ -550,7 +550,7 @@ The `-A` flag stands for "after match" so it's returning the line that matches p
 
 ----
 
-**EXERCISE**
+**EXERCISE 8**
 
 Search for the sequence 'GATTTTTACA' (GATTACA with 5 T's instead of 2) in ctl1.fastq file and in the output have the sequence name. The output should look like this:
 
@@ -700,7 +700,7 @@ The `rm` file removes the file. Be careful with this command. It doesn't just ni
 
 ----
 
-**EXERCISE**
+**EXERCISE 9**
 
 Do the following:
 
@@ -741,7 +741,7 @@ Now you've written a file. You can take a look at it with less or cat, or open i
 
 ----
 
-**EXERCISE**
+**EXERCISE 10**
 
 Open 'awesome.sh' and add "echo AWESOME!" (no quotes) after the grep command and save the file.
 
@@ -804,7 +804,7 @@ Now you should have seen some output, and of course, it's AWESOME! Congratulatio
 
 ----
 
-**EXERCISE**
+**EXERCISE 11**
 
 1. In the `data` directory, use `nano` to write a script called `quickpeek.sh` that:
     * Runs `head` on all the fastq files in the current directory
@@ -938,7 +938,7 @@ These are the commands that _would be run_ in `parallel` if you didn't use the `
 
 ----
 
-**EXERCISE**
+**EXERCISE 12**
 
 1. `cd` into the `data` directory and take a look at what files were created.
 2. Open up one of the new files with `less` and use the `/` key to search for the "GATTACA" motif. Does it actually occur on every line?
