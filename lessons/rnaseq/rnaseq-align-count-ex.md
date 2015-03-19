@@ -1,6 +1,6 @@
 # Exercises for RNA-seq: Alignment & Counting
 
-**EXERCISE 1**
+**Exercise 1**
 
 Run `ls` on the current directory. We need to clean things up before they get out of hand.
 
@@ -11,7 +11,7 @@ Run `ls` on the current directory. We need to clean things up before they get ou
 
 ----
 
-**EXERCISE 2**
+**Exercise 2**
 
 First, look around at the results, then delete those files when you're done:
 
@@ -30,11 +30,11 @@ tophat --no-coverage-search -o trimmed_uvb2.fastq_tophat chr4 trimmed_uvb2.fastq
 tophat --no-coverage-search -o trimmed_uvb3.fastq_tophat chr4 trimmed_uvb3.fastq
 ```
 
-**But, don't launch the jobs just yet**
+**_But, don't launch the jobs just yet!_**
 
 ----
 
-**EXERCISE 3**
+**Exercise 3**
 
 - When that's done, from the main data directory, look at all the `align_summary.txt` files with one command.
 - Using `grep`, pull out the line that shows you the number of mapped reads.
