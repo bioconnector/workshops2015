@@ -201,14 +201,14 @@ cd
 
 This puts you in your home directory. That's **/home/username**
 
----
+----
 
 **EXERCISE**
 
 -	Using `cd` and `ls`, go in to the 'workshops/shell/data' directory and list its contents.
 -	How many files, how many directories and how many programs are there?
 
----
+----
 
 ### Where am I?
 
@@ -230,13 +230,13 @@ cd ..
 
 Now do `ls` and `pwd`. See now that we went back up in to the 'shell' directory. `..` means "the directory above," or "the parent directory."
 
----
+----
 
 **EXERCISE**
 
 Let's go on a file hunt. Move around in the "shell/data/hidden" directory and try to find the file "youfoundit.txt."
 
----
+----
 
 ### Examining the contents of other directories
 
@@ -259,13 +259,13 @@ ls workshops/lessons/shell/data/hidden
 
 and you will jump directly to `hidden` without having to go through the intermediate directories.
 
----
+----
 
 **EXERCISE**
 
 Try finding the 'anotherfile.txt' file without changing directories.
 
----
+----
 
 
 ### HUGE Shortcut: Tab Completion
@@ -324,13 +324,13 @@ You can usually use either a full path or a relative path depending on what is m
 
 Over time, it will become easier for you to keep a mental note of the structure of the directories that you are using and how to quickly navigate them.
 
----
+----
 
 **EXERCISE**
 
 -	List the contents of the /bin directory. Do you see anything familiar in there?
 
----
+----
 
 ### Saving time with shortcuts and wild cards
 
@@ -412,7 +412,7 @@ gunzip *.gz
 
 Now, time for some more practice with wildcards.
 
----
+----
 
 **EXERCISE**
 
@@ -421,7 +421,7 @@ Do each of the following using a single `ls` command without navigating to a dif
   -	List all of the files in `/bin` that contain the letter 'a'
   -	List all of the files in `/bin` that end with the letter 'o'
 
----
+----
 
 ### Command History
 
@@ -450,13 +450,13 @@ then you could repeat command `#260` by simply entering:
 !260
 ```
 
----
+----
 
 **EXERCISE**
 
 Find the line number in your history for the last exercise (listing files in /bin) and reissue that command.
 
----
+----
 
 ### Examining Files
 
@@ -471,14 +471,14 @@ cat ctl1.fastq
 This prints out the contents of the `ctl1.fastq` file.
 
 
----
+----
 
 **EXERCISE**
 
 -	Print out the contents of the `workshops/lessons/rnaseq/data/coldata.csv` file. What does this file contain?
 -	Without changing directories, use one short command to print the contents of all of the files in the `~/workshops/posts_/` directory.
 
----
+----
 
 Make sure we're in the right place for the next set of the lessons. We want to be in the rnaseq data directory (`workshops/lessons/rnaseq/data`). Check if you're there with `pwd` and if not navigate there. One way to do that would be
 
@@ -548,7 +548,7 @@ grep -B 1 -A 2 GATTACA ctl1.fastq
 
 The `-A` flag stands for "after match" so it's returning the line that matches plus the two after it. The `-B` flag returns that number of lines before the match, so that's returning the fastq header.
 
----
+----
 
 **EXERCISE**
 
@@ -561,7 +561,7 @@ AAGCTAAAAAAAAAATGGATGTTTCAGTTAAATGTTTTAAAGAGGTACAGATTTTTACAAGGACATAATATAAG
 
 Next, search for that sequence in all the FASTQ files.
 
----
+----
 
 ### Redirection & Pipes
 
@@ -698,7 +698,7 @@ ls backup
 
 The `rm` file removes the file. Be careful with this command. It doesn't just nicely put the files in the Trash. They're really gone.
 
----
+----
 
 **EXERCISE**
 
@@ -708,7 +708,7 @@ Do the following:
 2.	Create a new directory in the rnaseq directory called `new`.
 3.	Then, copy the `coldata.csv` file into `new`
 
----
+----
 
 By default, `rm`, will NOT delete directories. You can tell `rm` to delete a directory and everything in it *recursively* using the `-r` option. Let's delete that `new` directory we just made. Enter the following command:
 
@@ -739,7 +739,7 @@ At the bottom of nano, you see the "^X Exit". That means that we use Ctrl-X to e
 
 Now you've written a file. You can take a look at it with less or cat, or open it up again and edit it.
 
----
+----
 
 **EXERCISE**
 
@@ -747,7 +747,7 @@ Open 'awesome.sh' and add "echo AWESOME!" (no quotes) after the grep command and
 
 We're going to come back and use this file in just a bit.
 
----
+----
 
 ### Running programs
 
@@ -802,7 +802,7 @@ Now we can run the program
 
 Now you should have seen some output, and of course, it's AWESOME! Congratulations, you just created your first shell script!
 
----
+----
 
 **EXERCISE**
 
@@ -813,7 +813,7 @@ Now you should have seen some output, and of course, it's AWESOME! Congratulatio
 2. Make the program executable.
 3. Run the program.
 
----
+----
 
 ## Simple parallel computing with `find` and `parallel`
 
@@ -936,7 +936,7 @@ grep GATTACA ./data/uvb3.fastq > ./data/uvb3.fastq.gattaca.txt
 
 These are the commands that _would be run_ in `parallel` if you didn't use the `--dry-run` flag. Now, if we go back and re-run that command without the `--dry-run` flag.
 
----
+----
 
 **EXERCISE**
 
@@ -944,7 +944,7 @@ These are the commands that _would be run_ in `parallel` if you didn't use the `
 2. Open up one of the new files with `less` and use the `/` key to search for the "GATTACA" motif. Does it actually occur on every line?
 3. Use `rm` to delete all the files ending with `.gattaca.txt`.
 
----
+----
 
 ## Installing software
 
