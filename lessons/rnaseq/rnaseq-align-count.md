@@ -24,7 +24,7 @@ In this section of the workshop we will start with raw RNA-seq reads and do ever
 First, let's extract the fastq files if we haven't done so already:
 
 ```bash
-cd workshops/lessons/rnaseq-1day/data
+cd workshops/lessons/rnaseq/data
 ls -l
 gunzip *.fastq.gz
 ls -l
