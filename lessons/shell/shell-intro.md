@@ -277,7 +277,7 @@ cd
 cd w<tab>
 ```
 
-The shell will fill in the rest of the directory name for "workshops". Now go to `workshops/lessons/rnaseq-1day/data`
+The shell will fill in the rest of the directory name for "workshops". Now go to `workshops/lessons/rnaseq/data`
 
 ```
 cd
@@ -379,7 +379,7 @@ We did sequencing, and what we have here are just reads that came from a 100 MB 
 
 #### Wild cards
 
-Navigate to the `workshops/lessons/rnaseq-1day/data` directory from your home. This directory contains our FASTQ files and some other ones we'll need for analyses. If we type `ls`, we will see that there are several files in there. Some of the end with .fastq.gz. These are compressed fastq files.
+Navigate to the `workshops/lessons/rnaseq/data` directory from your home. This directory contains our FASTQ files and some other ones we'll need for analyses. If we type `ls`, we will see that there are several files in there. Some of the end with .fastq.gz. These are compressed fastq files.
 
 The `*` character is a shortcut for "everything". Thus, if you enter `ls *`, you will see all of the contents of a given directory.
 
@@ -475,15 +475,15 @@ This prints out the contents of the `ctl1.fastq` file.
 
 **EXERCISE**
 
--	Print out the contents of the `workshops/lessons/rnaseq-1day/data/coldata.csv` file. What does this file contain?
+-	Print out the contents of the `workshops/lessons/rnaseq/data/coldata.csv` file. What does this file contain?
 -	Without changing directories, use one short command to print the contents of all of the files in the `~/workshops/posts/` directory.
 
 ---
 
-Make sure we're in the right place for the next set of the lessons. We want to be in the rnaseq data directory (`workshops/lessons/rnaseq-1day/data`). Check if you're there with `pwd` and if not navigate there. One way to do that would be
+Make sure we're in the right place for the next set of the lessons. We want to be in the rnaseq data directory (`workshops/lessons/rnaseq/data`). Check if you're there with `pwd` and if not navigate there. One way to do that would be
 
 ```bash
-cd ~/workshops/lessons/rnaseq-1day/data
+cd ~/workshops/lessons/rnaseq/data
 ```
 
 `cat` is a terrific program, but when the file is really big, it can be annoying to use.
@@ -654,7 +654,7 @@ Now we can move around in the file structure, look at files, search files, redir
 
 The `coldata.csv` file tells us which sample names are which treatment (in this example the filenames are pretty informative, but when they come off the sequencer usually they won't be). This is a really important file, so we want to make a copy so we don't lose it.
 
-Lets copy the file using the `cp` command. The `cp` command backs up the file. Navigate to the `rnaseq-1day/data` directory and enter:
+Lets copy the file using the `cp` command. The `cp` command backs up the file. Navigate to the `rnaseq/data` directory and enter:
 
 ```bash
 cp coldata.csv coldata.csv-backup
@@ -676,7 +676,7 @@ We can now move our backed up file in to this directory. We can move files aroun
 mv coldata.csv-backup backup
 ```
 
-This moves `coldata.csv-backup` into the directory `backup/` or the full path would be `~/workshops/lessons/rnaseq-1day/data/backup/coldata.csv-backup`
+This moves `coldata.csv-backup` into the directory `backup/` or the full path would be `~/workshops/lessons/rnaseq/data/backup/coldata.csv-backup`
 
 The `mv` command is also how you rename files. Since this file is important, let's rename it:
 
@@ -705,7 +705,7 @@ The `rm` file removes the file. Be careful with this command. It doesn't just ni
 Do the following:
 
 1.	Rename the `coldata-IMPORTANT.csv` file back to `coldata.csv`.
-2.	Create a new directory in the rnaseq-1day directory called `new`.
+2.	Create a new directory in the rnaseq directory called `new`.
 3.	Then, copy the `coldata.csv` file into `new`
 
 ---
@@ -779,7 +779,7 @@ Remember that file where we wrote our favorite grep command in there? Since we l
 awesome.sh
 ```
 
-You should get an error saying that awesome.sh cannot be found. That is because the directory `~/workshops/lessons/rnaseq-1day/data` is not in the`PATH`. You can try again to run the `awesome.sh` program by entering:
+You should get an error saying that awesome.sh cannot be found. That is because the directory `~/workshops/lessons/rnaseq/data` is not in the`PATH`. You can try again to run the `awesome.sh` program by entering:
 
 ```bash
 ./awesome.sh
@@ -852,7 +852,7 @@ Now, for one, that's a lot of typing. What if you had 100 fastq files you wanted
 
 ### find
 
-The UNIX `find` command is a simple program can be used to find files based on arbitrary criteria. Go back up to the parent `rnaseq-1day` directory, and type this command:
+The UNIX `find` command is a simple program can be used to find files based on arbitrary criteria. Go back up to the parent `rnaseq` directory, and type this command:
 
 ```bash
 find .
