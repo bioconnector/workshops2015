@@ -38,7 +38,7 @@ The *shell* is a program that presents a command line interface which allows you
 
 Have 10,000,000 files to rename, read in, analyze, and visualize? It's easy to automate things with the shell.
 
-![Automation](../img/geek_vs_nongeek.png)
+![Automation](img/geek_vs_nongeek.png)
 
 
 ### How to access the shell
@@ -187,7 +187,7 @@ Let's draw out what we just did, and some of the other files and folders we coul
 
 This is called a hierarchical file system structure, like an upside down tree with root (/) at the base that looks like this.
 
-![Unix](../img/unix_filesystem.png)
+![Unix](img/unix_filesystem.png)
 
 That (/) at the base is often also called the 'top' level.
 
