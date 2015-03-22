@@ -187,7 +187,7 @@ Let's draw out what we just did, and some of the other files and folders we coul
 
 This is called a hierarchical file system structure, like an upside down tree with root (/) at the base that looks like this.
 
-![Unix](../img/unix_filesystem.png)
+![Unix](img/unix_filesystem.png)
 
 That (/) at the base is often also called the 'top' level.
 
