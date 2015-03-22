@@ -38,7 +38,7 @@ The *shell* is a program that presents a command line interface which allows you
 
 Have 10,000,000 files to rename, read in, analyze, and visualize? It's easy to automate things with the shell.
 
-![Automation](../img/geek_vs_nongeek.png)
+![Automation](img/geek_vs_nongeek.png)
 
 
 ### How to access the shell
