@@ -8,6 +8,7 @@ layout: page
 # Must load knitr so opts_chunk is in search path.
 library(knitr)
 opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none", tidy=TRUE, warning=FALSE)
+.ex <- 1
 ```
 
 # RNA-seq: differential gene expression analysis
@@ -66,29 +67,68 @@ The output from this tool is provided in the `counts.txt` file in the `data` dir
 First, set your working directory to the top level of the RNA-seq course. Import the data into R as a `data.frame` and examine it again. You can set the arguments of `read.table` to import the first row as a header giving the column names, and the first column as row names.
 
 ```{r data_input}
-# Filename with output from featureCounts
-countfile <- "data/counts.txt"
 # Read in the data
-countdata <- read.table(countfile, header=TRUE, row.names=1)
-head(countdata)
-colnames(countdata)
-class(countdata)
+mycounts <- read.table("data/counts.txt")
+head(mycounts)
+mycounts <- read.table("data/counts.txt", header=TRUE)
+head(mycounts)
+mycounts <- read.table("data/counts.txt", header=TRUE, row.names=1)
+head(mycounts)
+rownames(mycounts)
+colnames(mycounts)
+class(mycounts)
 ```
 
 The data.frame contains information about genes (one gene per row) with the gene positions in the first five columns and then information about the number of reads aligning to the gene in each experimental sample. There are three replicates for control (column names starting with "ctl") and three for samples treated with ultraviolet-B light (starting "uvb"). We don't need the information on gene position for this analysis, just the counts for each gene and sample, so we can remove it from the data frame.
 
 ```{r remove_metadata_cols}
-# Remove first five columns (chr, start, end, strand, length)
-countdata <- countdata[ ,-(1:5)]
-head(countdata)
-colnames(countdata)
+# First, take a look
+options(max.print=80)
+head(mycounts)
+colnames(mycounts)
+
+# One way to do it: by indexes
+mycounts[ ,-(1:5)]
+
+# Another way to do it, by arg to subset
+subset(mycounts, select=c(-Chr, -Start, -End, -Strand, -Length))
+subset(mycounts, select=-c(Chr, Start, End, Strand, Length))
+
+# Reassign
+mycounts <- subset(mycounts, select=-c(Chr, Start, End, Strand, Length))
+
+# Take another look
+head(mycounts)
+colnames(mycounts)
 ```
 
 ---
 
-**EXERCISE**
+**EXERCISE `r .ex``r .ex=.ex+1`**
 
-There's an R function called `rowSums()` that calculates the sum of each row in a numeric matrix, like the count matrix we have here, and it returns a vector. There's also a function called `which.max()` that determines the index of the maximum value in a vector.
+There's an R function called `rowSums()` that calculates the sum of each row in a numeric matrix, like the count matrix we have here, and it returns a vector. There's also a function called `which.max()` that determines the index of the maximum value in a vector. Here's an example of it in action
+
+```{r, results='markup'}
+# Create a temporary data frame called fake
+fake <- data.frame(row.names = c("GeneA", "GeneB", "GeneC"),
+                  samp1=c(20,50,40), samp2=c(30,70,50))
+
+# This is what it looks like
+fake
+
+# Get the rowSums
+rowSums(fake)
+
+# Get the index of the maximum total value
+which.max(rowSums(fake))
+
+# Store that index
+topGene <- which.max(rowSums(fake))
+
+# Get that row, and all the columns
+fake[topGene, ]
+```
+
 
 0. Find the gene with the highest expression across all samples -- remember, each row is a gene.
 0. Extract the expression data for this gene for all samples.
@@ -96,9 +136,11 @@ There's an R function called `rowSums()` that calculates the sum of each row in 
 0. What is the function of the gene? Can you suggest why this is the top expressed gene?
 
 ```{r, echo=FALSE, include=FALSE}
-topGene <- which.max(rowSums(countdata))
+rowSums(mycounts)
+which.max(rowSums(mycounts))
+topGene <- which.max(rowSums(mycounts))
 topGene
-countdata[topGene, ]
+mycounts[topGene, ]
 # this is a pseudogene - maybe an artefact of only aligning reads to a single chromosome?
 ```
 
@@ -111,53 +153,53 @@ We can investigate this data a bit more using some of the basic R functions befo
 First make a copy of the data, because we'll need it later. We will work on the copy. We will calculate the mean for each gene for each condition and plot them.
 
 ```{r get_means}
-cd2 <- countdata #make a copy
+mc2 <- mycounts #make a copy
 
 # get Control columns
-colnames(cd2)
+colnames(mc2)
 
 # grep searches for matches to a pattern. Get help with ?grep
 
 # get the indexes for the controls
-grep("ctl", colnames(cd2))
-ctlCols <- grep("ctl", colnames(cd2))
-head(cd2[,ctlCols])
+grep("ctl", colnames(mc2))
+ctlCols <- grep("ctl", colnames(mc2))
+mc2[,ctlCols]
 
 # use the rowMeans function
-cd2$ctlmean <- rowMeans(cd2[, ctlCols])
-head(cd2)
+mc2$ctlmean <- rowMeans(mc2[, ctlCols])
+head(mc2)
 
 # same for uvb
-uvbCols <- grep("uvb", colnames(cd2))
-cd2$uvbmean <- rowMeans(cd2[, uvbCols])
+uvbCols <- grep("uvb", colnames(mc2))
+mc2$uvbmean <- rowMeans(mc2[, uvbCols])
 
-head(cd2)
+head(mc2)
 ```
 
 ---
 
-**EXERCISE**
+**EXERCISE `r .ex``r .ex=.ex+1`**
 
 Using the `subset()` function, print out all the columns where the control mean does not equal 0 **and** where the UVB mean does not equal zero.
 
 Bonus: code golf -- use the fewest characters to get the same solution.
 
 ```{r, echo=FALSE, include=FALSE}
-subset(cd2, ctlmean>0 & uvbmean>0)
-subset(cd2, ctlmean*uvbmean>0)
+subset(mc2, ctlmean>0 & uvbmean>0)
+subset(mc2, ctlmean*uvbmean>0)
 ```
 
 ---
 
-**EXERCISE**
+**EXERCISE `r .ex``r .ex=.ex+1`**
 
 1. Plot the mean expression of each gene in control against the UVB sample mean. Are there any outliers?
 2. How could you make this plot more informative and look more professional? Hint: try plotting on the log scale and using a different point character.
 
 ```{r plot_means}
-plot(cd2$ctlmean, cd2$uvbmean)
-with(cd2, plot(log10(ctlmean), log10(uvbmean), pch=16))
-with(cd2, plot(ctlmean, uvbmean, log="xy", pch=16))
+plot(mc2$ctlmean, mc2$uvbmean)
+with(mc2, plot(log10(ctlmean), log10(uvbmean), pch=16))
+with(mc2, plot(ctlmean, uvbmean, log="xy", pch=16))
 ```
 
 ---
@@ -168,25 +210,20 @@ We can find candidate differentially expressed genes by looking for genes with a
 
 First, check for genes with a mean expression of 0. Putting zeroes into the log2 fold change calculation will produce NAs, so we might want to remove these genes. Note: this is for mathematical reasons, although different software may produce different results when you try to do `log2(0)`.
 
-```{r count_expressed}
-head(cd2$ctlmean)
-head(cd2$ctlmean > 0)
-```
-
-In R, `TRUE` and `FALSE` can be represented as `1` and `0`, respectively. When we call `sum(cd2$ctlmean > 0)`, we're really asking, "how many genes have a mean above 0 in the control group?"
+In R, `TRUE` and `FALSE` can be represented as `1` and `0`, respectively. When we call `sum(mc2$ctlmean > 0)`, we're really asking, "how many genes have a mean above 0 in the control group?"
 
 ```{r remove_unexpressed}
-sum(cd2$ctlmean > 0)
-sum(cd2$uvbmean > 0)
+sum(mc2$ctlmean > 0)
+sum(mc2$uvbmean > 0)
 ```
 
 Now, let's subset the data and keep things where either the control or UVB group means are greater than zero.
 
 ```{r subset_nonzero}
-nrow(cd2)
-cd2 <- subset(cd2, cd2$ctlmean > 0 | cd2$uvbmean > 0)
-nrow(cd2)
-head(cd2)
+nrow(mc2)
+mc2 <- subset(mc2, mc2$ctlmean > 0 | mc2$uvbmean > 0)
+nrow(mc2)
+head(mc2)
 ```
 
 Mathematically things work out better for us when we test things on the log scale. On the absolute scale, upregulation goes from 1 to infinity, while downregulation is bounded by 0 and 1. On the log scale, upregulation goes from 0 to infinity, and downregulation goes from 0 to negative infinity. Let's compute a log-base-2 of the fold change.
@@ -195,22 +232,23 @@ When we do this we'll see some `Inf` and `-Inf` values. This is what happens whe
 
 ```{r log2FC}
 # calculate the log2 fold change
-cd2$log2FC <- log2(cd2$uvbmean / cd2$ctlmean)
-head(cd2)
+mc2$log2FC <- log2(mc2$uvbmean / mc2$ctlmean)
+head(mc2)
 
 # see how many are up, down, or both (using the absolute value function)
-sum(cd2$log2FC > 2)
-sum(cd2$log2FC < -2)
-sum(abs(cd2$log2FC)>2)
+sum(mc2$log2FC > 2)
+sum(mc2$log2FC < -2)
+sum(abs(mc2$log2FC)>2)
 ```
 
-We can few just the "outliers" with `subset(cd2, abs(log2FC)>2)`, which gets us just the things that have a large fold change in either direction. Let's plot these.
+We can few just the "outliers" with `subset(mc2, abs(log2FC)>2)`, which gets us just the things that have a large fold change in either direction. Let's plot these.
 
 ```{r plot_outliers}
-with(cd2, plot(ctlmean, uvbmean, log="xy", pch=16))
-subset(cd2, abs(log2FC)>2)
-# use the points function to add more points to the same axes
-with(subset(cd2, abs(log2FC)>2), points(ctlmean, uvbmean, pch=16, col="red"))
+with(mc2, plot(ctlmean, uvbmean, log="xy", pch=16))
+
+# Use the points function to add to the same plot
+mc2de <- subset(mc2, abs(log2FC)>2)
+with(mc2de, points(ctlmean, uvbmean, pch=16, col="red"))
 ```
 
 What do you notice about the positions of the outliers on these plots? How would you interpret this? What are some of the problems with this simple approach?
@@ -241,7 +279,7 @@ mycoldata
 DESeq works on a particular type of object called a DESeqDataSet. The DESeqDataSet is a single object that contains input values, intermediate calculations like how things are normalized, and all results of a differential expression analysis. You can construct a DESeqDataSet from a count matrix, a metadata file, and a formula indicating the design of the experiment.
 
 ```{r make_deseqdataset}
-dds <- DESeqDataSetFromMatrix(countData=countdata, colData=mycoldata, design=~condition)
+dds <- DESeqDataSetFromMatrix(countData=mycounts, colData=mycoldata, design=~condition)
 dds
 ```
 

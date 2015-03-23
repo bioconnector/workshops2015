@@ -65,50 +65,98 @@ First, set your working directory to the top level of the RNA-seq course. Import
 
 
 ```r
-# Filename with output from featureCounts
-countfile <- "data/counts.txt"
 # Read in the data
-countdata <- read.table(countfile, header = TRUE, row.names = 1)
-head(countdata)
-colnames(countdata)
-class(countdata)
+mycounts <- read.table("data/counts.txt")
+head(mycounts)
+mycounts <- read.table("data/counts.txt", header = TRUE)
+head(mycounts)
+mycounts <- read.table("data/counts.txt", header = TRUE, row.names = 1)
+head(mycounts)
+rownames(mycounts)
+colnames(mycounts)
+class(mycounts)
 ```
 
 The data.frame contains information about genes (one gene per row) with the gene positions in the first five columns and then information about the number of reads aligning to the gene in each experimental sample. There are three replicates for control (column names starting with "ctl") and three for samples treated with ultraviolet-B light (starting "uvb"). We don't need the information on gene position for this analysis, just the counts for each gene and sample, so we can remove it from the data frame.
 
 
 ```r
-# Remove first five columns (chr, start, end, strand, length)
-countdata <- countdata[, -(1:5)]
-head(countdata)
-colnames(countdata)
-```
+# First, take a look
+options(max.print = 80)
+head(mycounts)
+colnames(mycounts)
 
-We can rename the columns to something shorter and a bit more readable.
+# One way to do it: by indexes
+mycounts[, -(1:5)]
 
+# Another way to do it, by arg to subset
+subset(mycounts, select = c(-Chr, -Start, -End, -Strand, -Length))
+subset(mycounts, select = -c(Chr, Start, End, Strand, Length))
 
-```r
-# Manually
-c("ctl1", "ctl2", "ctl3", "uvb1", "uvb2", "uvb3")
-```
+# Reassign
+mycounts <- subset(mycounts, select = -c(Chr, Start, End, Strand, Length))
 
-We can do it manually, but what if we have 600 samples instead of 6? This would become cumbersome. Also, it's always a bad idea to hard-code sample phenotype information at the top of the file like this. A better way to do this is to use the `gsub` command to strip out the extra information. This more robust to introduced errors, for example if the column order changes at some point in the future or you add additional replicates.
-
-
-```r
-# Using gsub -- robust. Get help with ?gsub
-gsub(pattern = "trimmed_|.fastq_tophat.accepted_hits.bam", replacement = "", 
-    x = colnames(countdata))
-colnames(countdata) <- gsub(pattern = "trimmed_|.fastq_tophat.accepted_hits.bam", 
-    replacement = "", x = colnames(countdata))
-head(countdata)
+# Take another look
+head(mycounts)
+colnames(mycounts)
 ```
 
 ---
 
-**EXERCISE**
+**EXERCISE 1**
 
-There's an R function called `rowSums()` that calculates the sum of each row in a numeric matrix, like the count matrix we have here, and it returns a vector. There's also a function called `which.max()` that determines the index of the maximum value in a vector.
+There's an R function called `rowSums()` that calculates the sum of each row in a numeric matrix, like the count matrix we have here, and it returns a vector. There's also a function called `which.max()` that determines the index of the maximum value in a vector. Here's an example of it in action
+
+
+```r
+# Create a temporary data frame called fake
+fake <- data.frame(row.names = c("GeneA", "GeneB", "GeneC"), samp1 = c(20, 50, 
+    40), samp2 = c(30, 70, 50))
+
+# This is what it looks like
+fake
+```
+
+```
+##       samp1 samp2
+## GeneA    20    30
+## GeneB    50    70
+## GeneC    40    50
+```
+
+```r
+# Get the rowSums
+rowSums(fake)
+```
+
+```
+## GeneA GeneB GeneC 
+##    50   120    90
+```
+
+```r
+# Get the index of the maximum total value
+which.max(rowSums(fake))
+```
+
+```
+## GeneB 
+##     2
+```
+
+```r
+# Store that index
+topGene <- which.max(rowSums(fake))
+
+# Get that row, and all the columns
+fake[topGene, ]
+```
+
+```
+##       samp1 samp2
+## GeneB    50    70
+```
+
 
 0. Find the gene with the highest expression across all samples -- remember, each row is a gene.
 0. Extract the expression data for this gene for all samples.
@@ -127,32 +175,32 @@ First make a copy of the data, because we'll need it later. We will work on the 
 
 
 ```r
-cd2 <- countdata  #make a copy
+mc2 <- mycounts  #make a copy
 
 # get Control columns
-colnames(cd2)
+colnames(mc2)
 
 # grep searches for matches to a pattern. Get help with ?grep
 
 # get the indexes for the controls
-grep("ctl", colnames(cd2))
-ctlCols <- grep("ctl", colnames(cd2))
-head(cd2[, ctlCols])
+grep("ctl", colnames(mc2))
+ctlCols <- grep("ctl", colnames(mc2))
+mc2[, ctlCols]
 
 # use the rowMeans function
-cd2$ctlmean <- rowMeans(cd2[, ctlCols])
-head(cd2)
+mc2$ctlmean <- rowMeans(mc2[, ctlCols])
+head(mc2)
 
 # same for uvb
-uvbCols <- grep("uvb", colnames(cd2))
-cd2$uvbmean <- rowMeans(cd2[, uvbCols])
+uvbCols <- grep("uvb", colnames(mc2))
+mc2$uvbmean <- rowMeans(mc2[, uvbCols])
 
-head(cd2)
+head(mc2)
 ```
 
 ---
 
-**EXERCISE**
+**EXERCISE 2**
 
 Using the `subset()` function, print out all the columns where the control mean does not equal 0 **and** where the UVB mean does not equal zero.
 
@@ -162,16 +210,16 @@ Bonus: code golf -- use the fewest characters to get the same solution.
 
 ---
 
-**EXERCISE**
+**EXERCISE 3**
 
 1. Plot the mean expression of each gene in control against the UVB sample mean. Are there any outliers?
 2. How could you make this plot more informative and look more professional? Hint: try plotting on the log scale and using a different point character.
 
 
 ```r
-plot(cd2$ctlmean, cd2$uvbmean)
-with(cd2, plot(log10(ctlmean), log10(uvbmean), pch = 16))
-with(cd2, plot(ctlmean, uvbmean, log = "xy", pch = 16))
+plot(mc2$ctlmean, mc2$uvbmean)
+with(mc2, plot(log10(ctlmean), log10(uvbmean), pch = 16))
+with(mc2, plot(ctlmean, uvbmean, log = "xy", pch = 16))
 ```
 
 ---
@@ -182,28 +230,22 @@ We can find candidate differentially expressed genes by looking for genes with a
 
 First, check for genes with a mean expression of 0. Putting zeroes into the log2 fold change calculation will produce NAs, so we might want to remove these genes. Note: this is for mathematical reasons, although different software may produce different results when you try to do `log2(0)`.
 
-
-```r
-head(cd2$ctlmean)
-head(cd2$ctlmean > 0)
-```
-
-In R, `TRUE` and `FALSE` can be represented as `1` and `0`, respectively. When we call `sum(cd2$ctlmean > 0)`, we're really asking, "how many genes have a mean above 0 in the control group?"
+In R, `TRUE` and `FALSE` can be represented as `1` and `0`, respectively. When we call `sum(mc2$ctlmean > 0)`, we're really asking, "how many genes have a mean above 0 in the control group?"
 
 
 ```r
-sum(cd2$ctlmean > 0)
-sum(cd2$uvbmean > 0)
+sum(mc2$ctlmean > 0)
+sum(mc2$uvbmean > 0)
 ```
 
 Now, let's subset the data and keep things where either the control or UVB group means are greater than zero.
 
 
 ```r
-nrow(cd2)
-cd2 <- subset(cd2, cd2$ctlmean > 0 | cd2$uvbmean > 0)
-nrow(cd2)
-head(cd2)
+nrow(mc2)
+mc2 <- subset(mc2, mc2$ctlmean > 0 | mc2$uvbmean > 0)
+nrow(mc2)
+head(mc2)
 ```
 
 Mathematically things work out better for us when we test things on the log scale. On the absolute scale, upregulation goes from 1 to infinity, while downregulation is bounded by 0 and 1. On the log scale, upregulation goes from 0 to infinity, and downregulation goes from 0 to negative infinity. Let's compute a log-base-2 of the fold change.
@@ -213,23 +255,24 @@ When we do this we'll see some `Inf` and `-Inf` values. This is what happens whe
 
 ```r
 # calculate the log2 fold change
-cd2$log2FC <- log2(cd2$uvbmean/cd2$ctlmean)
-head(cd2)
+mc2$log2FC <- log2(mc2$uvbmean/mc2$ctlmean)
+head(mc2)
 
 # see how many are up, down, or both (using the absolute value function)
-sum(cd2$log2FC > 2)
-sum(cd2$log2FC < -2)
-sum(abs(cd2$log2FC) > 2)
+sum(mc2$log2FC > 2)
+sum(mc2$log2FC < -2)
+sum(abs(mc2$log2FC) > 2)
 ```
 
-We can few just the "outliers" with `subset(cd2, abs(log2FC)>2)`, which gets us just the things that have a large fold change in either direction. Let's plot these.
+We can few just the "outliers" with `subset(mc2, abs(log2FC)>2)`, which gets us just the things that have a large fold change in either direction. Let's plot these.
 
 
 ```r
-with(cd2, plot(ctlmean, uvbmean, log = "xy", pch = 16))
-subset(cd2, abs(log2FC) > 2)
-# use the points function to add more points to the same axes
-with(subset(cd2, abs(log2FC) > 2), points(ctlmean, uvbmean, pch = 16, col = "red"))
+with(mc2, plot(ctlmean, uvbmean, log = "xy", pch = 16))
+
+# Use the points function to add to the same plot
+mc2de <- subset(mc2, abs(log2FC) > 2)
+with(mc2de, points(ctlmean, uvbmean, pch = 16, col = "red"))
 ```
 
 What do you notice about the positions of the outliers on these plots? How would you interpret this? What are some of the problems with this simple approach?
@@ -264,7 +307,7 @@ DESeq works on a particular type of object called a DESeqDataSet. The DESeqDataS
 
 
 ```r
-dds <- DESeqDataSetFromMatrix(countData = countdata, colData = mycoldata, design = ~condition)
+dds <- DESeqDataSetFromMatrix(countData = mycounts, colData = mycoldata, design = ~condition)
 dds
 ```
 
@@ -417,9 +460,9 @@ sessionInfo()
 ## [8] datasets  base     
 ## 
 ## other attached packages:
-##  [1] calibrate_1.7.2           MASS_7.3-37              
+##  [1] calibrate_1.7.2           MASS_7.3-39              
 ##  [3] gplots_2.16.0             DESeq2_1.6.3             
-##  [5] RcppArmadillo_0.4.600.4.0 Rcpp_0.11.4              
+##  [5] RcppArmadillo_0.4.650.1.1 Rcpp_0.11.5              
 ##  [7] GenomicRanges_1.18.4      GenomeInfoDb_1.2.4       
 ##  [9] IRanges_2.0.1             S4Vectors_0.4.0          
 ## [11] BiocGenerics_0.12.1       knitr_1.9                
@@ -427,22 +470,22 @@ sessionInfo()
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] acepack_1.3-3.3      annotate_1.44.0      AnnotationDbi_1.28.1
-##  [4] base64enc_0.1-2      BatchJobs_1.5        BBmisc_1.8          
+##  [4] base64enc_0.1-2      BatchJobs_1.5        BBmisc_1.9          
 ##  [7] Biobase_2.26.0       BiocParallel_1.0.2   bitops_1.0-6        
 ## [10] brew_1.0-6           caTools_1.17.1       checkmate_1.5.1     
 ## [13] cluster_2.0.1        codetools_0.2-10     colorspace_1.2-4    
 ## [16] DBI_0.3.1            digest_0.6.8         evaluate_0.5.5      
-## [19] fail_1.2             foreach_1.4.2        foreign_0.8-62      
+## [19] fail_1.2             foreach_1.4.2        foreign_0.8-63      
 ## [22] formatR_1.0          Formula_1.2-0        gdata_2.13.3        
 ## [25] genefilter_1.48.1    geneplotter_1.44.0   ggplot2_1.0.0       
 ## [28] grid_3.1.2           gtable_0.1.2         gtools_3.4.1        
-## [31] Hmisc_3.14-6         iterators_1.0.7      KernSmooth_2.23-13  
-## [34] labeling_0.3         lattice_0.20-29      latticeExtra_0.6-26 
-## [37] locfit_1.5-9.1       munsell_0.4.2        nnet_7.3-8          
+## [31] Hmisc_3.15-0         iterators_1.0.7      KernSmooth_2.23-14  
+## [34] labeling_0.3         lattice_0.20-30      latticeExtra_0.6-26 
+## [37] locfit_1.5-9.1       munsell_0.4.2        nnet_7.3-9          
 ## [40] plyr_1.8.1           proto_0.3-10         RColorBrewer_1.1-2  
-## [43] reshape2_1.4.1       rpart_4.1-8          RSQLite_1.0.0       
+## [43] reshape2_1.4.1       rpart_4.1-9          RSQLite_1.0.0       
 ## [46] scales_0.2.4         sendmailR_1.2-1      splines_3.1.2       
-## [49] stringr_0.6.2        survival_2.37-7      tools_3.1.2         
+## [49] stringr_0.6.2        survival_2.38-1      tools_3.1.2         
 ## [52] XML_3.98-1.1         xtable_1.7-4         XVector_0.6.0
 ```
 
