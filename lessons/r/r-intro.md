@@ -312,12 +312,18 @@ Once we've loaded it we can type the name of the object itself (`gm`) to view th
 
 
 ```r
+# Read in the data from a file
 gm <- read.csv("data/gapminder.csv", header = TRUE)
 
 # Alternatively, read directly from the web: gm <-
 # read.csv(url('http://bioconnector.org/data/gapminder.csv'), header=TRUE)
 
+# See what kind of data it is, and print the object to the screen
 class(gm)
+gm
+
+# Set an option to only show a few elements
+options(max.print = 80)
 gm
 ```
 
