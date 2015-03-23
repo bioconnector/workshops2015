@@ -102,7 +102,7 @@ head(mycounts)
 colnames(mycounts)
 ```
 
----
+----
 
 **EXERCISE `r .ex``r .ex=.ex+1`**
 
@@ -144,7 +144,7 @@ mycounts[topGene, ]
 # this is a pseudogene - maybe an artefact of only aligning reads to a single chromosome?
 ```
 
----
+----
 
 ## Data investigation using base R
 
@@ -176,7 +176,7 @@ mc2$uvbmean <- rowMeans(mc2[, uvbCols])
 head(mc2)
 ```
 
----
+----
 
 **EXERCISE `r .ex``r .ex=.ex+1`**
 
@@ -189,7 +189,7 @@ subset(mc2, ctlmean>0 & uvbmean>0)
 subset(mc2, ctlmean*uvbmean>0)
 ```
 
----
+----
 
 **EXERCISE `r .ex``r .ex=.ex+1`**
 
@@ -202,7 +202,7 @@ with(mc2, plot(log10(ctlmean), log10(uvbmean), pch=16))
 with(mc2, plot(ctlmean, uvbmean, log="xy", pch=16))
 ```
 
----
+----
 
 ## Poor man's differential gene expression
 

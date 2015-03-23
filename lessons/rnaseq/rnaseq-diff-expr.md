@@ -101,7 +101,7 @@ head(mycounts)
 colnames(mycounts)
 ```
 
----
+----
 
 **EXERCISE 1**
 
@@ -165,7 +165,7 @@ fake[topGene, ]
 
 
 
----
+----
 
 ## Data investigation using base R
 
@@ -198,7 +198,7 @@ mc2$uvbmean <- rowMeans(mc2[, uvbCols])
 head(mc2)
 ```
 
----
+----
 
 **EXERCISE 2**
 
@@ -208,7 +208,7 @@ Bonus: code golf -- use the fewest characters to get the same solution.
 
 
 
----
+----
 
 **EXERCISE 3**
 
@@ -222,7 +222,7 @@ with(mc2, plot(log10(ctlmean), log10(uvbmean), pch = 16))
 with(mc2, plot(ctlmean, uvbmean, log = "xy", pch = 16))
 ```
 
----
+----
 
 ## Poor man's differential gene expression
 
