@@ -108,7 +108,7 @@ colnames(mycounts)
 
 There's an R function called `rowSums()` that calculates the sum of each row in a numeric matrix, like the count matrix we have here, and it returns a vector. There's also a function called `which.max()` that determines the index of the maximum value in a vector. Here's an example of it in action
 
-```{r, results='markup'}
+```{r, results='markup', tidy=FALSE}
 # Create a temporary data frame called fake
 fake <- data.frame(row.names = c("GeneA", "GeneB", "GeneC"),
                   samp1=c(20,50,40), samp2=c(30,70,50))

@@ -110,8 +110,8 @@ There's an R function called `rowSums()` that calculates the sum of each row in 
 
 ```r
 # Create a temporary data frame called fake
-fake <- data.frame(row.names = c("GeneA", "GeneB", "GeneC"), samp1 = c(20, 50, 
-    40), samp2 = c(30, 70, 50))
+fake <- data.frame(row.names = c("GeneA", "GeneB", "GeneC"),
+                  samp1=c(20,50,40), samp2=c(30,70,50))
 
 # This is what it looks like
 fake
