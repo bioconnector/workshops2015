@@ -84,22 +84,6 @@ head(countdata)
 colnames(countdata)
 ```
 
-We can rename the columns to something shorter and a bit more readable.
-
-```{r bad_renaming, eval=FALSE}
-# Manually
-c("ctl1", "ctl2", "ctl3", "uvb1", "uvb2", "uvb3")
-```
-
-We can do it manually, but what if we have 600 samples instead of 6? This would become cumbersome. Also, it's always a bad idea to hard-code sample phenotype information at the top of the file like this. A better way to do this is to use the `gsub` command to strip out the extra information. This more robust to introduced errors, for example if the column order changes at some point in the future or you add additional replicates.
-
-```{r rename_cols}
-# Using gsub -- robust. Get help with ?gsub
-gsub(pattern="trimmed_|.fastq_tophat.accepted_hits.bam", replacement="", x=colnames(countdata))
-colnames(countdata) <- gsub(pattern="trimmed_|.fastq_tophat.accepted_hits.bam", replacement="", x=colnames(countdata))
-head(countdata)
-```
-
 ---
 
 **EXERCISE**
