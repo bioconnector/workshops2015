@@ -269,10 +269,12 @@ library("DESeq2")
 citation("DESeq2")
 ```
 
-It requires the count data to be in matrix form, and an additional dataframe describing sample metadata. Notice that the **colnames of the countdata** match the **rownames of the metadata*.
+It requires the count data to be in matrix form, and an additional dataframe describing sample metadata. Notice that the **colnames of the countdata** match the **rownames of the metadata*. If you read it in without specifying which column contains the row names, the row names will be blank. We have to specify column 1 contains the row names.
 
 ```{r read_coldata}
-mycoldata <- read.csv("data/coldata.csv", row.names=1)
+mycoldata <- read.csv("data/coldata.csv", header=TRUE)
+mycoldata
+mycoldata <- read.csv("data/coldata.csv", header=TRUE, row.names=1)
 mycoldata
 ```
 
@@ -294,11 +296,13 @@ Now, let's use the `results()` function to pull out the results from the `dds` o
 ```{r}
 # Get differential expression results
 res <- results(dds)
-head(res)
+res
 
 # Order by adjusted p-value
+order(res$padj)
+res[order(res$padj), ]
 res <- res[order(res$padj), ]
-head(res)
+res
 ```
 
 Combine DEseq results with the original counts data. Write significant results to a file.
