@@ -1,5 +1,5 @@
 # Program:featureCounts v1.4.4; Command:"featureCounts" "-a" "chr4.gtf" "-o" "counts.txt" "-t" "exon" "-g" "gene_name" "-T" "16" "trimmed_ctl1.fastq_tophat/accepted_hits.bam" "trimmed_ctl2.fastq_tophat/accepted_hits.bam" "trimmed_ctl3.fastq_tophat/accepted_hits.bam" "trimmed_uvb1.fastq_tophat/accepted_hits.bam" "trimmed_uvb2.fastq_tophat/accepted_hits.bam" "trimmed_uvb3.fastq_tophat/accepted_hits.bam" 
-Geneid	Chr	Start	End	Strand	Length	trimmed_ctl1.fastq_tophat/accepted_hits.bam	trimmed_ctl2.fastq_tophat/accepted_hits.bam	trimmed_ctl3.fastq_tophat/accepted_hits.bam	trimmed_uvb1.fastq_tophat/accepted_hits.bam	trimmed_uvb2.fastq_tophat/accepted_hits.bam	trimmed_uvb3.fastq_tophat/accepted_hits.bam
+Geneid	Chr	Start	End	Strand	Length	ctl1	ctl2	ctl3	uvb1	uvb2	uvb3
 BNIP3P41	4	49096	50124	-	1029	0	0	0	0	0	0
 ZNF595	4;4;4;4;4	53285;59430;60058;67840;85731	53491;59556;60514;68500;88211	+;+;+;+;+	3933	0	0	0	0	0	0
 AC253576.1	4	65125	65233	+	109	0	0	0	0	0	0
