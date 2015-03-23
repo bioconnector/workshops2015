@@ -216,11 +216,6 @@ Bonus: code golf -- use the fewest characters to get the same solution.
 2. How could you make this plot more informative and look more professional? Hint: try plotting on the log scale and using a different point character.
 
 
-```r
-plot(mc2$ctlmean, mc2$uvbmean)
-with(mc2, plot(log10(ctlmean), log10(uvbmean), pch = 16))
-with(mc2, plot(ctlmean, uvbmean, log = "xy", pch = 16))
-```
 
 ----
 
