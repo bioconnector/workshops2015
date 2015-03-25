@@ -102,7 +102,7 @@ ls()
 weight_lb  # oops! you should get an error because weight_lb no longer exists!
 ```
 
----
+----
 
 **EXERCISE 1**
 
@@ -117,7 +117,7 @@ age <- age - 10  # age?
 mass_index <- mass/age  # massIndex?
 ```
 
----
+----
 
 ## Functions
 
@@ -148,13 +148,13 @@ log(1000, 10)
 sqrt(log(1000, base = 10))
 ```
 
----
+----
 
 **EXERCISE 2**
 
 See `?abs` and calculate the square root of the log-base-10 of the absolute value of `-4*(2550-50)`. Answer should be `2`.
 
----
+----
 
 ## Vectors and classes
 
@@ -222,7 +222,7 @@ class(weights)
 class(animals)
 ```
 
----
+----
 
 **EXERCISE 3**
 
@@ -230,7 +230,7 @@ class(animals)
 - What happened to the numeric values? *Hint*: What's the `class()` of `combined`?
 - Why do you think this happens?
 
----
+----
 
 The function `str()` provides an overview of the structure of an object and the elements it contains. It is a really useful function when working with large and complex objects:
 
@@ -260,13 +260,13 @@ sum(weights)
 sum(animals)
 ```
 
----
+----
 
 **EXERCISE 4**
 
 Sum the integers 1 through 100 and 501 through 600 (e.g. 1+2+...+99+100+501+502+...+599+600)
 
----
+----
 
 ## Slicing/indexing vectors
 
@@ -417,7 +417,7 @@ filter(gm, continent == "Oceania" & year == 2002)$gdpPercap
 mean(filter(gm, continent == "Oceania" & year == 2002)$gdpPercap)
 ```
 
----
+----
 
 **EXERCISE 5**
 
@@ -426,9 +426,9 @@ mean(filter(gm, continent == "Oceania" & year == 2002)$gdpPercap)
 
 
 
----
+----
 
----
+----
 
 **BONUS: Preview to advanced class**
 
@@ -436,7 +436,7 @@ What if we wanted to compute the mean population size and mean GDP for each coun
 
 
 
----
+----
 
 ### with()
 
@@ -455,7 +455,7 @@ gm$pop/gm$lifeExp
 with(gm, pop/lifeExp)
 ```
 
----
+----
 
 **EXERCISE 6**
 
@@ -468,7 +468,7 @@ _Hint:_ GDP per capita is the GDP divided by the population size. So to get GDP,
 
 
 
----
+----
 
 ## Plotting basics
 
@@ -518,7 +518,7 @@ With plotting parameters, **Google is your friend.**
 * Forget the names of R's colors? Google _R colors_. Want to learn more about color schemes in R? Google _RColorBrewer_.
 * Try googling _R graphical parameters_.
 
----
+----
 
 **EXERCISE 7**
 
@@ -527,7 +527,7 @@ Plot GDP in trillions (`gdpPercap*pop/1e9`) on the y-axis versus population size
 
 
 
----
+----
 
 ## Reading in / writing out data
 
