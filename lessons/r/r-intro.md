@@ -104,7 +104,7 @@ weight_lb  # oops! you should get an error because weight_lb no longer exists!
 
 ---
 
-**EXERCISE**
+**EXERCISE 1**
 
 What are the values after each statement in the following?
 
@@ -150,7 +150,7 @@ sqrt(log(1000, base = 10))
 
 ---
 
-**EXERCISE**
+**EXERCISE 2**
 
 See `?abs` and calculate the square root of the log-base-10 of the absolute value of `-4*(2550-50)`. Answer should be `2`.
 
@@ -224,7 +224,7 @@ class(animals)
 
 ---
 
-**EXERCISE**
+**EXERCISE 3**
 
 - Use the `c()` function to create/assign a new object that combines the `weights` and `animals` vectors into a single vector called `combined`.
 - What happened to the numeric values? *Hint*: What's the `class()` of `combined`?
@@ -262,7 +262,7 @@ sum(animals)
 
 ---
 
-**EXERCISE**
+**EXERCISE 4**
 
 Sum the integers 1 through 100 and 501 through 600 (e.g. 1+2+...+99+100+501+502+...+599+600)
 
@@ -419,7 +419,7 @@ mean(filter(gm, continent == "Oceania" & year == 2002)$gdpPercap)
 
 ---
 
-**EXERCISE**
+**EXERCISE 5**
 
 1. What country and what years had a low GDP (<500) but high life expectancy (>50)?
 2. What's the average GDP for Asian countries in 2002? How does that compare to European countries in the same year? To the Americas?
@@ -457,7 +457,7 @@ with(gm, pop/lifeExp)
 
 ---
 
-**EXERCISE**
+**EXERCISE 6**
 
 Using the `with()` and `filter()` functions: 
 
@@ -520,7 +520,7 @@ With plotting parameters, **Google is your friend.**
 
 ---
 
-**EXERCISE**
+**EXERCISE 7**
 
 Plot GDP in trillions (`gdpPercap*pop/1e9`) on the y-axis versus population size in millions on the x-axis for all countries in the Americas. Use solid (`pch=16`) "blue" points, and give the plot a title and legends.
 

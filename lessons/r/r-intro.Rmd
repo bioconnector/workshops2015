@@ -8,6 +8,8 @@ layout: page
 # Must load knitr so opts_chunk is in search path.
 library(knitr)
 opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none", tidy=TRUE)
+# Keep track of the exercise numbers with a hidden variable. Update each exercise.
+.ex <- 1
 ```
 
 # Introduction to R
@@ -101,7 +103,7 @@ weight_lb # oops! you should get an error because weight_lb no longer exists!
 
 ---
 
-**EXERCISE**
+**EXERCISE `r .ex``r .ex=.ex+1`**
 
 What are the values after each statement in the following?
 
@@ -144,7 +146,7 @@ sqrt(log(1000, base=10))
 
 ---
 
-**EXERCISE**
+**EXERCISE `r .ex``r .ex=.ex+1`**
 
 See `?abs` and calculate the square root of the log-base-10 of the absolute value of `-4*(2550-50)`. Answer should be `2`.
 
@@ -210,7 +212,7 @@ class(animals)
 
 ---
 
-**EXERCISE**
+**EXERCISE `r .ex``r .ex=.ex+1`**
 
 - Use the `c()` function to create/assign a new object that combines the `weights` and `animals` vectors into a single vector called `combined`.
 - What happened to the numeric values? *Hint*: What's the `class()` of `combined`?
@@ -245,7 +247,7 @@ sum(animals)
 
 ---
 
-**EXERCISE**
+**EXERCISE `r .ex``r .ex=.ex+1`**
 
 Sum the integers 1 through 100 and 501 through 600 (e.g. 1+2+...+99+100+501+502+...+599+600)
 
@@ -394,7 +396,7 @@ mean(filter(gm, continent=="Oceania" & year==2002)$gdpPercap)
 
 ---
 
-**EXERCISE**
+**EXERCISE `r .ex``r .ex=.ex+1`**
 
 1. What country and what years had a low GDP (<500) but high life expectancy (>50)?
 2. What's the average GDP for Asian countries in 2002? How does that compare to European countries in the same year? To the Americas?
@@ -438,7 +440,7 @@ with(gm, pop/lifeExp)
 
 ---
 
-**EXERCISE**
+**EXERCISE `r .ex``r .ex=.ex+1`**
 
 Using the `with()` and `filter()` functions: 
 
@@ -448,8 +450,8 @@ Using the `with()` and `filter()` functions:
 _Hint:_ GDP per capita is the GDP divided by the population size. So to get GDP, you'd multiple `gdpPercap*pop`. To get that in billions, divide by 1,000,000, or more easily expressed in R using scientific notation: `1e9`.
 
 ```{r, echo=FALSE, results='hide'}
-with(filter(gm, continent=="Asia", year==2007), mean(gdpPercap*pop/1e9))
-with(filter(gm, continent=="Europe", year==2007), mean(gdpPercap*pop/1e9))
+with(filter(gm, continent=="Asia" & year==2007), mean(gdpPercap*pop/1e9))
+with(filter(gm, continent=="Europe" & year==2007), mean(gdpPercap*pop/1e9))
 ```
 
 ---
@@ -500,7 +502,7 @@ With plotting parameters, **Google is your friend.**
 
 ---
 
-**EXERCISE**
+**EXERCISE `r .ex``r .ex=.ex+1`**
 
 Plot GDP in trillions (`gdpPercap*pop/1e9`) on the y-axis versus population size in millions on the x-axis for all countries in the Americas. Use solid (`pch=16`) "blue" points, and give the plot a title and legends.
 
