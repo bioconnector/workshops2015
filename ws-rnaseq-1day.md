@@ -47,14 +47,15 @@ The boot camp is a two-part series.
 
 ## Course Material
 
-_Check back after course_.
+- Part I:
+  - [Introduction to the Unix Shell](../lessons/shell/shell-intro)
+  - [Alignment and Counting](../lessons/rnaseq/rnaseq-align-count)
+- Part II:
+  - [Introduction to R](../lessons/r/r-intro)
+  - [Differential Expression Analysis with DESeq2](../lessons/rnaseq/rnaseq-diff-expr)
 
 <!--
-* [Introduction to Unix](../lessons/shell/shell-intro/)
-* [NGS data analysis: QC, Alignment, Quantitation](../lessons/rnaseq/rnaseq-align-count/)
-* [R Slides](https://speakerdeck.com/stephenturner/introduction-to-r-for-life-scientists)
-* [Introduction to R](../lessons/r/r-intro/)
-* [RNA-seq data analysis with DESeq2](../lessons/rnaseq/rnaseq-diff-expr/)
+_Check back after course._
  -->
 
 <a name="setup"></a>
