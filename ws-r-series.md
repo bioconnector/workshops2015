@@ -10,8 +10,11 @@ This is a three-part series. The first session will introduce participants to th
 
 **Pre-requisites**:
 
-* Bring a laptop to the course with the software installed [as detailed below](#setup).
-* Print and bring this [R Cheat Sheet](http://dx.doi.org/10.6084/m9.figshare.1080756) created specifically for this workshop.
+- Bring a laptop to the course with the software installed [as detailed below](#setup).
+- Print these cheat sheets and bring them with you to the workshop:
+    - [R Reference Card](http://cran.r-project.org/doc/contrib/Short-refcard.pdf)
+    - [Advanced Data Wrangling Cheat Sheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+    - [Advanced Data Visualization Cheat Sheet](http://www.rstudio.com/wp-content/uploads/2015/04/ggplot2-cheatsheet.pdf)
 
 **Registration**: Registration opens Friday, February 20, 2015 at 9:00am. [See below](#registration) for registration instructions. The workshop is free[^free], but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation.
 
