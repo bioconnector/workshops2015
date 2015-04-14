@@ -1,4 +1,6 @@
-**EXERCISE 1**
+# Exercises: Advanced Manipulation
+
+**Exercise 1**
 
 Re-create this same plot from scratch without saving anything to a variable. That is, start from the `ggplot` call.
 
@@ -12,7 +14,7 @@ Re-create this same plot from scratch without saving anything to a variable. Tha
 
 ---
 
-**EXERCISE 2**
+**Exercise 2**
 
 1. Make a scatter plot of `lifeExp` on the y-axis against `year` on the x.
 2. Make a series of small multiples faceting on continent.
@@ -21,7 +23,7 @@ Re-create this same plot from scratch without saving anything to a variable. Tha
 
 ---
 
-**EXERCISE 3**
+**Exercise 3**
 
 1. Make a jittered strip plot of GDP per capita against continent.
 2. Make a box plot of GDP per capita against continent.
@@ -30,7 +32,7 @@ Re-create this same plot from scratch without saving anything to a variable. Tha
 
 ---
 
-**EXERCISE 4**
+**Exercise 4**
 
 1. Plot a histogram of GDP Per Capita.
 2. Do the same but use a log<sub>10</sub> x-axis.

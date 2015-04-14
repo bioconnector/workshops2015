@@ -1,4 +1,6 @@
-**EXERCISE 1**
+# Exercises: Advanced Data Manipulation
+
+**Exercise 1**
 
 Load the `malebmi.csv` data. This is male BMI data from 1980 through 2008 from the gapminder project. If you downloaded the zip file from the repository, it's located in `workshops/lessons/r/data`. Alternatively you can donload it directly from <http://bioconnector.org/data/>.
 
@@ -10,7 +12,7 @@ Don't remove it -- we're going to use it later on.
 
 ---
 
-**EXERCISE 2**
+**Exercise 2**
 
 Here's a warm-up round. Try the following.
 
@@ -61,7 +63,7 @@ What was the average life expectancy across all contries for each year in the da
 
 ---
 
-**EXERCISE 3**
+**Exercise 3**
 
 Which five Asian countries had the highest life expectancy in 2007? _Hint: 3 pipes._
 

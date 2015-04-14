@@ -1,4 +1,4 @@
-% Exercises: Introduction to R
+# Exercises: Introduction to R
 
 **Exercise 1**
 
