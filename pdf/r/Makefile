@@ -1,4 +1,4 @@
-FILENAME=intro-r-lifesci
+FILENAME=r-workshop-series
 
 # make all should build the pdf
 all: $(FILENAME).pdf
@@ -15,6 +15,9 @@ $(FILENAME).pdf $(FILENAME).epub: ../../lessons/r/r-intro.md ../../lessons/r/r-m
 
 	# Edit the file in place to remove any image references
 	gsed -i 's/.*\/img\/.*/*(image removed from PDF version)*/' $(FILENAME).md
+
+	# Remove setup instructions
+	gsed -i 's/{% include setup-r.md %}/Please see setup instructions at [bioconnector.org](http:\/\/bioconnector.org)./g' $(FILENAME).md
 
 	# Create the pdf and epub from the preface and the md you created from all the input MD files.
 	pandoc -s -V fontsize=12pt -V geometry:margin=1in -V documentclass:report --toc preface.md $(FILENAME).md -o $(FILENAME).pdf
