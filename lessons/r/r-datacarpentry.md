@@ -2,26 +2,15 @@
 layout: page
 ---
 
-```{r, echo=FALSE, message=FALSE, eval=TRUE}
-# Set eval=TRUE to hide all results and figures.
-# This sets defaults. Can change this manually in individual chunks.
-# Must load knitr so opts_chunk is in search path.
-library(knitr)
-opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none", eval=TRUE)
-options(digits=3)
-# Keep track of the exercise numbers with a hidden variable. Update each exercise using: `r .ex``r .ex=.ex+1`
-.ex <- 1
-```
+
 
 <!-- This begins a comment
 
 ----
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE 1**
 
-```{r, echo=FALSE}
 
-```
 
 ----
 
@@ -80,7 +69,8 @@ Let's start by learning about RStudio. **R** is the underlying statistical compu
 
 R can be used as a glorified calculator. Try typing this in directly into the console. Make sure you're typing into into the editor, not the console, and save your script. Use the run button, or press `CMD`+`Enter` (`Ctrl`+`Enter` on Windows).
 
-```{r calculator}
+
+```r
 2+2
 5*4
 2^3
@@ -88,14 +78,16 @@ R can be used as a glorified calculator. Try typing this in directly into the co
 
 R Knows order of operations and scientific notation.
 
-```{r calculator2}
+
+```r
 2+3*4/(5+3)*15/2^2+3*4^2
 5e4
 ```
 
 However, to do useful and interesting things, we need to assign *values* to *objects*. To create objects, we need to give it a name followed by the assignment operator `<-` and the value we want to give it:
 
-```{r assignment}
+
+```r
 weight_kg <- 55
 ```
 
@@ -105,32 +97,37 @@ Objects can be given any name such as `x`, `current_temperature`, or `subject_id
 
 When assigning a value to an object, R does not print anything. You can force to print the value by typing the name:
 
-```{r printAssignment}
+
+```r
 weight_kg
 ```
 
 Now that R has `weight_kg` in memory, we can do arithmetic with it. For instance, we may want to convert this weight in pounds (weight in pounds is 2.2 times the weight in kg).
 
-```{r modAssignment}
+
+```r
 2.2 * weight_kg
 ```
 
 We can also change a variable's value by assigning it a new one:
 
-```{r newAssignment}
+
+```r
 weight_kg <- 57.5
 2.2 * weight_kg
 ```
 
 This means that assigning a value to one variable does not change the values of other variables. For example, let's store the animal's weight in pounds in a variable.
 
-```{r calculationWithVar}
+
+```r
 weight_lb <- 2.2 * weight_kg
 ```
 
 and then change `weight_kg` to 100.
 
-```{r modAssignment2}
+
+```r
 weight_kg <- 100
 ```
 
@@ -138,7 +135,8 @@ What do you think is the current content of the object `weight_lb`? 126.5 or 220
 
 You can see what objects (variables) are stored by viewing the Environment tab in Rstudio. You can also use the `ls()` function. You can remove objects (variables) with the `rm()` function. You can do this one at a time or remove several objects at once.
 
-```{r rm, eval=FALSE}
+
+```r
 ls()
 rm(weight_lb, weight_kg)
 ls()
@@ -147,11 +145,12 @@ weight_lb # oops! you should get an error because weight_lb no longer exists!
 
 ----
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE 2**
 
 What are the values after each statement in the following?
 
-```{r ex1}
+
+```r
 mass <- 50              # mass?
 age  <- 30              # age?
 mass <- mass * 2        # mass?
@@ -165,7 +164,8 @@ mass_index <- mass/age  # massIndex?
 
 R has built-in functions.
 
-```{r fns}
+
+```r
 # Notice that this is a comment.
 # Anything behind a # is "commented out" and is not run.
 sqrt(144)
@@ -181,7 +181,8 @@ help(log)
 
 Note syntax highlighting when typing this into the editor. Also note how we pass *arguments* to functions. The `base=` part inside the parentheses is called an argument, and most functions use arguments. Arguments modify the behavior of the function. Functions some input (e.g., some data, an object) and other options to change what the function will return, or how to treat the data provided. Finally, see how you can *next* one function inside of another (here taking the square root of the log-base-10 of 1000).
 
-```{r log}
+
+```r
 log(1000)
 log(1000, base=10)
 log(1000, 10)
@@ -190,7 +191,7 @@ sqrt(log(1000, base=10))
 
 ----
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE 3**
 
 See `?abs` and calculate the square root of the log-base-10 of the absolute value of `-4*(2550-50)`. Answer should be `2`.
 
@@ -215,7 +216,8 @@ Let's load the data first. There are two ways to do this. You can use RStudio's 
 
 Once we've loaded it we can type the name of the object itself (`gm`) to view the entire data frame. *Note: doing this with large data frames can cause you trouble, but I'll show you soon how to get around that.*
 
-```{r readGapminder}
+
+```r
 # Read in the data from a file
 gm <- read.csv("data/gapminder.csv", header=TRUE)
 
@@ -231,7 +233,8 @@ gm
 
 You probably saw that printing the entire dataset wasn't very useful. With very large datasets this could potentially slow down your computer if it tries to display too much. We're going to use a function from the **dplyr** package that we'll cover in more detail later on that will convert the regular `data.frame` into special kind of data frame that also has some additional functionality that we'll see later. First, load the dplyr package, then use the `tbl_df()` function on the data frame, reassigning it back to the object itself. 
 
-```{r convertToTbl}
+
+```r
 library(dplyr)
 gm <- tbl_df(gm)
 gm
@@ -256,7 +259,8 @@ There are several built-in functions that are useful for working with data frame
     * `str()`: structure of the object and information about the class, length and content of each column
     * `summary()`: works differently depending on what kind of object you pass to it. Passing a data frame to the `summary()` function prints out some summary statistics about each column (min, max, median, mean, etc.)
 
-```{r data_frame_functions}
+
+```r
 head(gm)
 tail(gm)
 dim(gm)
@@ -267,7 +271,8 @@ summary(gm)
 
 Finally, we can click on the object in the Environment pane, or we can use the `View()` function to bring it up in a graphical table viewer.
 
-```{r View, eval=FALSE}
+
+```r
 View(gm)
 ```
 
@@ -275,7 +280,8 @@ View(gm)
 
 We can access individual variables within a data frame using the `$` operator, e.g., `mydataframe$specificVariable`. Let's print out the population sizes for every country. Then let's calculate the average life expectancy for every country for every year (using the built-in `mean()` function).
 
-```{r}
+
+```r
 # display all populations
 gm$pop
 
@@ -287,7 +293,7 @@ Now that's not too interesting. This is the average life expectancy across all c
 
 ----
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE 4**
 
 1. What's the standard deviation of the life expectancy (hint: get help on the `sd` function with `?sd`).
 1. What's the mean population size in millions? (hint: divide by 1000000, or alternatively, `1e6`).
@@ -302,7 +308,8 @@ Now that's not too interesting. This is the average life expectancy across all c
 
 What if we wanted to compute the mean population size and median GDP for each country for each year? We have 12 different years, times 5 continents is 60, times 2 calculations (mean population size and median GDP), gives us 120 operations total. 
 
-```{r advanced, echo=TRUE, eval=FALSE}
+
+```r
 gm %>% group_by(continent,year) %>% summarize(mean(pop), median(gdpPercap)) %>% View
 ```
 
@@ -358,7 +365,8 @@ If you want to filter **rows** of the data where some condition is true, use the
 
 Let's try it out. For this to work you have to have already loaded the dplyr package.
 
-```{r}
+
+```r
 # Load the dplyr package
 library(dplyr)
 
@@ -377,7 +385,8 @@ filter(gm, gdpPercap<300 | lifeExp<30)
 
 Finally, take a look at the class of what's returned by a `filter()` function. The `filter()` function takes a data.frame and returns a data.frame. You can operate on this new data.frame just as you would any other data.frame using the `$` operator. E.g., print out the GDP for the two oceanic countries in 2002, and take the mean of that.
 
-```{r}
+
+```r
 filter(gm, continent=="Oceania" & year==2002)
 filter(gm, continent=="Oceania" & year==2002)$gdpPercap
 mean(filter(gm, continent=="Oceania" & year==2002)$gdpPercap)
@@ -385,17 +394,12 @@ mean(filter(gm, continent=="Oceania" & year==2002)$gdpPercap)
 
 ----
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE 5**
 
 1. What country and what years had a low GDP (<500) but high life expectancy (>50)?
 2. What's the average GDP for Asian countries in 2002?
 
-```{r, echo=FALSE}
-filter(gm, gdpPercap<500 & lifeExp>50)
-mean(filter(gm, year==2002 & continent=="Asia")$gdpPercap)
-mean(filter(gm, year==2002 & continent=="Europe")$gdpPercap)
-mean(filter(gm, year==2002 & continent=="Americas")$gdpPercap)
-```
+
 
 ----
 
@@ -403,7 +407,8 @@ mean(filter(gm, year==2002 & continent=="Americas")$gdpPercap)
 
 The `filter()` function allows you to return only certain rows matching a condition. The `select()` function lets you subset the data and restrict to a number of columns. The first argument is the data, and subsequent arguments are the columns you want. Let's just get the year and the population variables.
 
-```{r select}
+
+```r
 select(gm, year, pop)
 ```
 
@@ -411,13 +416,15 @@ select(gm, year, pop)
 
 The `mutate()` function adds new columns to the data. Remember, the variable in our dataset is GDP per capita, which is the total GDP divided by the population size for that country, for that year. Let's mutate this dataset and add a column called gdp:
 
-```{r mutate}
+
+```r
 mutate(gm, gdp=pop*gdpPercap)
 ```
 
 Mutate has a nice little feature too in that it's "lazy." You can mutate and add one variable, then continue mutating to add more variables based on that variable. Let's make another column that's GDP in billions.
 
-```{r mutatelazy}
+
+```r
 mutate(gm, gdp=pop*gdpPercap, gdpBil=gdp/1e9)
 ```
 
@@ -425,7 +432,8 @@ mutate(gm, gdp=pop*gdpPercap, gdpBil=gdp/1e9)
 
 The `arrange()` function does what it sounds like. It takes a data frame or tbl and arranges (or sorts) by column(s) of interest. The first argument is the data, and subsequent arguments are columns to sort on. Use the `desc()` function to arrange by descending.
 
-```{r arrange}
+
+```r
 arrange(gm, lifeExp)
 arrange(gm, year, desc(lifeExp))
 ```
@@ -435,7 +443,8 @@ arrange(gm, year, desc(lifeExp))
 
 The `summarize()` function summarizes multiple values to a single value. On its own the `summarize()` function doesn't seem to be all that useful. The dplyr package provides a few convenience functions called `n()` and `n_distinct()` that tell you the number of observations or the number of distinct values of a particular variable.
 
-```{r summarize}
+
+```r
 summarize(gm, mean(pop))
 summarize(gm, meanpop=mean(pop))
 summarize(gm, n())
@@ -446,14 +455,16 @@ summarize(gm, n_distinct(country))
 
 We saw that `summarize()` isn't that useful on its own. Neither is `group_by()` All this does is takes an existing tbl and coverts it into a grouped tbl where operations are performed by group.
 
-```{r groupby}
+
+```r
 gm
 group_by(gm, continent)
 ```
 
 The real power comes in where `group_by()` and `summarize()` are used together. Let's take the same grouped tbl from last time, and pass all that as an input to summarize, where we get the mean population size. We can also group by more than one variable.
 
-```{r gby_nopipe}
+
+```r
 summarize(group_by(gm, continent), mean(pop))
 
 group_by(gm, continent, year)
@@ -466,9 +477,35 @@ This is where things get awesome. The dplyr package imports functionality from t
 
 Here's the simplest way to use it. Remember of the `tail()` function. It expects a data frame as input, and the next argument is the number of lines to print. These two commands are identical:
 
-```{r, results='markup'}
+
+```r
 tail(gm, 5)
+```
+
+```
+## Source: local data frame [5 x 6]
+## 
+##    country continent year lifeExp      pop gdpPercap
+## 1 Zimbabwe    Africa 1987    62.4  9216418       706
+## 2 Zimbabwe    Africa 1992    60.4 10704340       693
+## 3 Zimbabwe    Africa 1997    46.8 11404948       792
+## 4 Zimbabwe    Africa 2002    40.0 11926563       672
+## 5 Zimbabwe    Africa 2007    43.5 12311143       470
+```
+
+```r
 gm %>% tail(5)
+```
+
+```
+## Source: local data frame [5 x 6]
+## 
+##    country continent year lifeExp      pop gdpPercap
+## 1 Zimbabwe    Africa 1987    62.4  9216418       706
+## 2 Zimbabwe    Africa 1992    60.4 10704340       693
+## 3 Zimbabwe    Africa 1997    46.8 11404948       792
+## 4 Zimbabwe    Africa 2002    40.0 11926563       672
+## 5 Zimbabwe    Africa 2007    43.5 12311143       470
 ```
 
 So what? 
@@ -483,25 +520,29 @@ Now, think about this for a minute. What if we wanted to get the life expectancy
 
 But in code, it gets ugly. First, `mutate` the data to add GDP.
 
-```{r}
+
+```r
 mutate(gm, gdp=gdpPercap*pop)
 ```
 
 Wrap that whole command with `filter()`.
 
-```{r}
+
+```r
 filter(mutate(gm, gdp=gdpPercap*pop), continent=="Asia")
 ```
 
 Wrap that again with `group_by()`:
 
-```{r}
+
+```r
 group_by(filter(mutate(gm, gdp=gdpPercap*pop), continent=="Asia"), year)
 ```
 
 Finally, wrap everything with `summarize()`:
 
-```{r nopipemess}
+
+```r
 summarize(
   group_by(
     filter(
@@ -517,7 +558,8 @@ Now compare that with the mental process of what you're actually trying to accom
 
 This is how we would do that in code. It's as simple as replacing the word "then" in words to the symbol `%>%` in code.
 
-```{r pipe}
+
+```r
 gm %>%
   mutate(gdp=gdpPercap*pop) %>%
   filter(continent=="Asia") %>%
@@ -527,75 +569,124 @@ gm %>%
 
 ----
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE 6**
 
 Here's a warm-up round. Try the following.
 
 What was the population of Peru in 1992? Show only the population variable. Answer should be 22430449. _Hint:_ 2 pipes; use `filter()` and `select()`.
 
-```{r, echo=FALSE, results='markup'}
-gm %>% filter(country=="Peru" & year==1992) %>% select(pop)
+
+```
+## Source: local data frame [1 x 1]
+## 
+##        pop
+## 1 22430449
 ```
 
 Which countries and which years had the worst five GDP per capita measurements? _Hint:_ 2 pipes; use `arrange()` and `head()`.
 
-```{r, echo=FALSE, results='markup'}
-gm %>%
-  arrange(gdpPercap) %>%
-  head(5)
+
+```
+## Source: local data frame [5 x 6]
+## 
+##            country continent year lifeExp      pop gdpPercap
+## 1 Congo, Dem. Rep.    Africa 2002    45.0 55379852       241
+## 2 Congo, Dem. Rep.    Africa 2007    46.5 64606759       278
+## 3          Lesotho    Africa 1952    42.1   748747       299
+## 4    Guinea-Bissau    Africa 1952    32.5   580653       300
+## 5 Congo, Dem. Rep.    Africa 1997    42.6 47798986       312
 ```
 
 What was the average life expectancy across all contries for each year in the dataset? _Hint:_ 2 pipes; `group_by()` and `summarize()`.
 
-```{r, echo=FALSE, results='markup'}
-gm %>% 
-  group_by(year) %>% 
-  summarize(mean(lifeExp))
+
+```
+## Source: local data frame [12 x 2]
+## 
+##    year mean(lifeExp)
+## 1  1952          49.1
+## 2  1957          51.5
+## 3  1962          53.6
+## 4  1967          55.7
+## 5  1972          57.6
+## 6  1977          59.6
+## 7  1982          61.5
+## 8  1987          63.2
+## 9  1992          64.2
+## 10 1997          65.0
+## 11 2002          65.7
+## 12 2007          67.0
 ```
 
 ----
 
 ----
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE 7**
 
 That was easy, right? How about some tougher ones.
 
 Which five Asian countries had the highest life expectancy in 2007? _Hint:_ 3 pipes; `filter`, `arrange`, and `head`.
 
-```{r, echo=FALSE, results='markup'}
-gm %>%
-  filter(continent=="Asia", year==2007) %>%
-  arrange(desc(lifeExp)) %>%
-  head(5)
+
+```
+## Source: local data frame [5 x 6]
+## 
+##            country continent year lifeExp       pop gdpPercap
+## 1            Japan      Asia 2007    82.6 127467972     31656
+## 2 Hong Kong, China      Asia 2007    82.2   6980412     39725
+## 3           Israel      Asia 2007    80.7   6426679     25523
+## 4        Singapore      Asia 2007    80.0   4553009     47143
+## 5      Korea, Rep.      Asia 2007    78.6  49044790     23348
 ```
 
 How many countries are on each continent? _Hint:_ 2 pipes; `group_by`, `summarize(n_distinct(...))`
 
-```{r, echo=FALSE, results='markup'}
-gm %>%
-  group_by(continent) %>%
-  summarize(n_distinct(country))
+
+```
+## Source: local data frame [5 x 2]
+## 
+##   continent n_distinct(country)
+## 1    Africa                  52
+## 2  Americas                  25
+## 3      Asia                  33
+## 4    Europe                  30
+## 5   Oceania                   2
 ```
 
 Separately for each year, compute the correlation coefficients (e.g., `cor(x,y)`) for life expectancy (y) against both log<sub>10</sub> of the population size and log<sub>10</sub> of the per capita GDP. What do these trends mean? _Hint:_ 2 pipes; `group_by` and `summarize`.
 
-```{r, echo=FALSE, results='markup'}
-gm %>%
-  group_by(year) %>%
-  summarize(cor(log10(pop), lifeExp), cor(log10(gdpPercap), lifeExp))
+
+```
+## Source: local data frame [12 x 3]
+## 
+##    year cor(log10(pop), lifeExp) cor(log10(gdpPercap), lifeExp)
+## 1  1952                   0.1543                          0.748
+## 2  1957                   0.1584                          0.759
+## 3  1962                   0.1376                          0.771
+## 4  1967                   0.1482                          0.773
+## 5  1972                   0.1322                          0.789
+## 6  1977                   0.1142                          0.814
+## 7  1982                   0.0944                          0.846
+## 8  1987                   0.0732                          0.874
+## 9  1992                   0.0593                          0.856
+## 10 1997                   0.0636                          0.864
+## 11 2002                   0.0746                          0.825
+## 12 2007                   0.0653                          0.809
 ```
 
 _Really tough one_: Compute the average GDP (not per-capita) in billions averaged across all contries separately for each continent separately for each year. What continents/years had the top 5 overall GDP? _Hint: 6 pipes. If you want to arrange a dataset by a value computed on grouped data, you first have to pass that resulting dataset to a funcion called `ungroup()` before continuing to operate._ 
 
-```{r, echo=FALSE, results='markup'}
-gm %>%
-  mutate(gdp=pop*gdpPercap/1e9) %>%
-  group_by(continent, year) %>%
-  summarize(meangdp=mean(gdp)) %>%
-  ungroup() %>%
-  arrange(desc(meangdp)) %>%
-  head(5)
+
+```
+## Source: local data frame [5 x 3]
+## 
+##   continent year meangdp
+## 1  Americas 2007     777
+## 2  Americas 2002     661
+## 3      Asia 2007     628
+## 4  Americas 1997     583
+## 5    Europe 2007     493
 ```
 
 ----
@@ -604,7 +695,8 @@ gm %>%
 
 Remember, running functions on data frames doesn't actually change the data frame. We have to reassign it back to an object first. First, lets create a small dataset that only has the data for 1997 in it.
 
-```{r}
+
+```r
 filter(gm, year==1997)
 gm
 gm97 <- filter(gm, year==1997)
@@ -612,7 +704,8 @@ gm97 <- filter(gm, year==1997)
 
 Next, check what your working directory is with `getwd()` with no arguments, and look up some help for `write.table()` and `write.csv()`.
 
-```{r, eval=FALSE}
+
+```r
 getwd()
 help(write.table)
 help(write.csv)
@@ -620,7 +713,8 @@ help(write.csv)
 
 Now you can save the new reduced data frame to a comma-separated file called `gm97.csv` using the `write.csv()` function.
 
-```{r, eval=FALSE}
+
+```r
 write.csv(gm97, file="gm97.csv")
 ```
 
@@ -637,11 +731,7 @@ Later on you can load this particular dataset again either using the menus (Tool
 
 
 
-```{r, echo=FALSE}
-# Set to FALSE to no longer run the code chunks below. 
-# This helps when building ggplot2 lesson, but turn off for final to make sure everything works as written.
-opts_chunk$set(eval=FALSE)
-```
+
 
 <a name="ggplot2"></a>
 
@@ -672,19 +762,22 @@ The `ggplot` function has two required arguments: the *data* used for creating t
 
 First let's load the package:
 
-```{r loadggplot2, eval=TRUE}
+
+```r
 library(ggplot2)
 ```
 
 Now, let's lay out the plot. If we want to plot a continuous Y variable by a continuous X variable we're probably most interested in a scatter plot. Here, we're telling ggplot that we want to use the `gm` dataset, and the aesthetic mapping will map `gdpPercap` onto the x-axis and `lifeExp` onto the y-axis.
 
-```{r noLayers, eval=FALSE}
+
+```r
 ggplot(gm, aes(x = gdpPercap, y = lifeExp))
 ```
 
 Look at that, we get an error, and it's pretty clear from the message what the problem is. We've laid out a two-dimensional plot specifying what goes on the x and y axes, but we haven't told it what kind of geometric object to plot. The obvious choice here is a point. Check out [docs.ggplot2.org](http://docs.ggplot2.org/) to see what kind of geoms are available.
 
-```{r}
+
+```r
 ggplot(gm, aes(x = gdpPercap, y = lifeExp)) + geom_point()
 ```
 
@@ -694,13 +787,15 @@ Now, the typical workflow for building up a ggplot2 plot is to first construct t
 
 First, let's construct the graphic. Notice that we don't have to specify `x=` and `y=` if we specify the arguments in the correct order (x is first, y is second).
 
-```{r, eval=TRUE}
+
+```r
 p <- ggplot(gm, aes(gdpPercap, lifeExp))
 ```
 
 Now, if we tried to display p here alone we'd get another error because we don't have any layers in the plot. Let's experiment with adding points and a different scale to the x-axis.
 
-```{r}
+
+```r
 # Experiment with adding poings
 p + geom_point()
 
@@ -710,13 +805,15 @@ p + geom_point() + scale_x_log10()
 
 I like the look of using a log scale for the x-axis. Let's make that stick.
 
-```{r, eval=TRUE}
+
+```r
 p <- p + scale_x_log10()
 ```
 
 Then re-plot again with a layer of points:
 
-```{r}
+
+```r
 p + geom_point()
 ```
 
@@ -724,31 +821,35 @@ Now notice what I've saved to `p` at this point: only the basic plot layout and 
 
 Above we implied the aesthetic mappings for the x- and y- axis should be `gdpPercap` and `lifeExp`, but we can also add aesthetic mappings to the geoms themselves. For instance, what if we wanted to color the points by the value of another variable in the dataset, say, continent?
 
-```{r}
+
+```r
 p + geom_point(aes(color=continent))
 ```
 
 Notice the difference here. If I wanted the colors to be some static value, I wouldn't wrap that in a call to `aes()`. I would just specify it outright. Same thing with other features of the points. For example, lets make all the points huge (`size=8`) blue (`color="blue"`) semitransparent (`alpha=(1/4)`) triangles (`pch=17`):
 
-```{r}
+
+```r
 p + geom_point(color="blue", pch=17, size=8, alpha=1/4)
 ```
 
 Now, this time, let's map the aesthetics of the point character to certain features of the data. For instance, let's give the points different colors and character shapes according to the continent, and map the size of the point onto the life Expectancy:
 
-```{r}
+
+```r
 p + geom_point(aes(col=continent, pch=continent, size=lifeExp))
 ```
 
 Now, this isn't a great plot because there are several aesthetic mappings that are redundant. Life expectancy is mapped to both the y-axis and the size of the points -- the size mapping is superfluous. Similarly, continent is mapped to both the color and the point character (the point character is superfluous). Let's get rid of that, but let's make the points a little bigger outsize of an aesthetic mapping.
 
-```{r}
+
+```r
 p + geom_point(aes(col=continent), size=4)
 ```
 
 ---
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE ????**
 
 Re-create this same plot from scratch without saving anything to a variable. That is, start from the `ggplot` call. 
 
@@ -760,11 +861,7 @@ Re-create this same plot from scratch without saving anything to a variable. Tha
   * Map continent onto the aesthetics of the point
 * Use a log<sub>10</sub> scale for the x-axis.
 
-```{r, echo=FALSE}
-ggplot(gm, aes(gdpPercap, lifeExp)) + 
-  geom_point(aes(col=continent), size=4) + 
-  scale_x_log10()
-```
+
 
 ---
 
@@ -772,26 +869,30 @@ ggplot(gm, aes(gdpPercap, lifeExp)) +
 
 Let's add a fitted curve to the points. Recreate the plot in the `p` object if you need to.
 
-```{r}
+
+```r
 p <- ggplot(gm, aes(gdpPercap, lifeExp)) + scale_x_log10()
 p + geom_point() + geom_smooth()
 ```
 
 By default `geom_smooth()` will try to lowess for data with n<1000 or generalized additive models for data with n>1000. We can change that behavior by tweaking the parameters to use a thick red line, use a linear model instead of a GAM, and to turn off the standard error stripes.
 
-```{r}
+
+```r
 p + geom_point() + geom_smooth(lwd=2, se=FALSE, method="lm", col="red")
 ```
 
 But let's add back in our aesthetic mapping to the continents. Notice what happens here. We're mapping continent as an aesthetic mapping _to the color of the points only_ -- so `geom_smooth()` still works only on the entire data. 
 
-```{r}
+
+```r
 p + geom_point(aes(color = continent)) + geom_smooth()
 ```
 
 But notice what happens here: we make the call to `aes()` outside of the `geom_point()` call, and the continent variable gets mapped as an aesthetic to any further geoms. So here, we get separate smoothing lines for each continent. Let's do it again but remove the standard error stripes and make the lines a bit thicker.
 
-```{r}
+
+```r
 p + aes(color = continent) + geom_point() + geom_smooth()
 p + aes(color = continent) + geom_point() + geom_smooth(se=F, lwd=2)
 ```
@@ -800,7 +901,8 @@ p + aes(color = continent) + geom_point() + geom_smooth(se=F, lwd=2)
 
 Facets display subsets of the data in different panels. There are a couple ways to do this, but `facet_wrap()` tries to sensibly wrap a series of facets into a 2-dimensional grid of small multiples. Just give it a formula specifying which variables to facet by. We can continue adding more layers, such as smoothing. If you have a look at the help for `?facet_wrap()` you'll see that we can control how the wrapping is laid out.
 
-```{r}
+
+```r
 p + geom_point() + facet_wrap(~continent)
 p + geom_point() + geom_smooth() + facet_wrap(~continent)
 p + geom_point() + geom_smooth() + facet_wrap(~continent, ncol=1)
@@ -810,37 +912,30 @@ p + geom_point() + geom_smooth() + facet_wrap(~continent, ncol=1)
 
 There are a few ways to save ggplots. The quickest way, that works in an interactive session, is to use the `ggsave()` function. You give it a file name and by default it saves the last plot that was printed to the screen. 
 
-```{r, eval=FALSE}
+
+```r
 p + geom_point()
 ggsave(file="myplot.png")
 ```
 
 But if you're running this through a script, the best way to do it is to pass `ggsave()` the object containing the plot that is meant to be saved. We can also adjust things like the width, height, and resolution. `ggsave()` also recognizes the name of the file extension and saves the appropriate kind of file. Let's save a PDF.
 
-```{r, eval=FALSE}
+
+```r
 pfinal <- p + geom_point() + geom_smooth() + facet_wrap(~continent, ncol=1)
 ggsave(pfinal, file="myplot.pdf", width=5, height=15)
 ```
 
 ---
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE ????**
 
 0. Make a scatter plot of `lifeExp` on the y-axis against `year` on the x.
 0. Make a series of small multiples faceting on continent.
 0. Add a fitted curve, smooth or lm, with and without facets.
 0. **Bonus**: using `geom_line()` and and aesthetic mapping `country` to `group=`, make a "spaghetti plot", showing _semitransparent_ lines connected for each country, faceted by continent. Add a smoothed loess curve with a thick (`lwd=3`) line with no standard error stripe. Reduce the opacity (`alpha=`) of the individual black lines.
 
-```{r, echo=FALSE}
-p <- ggplot(gm, aes(year, lifeExp))
-p + geom_point()
-p + geom_point() + geom_smooth()
-p + geom_point() + geom_smooth() + facet_wrap(~continent)
 
-p + facet_wrap(~continent) + geom_line()
-p + facet_wrap(~continent) + geom_line(aes(group=country))
-p + facet_wrap(~continent) + geom_line(aes(group=country), alpha=.5) + geom_smooth(lwd=3, se=FALSE)
-```
 
 ---
 
@@ -850,55 +945,64 @@ With the last example we examined the relationship between a continuous Y variab
 
 First, let's set up the basic plot:
 
-```{r, eval=TRUE}
+
+```r
 p <- ggplot(gm, aes(continent, lifeExp)) 
 ```
 
 Then add points:
 
-```{r}
+
+```r
 p + geom_point()
 ```
 
 That's not terribly useful. There's a big overplotting problem. We can try to solve with transparency:
 
-```{r}
+
+```r
 p + geom_point(alpha=1/4)
 ```
 
 But that really only gets us so far. What if we spread things out by adding a little bit of horizontal noise (aka "jitter") to the data.
 
-```{r}
+
+```r
 p + geom_jitter()
 ```
 
 Note that the little bit of horizontal noise that's added to the jitter is random. If you run that command over and over again, each time it will look slightly different. The idea is to visualize the density at each vertical position, and spreading out the points horizontally allows you to do that. If there were still lots of over-plotting you might think about adding some transparency by setting the `alpha=` value for the jitter.
 
-```{r}
+
+```r
 p + geom_jitter(alpha=1/2)
 ```
 
 Probably a more common visualization is to show a box plot:
 
-```{r}
+
+```r
 p + geom_boxplot()
 ```
 
 But why not show the summary and the raw data?
 
-```{r}
+
+```r
 p + geom_jitter() + geom_boxplot()
 ```
 
 Notice how in that example we first added the jitter layer then added the boxplot layer. But the boxplot is now superimposed over the jitter layer. Let's make the jitter layer go on top. Also, go back to just the boxplots. Notice that the outliers are represented as points. But there's no distinction between the outlier point from the boxplot geom and all the other points from the jitter geom. Let's change that. Notice the British spelling.
 
-```{r}
+
+```r
 p + geom_boxplot(outlier.colour = "red") + geom_jitter(alpha=1/2)
 ```
 
 There's another geom that's useful here, called a voilin plot.
 
-```{r}
+
+```r
 p + geom_violin()
 
 p + geom_violin() + geom_jitter(alpha=1/2)
@@ -906,45 +1010,33 @@ p + geom_violin() + geom_jitter(alpha=1/2)
 
 Let's go back to our boxplot for a moment.
 
-```{r}
+
+```r
 p + geom_boxplot()
 ```
 
 This plot would be a lot more effective if the continents were shown in some sort of order other than alphabetical. To do that, we'll have to go back to our basic build of the plot again and use the `reorder` function in our original aesthetic mapping. Here, reorder is taking the first variable, which is some categorical variable, and ordering it by the level of the mean of the second variable, which is a continuous variable. It looks like this
 
-```{r, eval=TRUE}
+
+```r
 p <- ggplot(gm, aes(x=reorder(continent, lifeExp), y=lifeExp))
 ```
 
-```{r}
+
+```r
 p + geom_boxplot()
 ```
 
 ---
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE ????**
 
 0. Make a jittered strip plot of GDP per capita against continent.
 0. Make a box plot of GDP per capita against continent.
 0. Using a log<sub>10</sub> y-axis scale, overlay semitransparent jittered points on top of box plots, where outlying points are colored. 
 0. **BONUS**: Try to reorder the continents on the x-axis by GDP per capita. Why isn't this working as expected? See `?reorder` for clues.
 
-```{r, echo=FALSE}
-p <- ggplot(gm, aes(continent, gdpPercap))
-p + geom_jitter()
-p + geom_boxplot()
 
-p <- ggplot(gm, aes(reorder(continent, gdpPercap), gdpPercap))
-p <- p + scale_y_log10()
-p + geom_boxplot(outlier.colour="red") + geom_jitter(alpha=1/2)
-
-library(dplyr)
-gm %>% group_by(continent) %>% summarize(mean(gdpPercap))
-gm %>% group_by(continent) %>% summarize(mean(log10(gdpPercap)))
-p <- ggplot(gm, aes(reorder(continent, gdpPercap, FUN=function(x) mean(log10(x))), gdpPercap))
-p <- p + scale_y_log10()
-p + geom_boxplot(outlier.colour="red") + geom_jitter(alpha=1/2)
-```
 
 ---
 
@@ -952,14 +1044,16 @@ p + geom_boxplot(outlier.colour="red") + geom_jitter(alpha=1/2)
 
 What if we just wanted to visualize distribution of a single continuous variable? A histogram is the usual go-to visualization. Here we only have one aesthetic mapping instead of two.
 
-```{r histogram}
+
+```r
 p <- ggplot(gm, aes(lifeExp))
 p + geom_histogram()
 ```
 
 When we do this ggplot lets us know that we're automatically selecting the width of the bins, and we might want to think about this a little further.
 
-```{r}
+
+```r
 p + geom_histogram(binwidth=5)
 p + geom_histogram(binwidth=1)
 p + geom_histogram(binwidth=.25)
@@ -967,50 +1061,57 @@ p + geom_histogram(binwidth=.25)
 
 Alternative we could plot a smoothed density curve instead of a histogram:
 
-```{r}
+
+```r
 p + geom_density()
 ```
 
 Back to histograms. What if we wanted to color this by continent?
 
-```{r}
+
+```r
 p + geom_histogram(aes(color=continent))
 ```
 
 That's not what we had in mind. That's just the outline of the bars. We want to change the fill color of the bars.
 
-```{r}
+
+```r
 p + geom_histogram(aes(fill=continent))
 ```
 
 Well, that's not exactly what we want either. If you look at the help for `?geom_histogram` you'll see that by default it stacks overlapping points. This isn't really an effective visualization. Let's change the position argument.
 
-```{r}
+
+```r
 p + geom_histogram(aes(fill=continent), position="identity")
 ```
 
 But the problem there is that the histograms are blocking each other. What if we tried transparency?
 
-```{r}
+
+```r
 p + geom_histogram(aes(fill=continent), position="identity", alpha=1/3)
 ```
 
 That's somewhat helpful, and might work for two distributions, but it gets cumbersome with 5. Let's go back and try this with density plots, first changing the color of the line:
 
-```{r}
+
+```r
 p + geom_density(aes(color=continent))
 ```
 
 Then by changing the color of the fill and setting the transparency to 25%:
 
-```{r}
+
+```r
 p + geom_density(aes(fill=continent), alpha=1/4)
 ```
 
 
 ---
 
-**EXERCISE `r .ex``r .ex=.ex+1`**
+**EXERCISE ????**
 
 0. Plot a histogram of GDP Per Capita.
 0. Do the same but use a log<sub>10</sub> x-axis.
@@ -1018,16 +1119,7 @@ p + geom_density(aes(fill=continent), alpha=1/4)
 0. Still on the log<sub>10</sub> x-axis scale, make a histogram faceted by continent _and_ filled by continent. Facet with a single column (see `?facet_wrap` for help). Save this to a 6x10 PDF file.
 
 
-```{r, echo=FALSE, eval=FALSE}
-p <- ggplot(gm, aes(gdpPercap))
-p + geom_histogram()
 
-p <- p + scale_x_log10()
-p + geom_histogram()
-p + geom_density(aes(fill=continent), alpha=1/4)
-p + geom_histogram(aes(fill=continent)) + facet_wrap(~continent, ncol=1)
-ggsave("myplot.pdf", width=6, height=10)
-```
 
 ---
 
@@ -1035,7 +1127,8 @@ ggsave("myplot.pdf", width=6, height=10)
 
 Let's make a plot we made earlier (life expectancy versus the log of GDP per capita with points colored by continent with lowess smooth curves overlaid without the standard error ribbon):
 
-```{r}
+
+```r
 p <- ggplot(gm, aes(gdpPercap, lifeExp)) 
 p <- p + scale_x_log10()
 p <- p + aes(col=continent) + geom_point() + geom_smooth(lwd=2, se=FALSE)
@@ -1044,7 +1137,8 @@ p
 
 Give the plot a title and axis labels:
 
-```{r}
+
+```r
 p <- p + ggtitle("Life expectancy vs GDP by Continent")
 p <- p + xlab("GDP Per Capita (USD)") + ylab("Life Expectancy (years)")
 p
@@ -1052,30 +1146,35 @@ p
 
 They "gray" theme is the usual background.
 
-```{r}
+
+```r
 p + theme_gray()
 ```
 
 We could also get a black and white background:
 
-```{r}
+
+```r
 p + theme_bw()
 ```
 
 Or go a step further and remove the gridlines:
 
-```{r}
+
+```r
 p + theme_classic()
 ```
 
 Finally, there's another package that gives us lots of different themes. This package isn't on CRAN, so you'll have to use devtools to install it directly from the source code on github.
 
-```{r, eval=FALSE}
+
+```r
 install.packages("devtools")
 devtools::install_github("jrnold/ggthemes")
 ```
 
-```{r themes, eval=FALSE}
+
+```r
 library(ggthemes)
 p <- ggplot(gm, aes(gdpPercap, lifeExp)) 
 p <- p + scale_x_log10()
