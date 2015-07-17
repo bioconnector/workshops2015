@@ -227,7 +227,7 @@ gm %>% head(5)
 
 So what? 
 
-Now, think abou this about this for a minute. What if we wanted to get the life expectancy and GDP averaged across all Asian countries for each year? (See top of image). Mentally we would do something like this:
+Now, think about this for a minute. What if we wanted to get the life expectancy and GDP averaged across all Asian countries for each year? (See top of image). Mentally we would do something like this:
 
 0. Take the `gm` dataset
 0. `mutate()` it to add raw GDP
