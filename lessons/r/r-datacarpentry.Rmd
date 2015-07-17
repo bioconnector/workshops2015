@@ -1,0 +1,683 @@
+---
+layout: page
+---
+
+```{r, echo=FALSE, message=FALSE, eval=TRUE}
+# Set eval=TRUE to hide all results and figures.
+# This sets defaults. Can change this manually in individual chunks.
+# Must load knitr so opts_chunk is in search path.
+library(knitr)
+opts_chunk$set(results="hide", message=FALSE, fig.show="hide", fig.keep="none", eval=TRUE)
+options(digits=3)
+# Keep track of the exercise numbers with a hidden variable. Update each exercise using: `r .ex``r .ex=.ex+1`
+.ex <- 1
+```
+
+
+# R for Data Carpentry
+
+fixme Description
+
+_Attribution:_ This course material is in part modified from lesson material from Jenny Bryan's [Stat 545 course at UBC](http://stat545-ubc.github.io/), [Software Carpentry](http://software-carpentry.org/), and [Data Carpentry](http://datacarpentry.org/).
+
+## Before coming
+
+You'll need to bring a laptop to the course with the software installed as detailed below.
+
+{% include setup-r-datacarpentry.md %}
+
+
+
+
+
+<a name="intro"></a>
+
+# Quick introduction to R and our dataset
+
+## RStudio
+
+Let's start by learning about RStudio. **R** is the underlying statistical computing environment, but using R alone is no fun. **RStudio** is a graphical integrated development environment that makes using R much easier.
+
+- Panes in RStudio. There are four panes, and their orientation is configurable under "Tools -- Global Options." I set up my window to have the editor in the top left, console top right, environment/history on the bottom left, and plots/help on the bottom right. 
+- Projects: first, start a new project in a new folder somewhere easy to remember. When we start reading in data it'll be important that the _code and the data are in the same place._ Creating a project creates an Rproj file that opens R running _in that folder_. This way, when you want to read in dataset _whatever.txt_, you just tell it the filename rather than a full path. This is critical for reproducibility.
+- Code that you type into the console is code that R executes. From here forward we will use the editor window to write a script that we can save to a file and run it again whenever we want to. We usually give it a `.R` extension, but it's just a plain text file. If you want to send commands from your editor to the console, use `CMD`+`Enter` (`Ctrl`+`Enter` on Windows).
+- Anything after a `#` sign is a comment. Use them liberally to *comment your code*.
+
+## Basic operations
+
+R can be used as a glorified calculator. Try typing this in directly into the console. Make sure you're typing into into the editor, not the console, and save your script. Use the run button, or press `CMD`+`Enter` (`Ctrl`+`Enter` on Windows).
+
+```{r calculator}
+2+2
+5*4
+2^3
+```
+
+R Knows order of operations and scientific notation.
+
+```{r calculator2}
+2+3*4/(5+3)*15/2^2+3*4^2
+5e4
+```
+
+However, to do useful and interesting things, we need to assign *values* to *objects*. To create objects, we need to give it a name followed by the assignment operator `<-` and the value we want to give it:
+
+```{r assignment}
+weight_kg <- 55
+```
+
+`<-` is the assignment operator. Assigns values on the right to objects on the left, it is like an arrow that points from the value to the object. Mostly similar to `=` but not always. Learn to use `<-` as it is good programming practice. Using `=` in place of `<-` can lead to issues down the line.
+
+Objects can be given any name such as `x`, `current_temperature`, or `subject_id`. You want your object names to be explicit and not too long. They cannot start with a number (`2x` is not valid but `x2` is). R is case sensitive (e.g., `weight_kg` is different from `Weight_kg`). There are some names that cannot be used because they represent the names of fundamental functions in R (e.g., `if`, `else`, `for`, see [here](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html) for a complete list). In general, even if it's allowed, it's best to not use other function names, which we'll get into shortly (e.g., `c`, `T`, `mean`, `data`, `df`, `weights`). In doubt check the help to see if the name is already in use. It's also best to avoid dots (`.`) within a variable name as in `my.dataset`. It is also recommended to use nouns for variable names, and verbs for function names.
+
+When assigning a value to an object, R does not print anything. You can force to print the value by typing the name:
+
+```{r printAssignment}
+weight_kg
+```
+
+Now that R has `weight_kg` in memory, we can do arithmetic with it. For instance, we may want to convert this weight in pounds (weight in pounds is 2.2 times the weight in kg).
+
+```{r modAssignment}
+2.2 * weight_kg
+```
+
+We can also change a variable's value by assigning it a new one:
+
+```{r newAssignment}
+weight_kg <- 57.5
+2.2 * weight_kg
+```
+
+This means that assigning a value to one variable does not change the values of other variables. For example, let's store the animal's weight in pounds in a variable.
+
+```{r calculationWithVar}
+weight_lb <- 2.2 * weight_kg
+```
+
+and then change `weight_kg` to 100.
+
+```{r modAssignment2}
+weight_kg <- 100
+```
+
+What do you think is the current content of the object `weight_lb`? 126.5 or 220?
+
+You can see what objects (variables) are stored by viewing the Environment tab in Rstudio. You can also use the `ls()` function. You can remove objects (variables) with the `rm()` function. You can do this one at a time or remove several objects at once.
+
+```{r rm, eval=FALSE}
+ls()
+rm(weight_lb, weight_kg)
+ls()
+weight_lb # oops! you should get an error because weight_lb no longer exists!
+```
+
+----
+
+**EXERCISE `r .ex``r .ex=.ex+1`**
+
+What are the values after each statement in the following?
+
+```{r ex1}
+mass <- 50              # mass?
+age  <- 30              # age?
+mass <- mass * 2        # mass?
+age  <- age - 10        # age?
+mass_index <- mass/age  # massIndex?
+```
+
+----
+
+## Functions
+
+R has built-in functions.
+
+```{r fns}
+# Notice that this is a comment.
+# Anything behind a # is "commented out" and is not run.
+sqrt(144)
+log(1000)
+```
+
+Get help by typing a question mark in front of the function's name, or `help(functionname)`:
+
+```
+help(log)
+?log
+```
+
+Note syntax highlighting when typing this into the editor. Also note how we pass *arguments* to functions. The `base=` part inside the parentheses is called an argument, and most functions use arguments. Arguments modify the behavior of the function. Functions some input (e.g., some data, an object) and other options to change what the function will return, or how to treat the data provided. Finally, see how you can *next* one function inside of another (here taking the square root of the log-base-10 of 1000).
+
+```{r log}
+log(1000)
+log(1000, base=10)
+log(1000, 10)
+sqrt(log(1000, base=10))
+```
+
+----
+
+**EXERCISE `r .ex``r .ex=.ex+1`**
+
+See `?abs` and calculate the square root of the log-base-10 of the absolute value of `-4*(2550-50)`. Answer should be `2`.
+
+----
+
+## Data Frames
+
+There are _lots_ of different basic data structures in R. If you take any kind of longer introduction to R you'll probably learn about arrays, lists, matrices, etc. We are going to skip straight to the data structure you'll probably use most -- the **data frame**. We use data frames to store heterogeneous tabular data in R: tabular, meaning that individuals or observations are typically represented in rows, while variables or features are represented as columns; heterogeneous, meaning that columns/features/variables can be different classes (on variable, e.g. age, can be numeric, while another, e.g., cause of death, can be text).
+
+Before coming, you should have downloaded the gapminder data. If you [downloaded this entire lesson repository](https://github.com/bioconnector/workshops/archive/master.zip), once you extract it you'll find it in `workshops/lessons/r/data/gapminder.csv`. Alternatively you can download it directly from <http://bioconnector.org/data/>. This dataset is an excerpt from the [Gapminder](http://www.gapminder.org/) data, that's [already been cleaned up to a degree](https://github.com/jennybc/gapminder). 
+
+Open up the data in Excel if you have it installed, and take a look. This particular dataset has 1704 observations on six variables:
+
+* `country` a categorical variable (aka "factor") 142 levels
+* `continent`, a categorical variable with 5 levels
+* `year`: going from 1952 to 2007 in increments of 5 years
+* `pop`: population
+* `gdpPercap`: GDP per capita
+* `lifeExp`: life expectancy
+
+Let's load the data first. There are two ways to do this. You can use RStudio's menus to select a file from your computer (tools, import dataset, from text file). But that's not reproducible. The best way to do this is to save the data and the script you're using to the same place, and read in the data in using `read.csv`. It's important to tell R that the file has a header, which tells R the names of the columns. We tell this to R with the `header=TRUE` argument. 
+
+Once we've loaded it we can type the name of the object itself (`gm`) to view the entire data frame. *Note: doing this with large data frames can cause you trouble, but I'll show you soon how to get around that.*
+
+```{r readGapminder}
+# Read in the data from a file
+gm <- read.csv("data/gapminder.csv", header=TRUE)
+
+# Alternatively, read directly from the web:
+# gm <- read.csv(url("http://bioconnector.org/data/gapminder.csv"), header=TRUE)
+
+# See what kind of data it is, and print the object to the screen
+class(gm)
+gm
+```
+
+### The dplyr tbl_df
+
+You probably saw that printing the entire dataset wasn't very useful. With very large datasets this could potentially slow down your computer if it tries to display too much. We're going to use a function from the **dplyr** package that we'll cover in more detail later on that will convert the regular `data.frame` into special kind of data frame that also has some additional functionality that we'll see later. First, load the dplyr package, then use the `tbl_df()` function on the data frame, reassigning it back to the object itself. 
+
+```{r convertToTbl}
+library(dplyr)
+gm <- tbl_df(gm)
+gm
+class(gm) # still a data.frame
+```
+
+This functionality comes out of the dplyr package. The first really nice thing about the dplyr package is the `tbl_df` class. A `tbl_df` is basically an improved version of the `data.frame` object. The main advantage to using a `tbl_df` over a regular data frame is the printing: `tbl` objects only print a few rows and all the columns that fit on one screen, describing the rest of it as text. We can turn our gm data frame into a `tbl_df` using the `tbl_df()` function. Let's do that, and reassign the result back to gm. Now, if we take a look at gm's class, we'll see that it's still a data frame, but it's also now a tbl_df. If we now type the name of the object, it will by default only print out a few lines. If this was a "wide" dataset with many columns, it would also not try to show us everything.
+
+### Inspecting data.frame objects
+
+There are several built-in functions that are useful for working with data frames.
+
+* Content:
+    * `head()`: shows the first 6 rows
+    * `tail()`: shows the last 6 rows
+* Size:
+    * `dim()`: returns a 2-element vector with the number of rows in the first element, and the number of columns as the second element (the dimensions of the object)
+    * `nrow()`: returns the number of rows
+    * `ncol()`: returns the number of columns
+* Summary:
+    * `colnames()` (or just `names()`): returns the column names
+    * `str()`: structure of the object and information about the class, length and content of each column
+    * `summary()`: works differently depending on what kind of object you pass to it. Passing a data frame to the `summary()` function prints out some summary statistics about each column (min, max, median, mean, etc.)
+
+```{r data_frame_functions}
+head(gm)
+tail(gm)
+dim(gm)
+names(gm)
+str(gm)
+summary(gm)
+```
+
+Finally, we can click on the object in the Environment pane, or we can use the `View()` function to bring it up in a graphical table viewer.
+
+```{r View, eval=FALSE}
+View(gm)
+```
+
+### Accessing variables & subsetting data frames
+
+We can access individual variables within a data frame using the `$` operator, e.g., `mydataframe$specificVariable`. Let's print out the population sizes for every country. Then let's calculate the average life expectancy for every country for every year (using the built-in `mean()` function).
+
+```{r}
+# display all populations
+gm$pop
+
+#mean life expectancy (notice capital E)
+mean(gm$lifeExp)
+```
+
+Now that's not too interesting. This is the average life expectancy across all countries across all years. We might be interested in something like the  life expectancy for a particular country, and how that changes over time. Or maybe the average life expectancy across all countries, separately for each year. Or maybe the average life expectancy for different continents, or both -- the life expectancy for each country for each year. This is the kind of thing we're going to do in the next section.
+
+----
+
+**EXERCISE `r .ex``r .ex=.ex+1`**
+
+1. What's the standard deviation of the life expectancy (hint: get help on the `sd` function with `?sd`).
+1. What's the mean population size in millions? (hint: divide by 1000000, or alternatively, `1e6`).
+1. What's the range of years represented in the data? (hint: `range()`).
+1. What's the median per capita GDP?
+
+----
+
+----
+
+**BONUS: Preview to advanced class**
+
+What if we wanted to compute the mean population size and median GDP for each country for each year? We have 12 different years, times 5 continents is 60, times 2 calculations (mean population size and median GDP), gives us 120 operations total. 
+
+```{r advanced, echo=FALSE, eval=FALSE}
+gm %>% group_by(continent,year) %>% summarize(mean(pop), median(gdpPercap)) %>% View
+```
+
+---
+
+
+
+
+
+
+<a name="dplyr"></a>
+
+# Data manipulation with dplyr
+
+## The dplyr package
+
+The [dplyr package](https://github.com/hadley/dplyr) is a relatively new R package that makes data manipulation fast and easy. It imports functionality from another package called magrittr that allows you to chain commands together into a pipeline that will completely change the way you write R code such that you're writing code the way you're thinking about the problem.
+
+You already saw one function, the `tbl_df()` function, that makes a data frame nicer to work with interactively. You don't have to turn all your data.frame objects into tbl_df objects, but it does make working with large datasets a bit easier.
+
+## dplyr verbs
+
+The dplyr package gives you a handful of useful **verbs** for managing data. On their own they don't do anything that base R can't do. 
+
+0. filter
+0. select
+0. mutate
+0. arrange
+0. summarize
+0. group_by
+
+They all take a `data.frame` or `tbl_df` as their input for the first argument, and they all return a `data.frame` or `tbl_df`.
+
+### filter()
+
+If you want to filter **rows** of the data where some condition is true, use the `filter()` function. 
+
+1. The first argument is the data frame you want to filter, e.g. `filter(gm, ...`.
+2. The second argument is a condition you must satisfy, e.g. `filter(gm, year==1982)`. If you want to satisfy *all* of multiple conditions, you can use the "and" operator, `&`. The "or" operator `|` (the pipe character, usually shift-backslash) will return a subset that meet *any* of the conditions.
+
+- `==`: Equal to
+- `!=`: Not equal to
+- `>`, `>=`: Greater than, greater than or equal to
+- `<`, `<=`: Less than, less than or equal to
+
+Let's try it out. For this to work you have to have already loaded the dplyr package.
+
+```{r}
+# Load the dplyr package
+library(dplyr)
+
+# Show only stats for the year 1982
+filter(gm, year==1982)
+
+# Show only stats for the US
+filter(gm, country=="United States")
+
+# Show only stats for American contries in 1997
+filter(gm, continent=="Americas" & year==1997)
+
+# Show only stats for countries with per-capita GDP of less than 300 OR a life expectancy of less than 30. What happened those years? 
+filter(gm, gdpPercap<300 | lifeExp<30)
+```
+
+Finally, take a look at the class of what's returned by a `filter()` function. The `filter()` function takes a data.frame and returns a data.frame. You can operate on this new data.frame just as you would any other data.frame using the `$` operator. E.g., print out the GDP for the two oceanic countries in 2002, and take the mean of that.
+
+```{r}
+filter(gm, continent=="Oceania" & year==2002)
+filter(gm, continent=="Oceania" & year==2002)$gdpPercap
+mean(filter(gm, continent=="Oceania" & year==2002)$gdpPercap)
+```
+
+----
+
+**EXERCISE `r .ex``r .ex=.ex+1`**
+
+1. What country and what years had a low GDP (<500) but high life expectancy (>50)?
+2. What's the average GDP for Asian countries in 2002?
+
+```{r, echo=FALSE}
+filter(gm, gdpPercap<500 & lifeExp>50)
+mean(filter(gm, year==2002 & continent=="Asia")$gdpPercap)
+mean(filter(gm, year==2002 & continent=="Europe")$gdpPercap)
+mean(filter(gm, year==2002 & continent=="Americas")$gdpPercap)
+```
+
+----
+
+### select()
+
+The `filter()` function allows you to return only certain rows matching a condition. The `select()` function lets you subset the data and restrict to a number of columns. The first argument is the data, and subsequent arguments are the columns you want. Let's just get the year and the population variables.
+
+```{r select}
+select(gm, year, pop)
+```
+
+### mutate()
+
+The `mutate()` function adds new columns to the data. Remember, the variable in our dataset is GDP per capita, which is the total GDP divided by the population size for that country, for that year. Let's mutate this dataset and add a column called gdp:
+
+```{r mutate}
+mutate(gm, gdp=pop*gdpPercap)
+```
+
+Mutate has a nice little feature too in that it's "lazy." You can mutate and add one variable, then continue mutating to add more variables based on that variable. Let's make another column that's GDP in billions.
+
+```{r mutatelazy}
+mutate(gm, gdp=pop*gdpPercap, gdpBil=gdp/1e9)
+```
+
+### arrange()
+
+The `arrange()` function does what it sounds like. It takes a data frame or tbl and arranges (or sorts) by column(s) of interest. The first argument is the data, and subsequent arguments are columns to sort on. Use the `desc()` function to arrange by descending.
+
+```{r arrange}
+arrange(gm, lifeExp)
+arrange(gm, year, desc(lifeExp))
+```
+
+
+### summarize()
+
+The `summarize()` function summarizes multiple values to a single value. On its own the `summarize()` function doesn't seem to be all that useful. The dplyr package provides a few convenience functions called `n()` and `n_distinct()` that tell you the number of observations or the number of distinct values of a particular variable.
+
+```{r summarize}
+summarize(gm, mean(pop))
+summarize(gm, meanpop=mean(pop))
+summarize(gm, n())
+summarize(gm, n_distinct(country))
+```
+
+### group_by()
+
+We saw that `summarize()` isn't that useful on its own. Neither is `group_by()` All this does is takes an existing tbl and coverts it into a grouped tbl where operations are performed by group.
+
+```{r groupby}
+gm
+group_by(gm, continent)
+```
+
+The real power comes in where `group_by()` and `summarize()` are used together. Let's take the same grouped tbl from last time, and pass all that as an input to summarize, where we get the mean population size. We can also group by more than one variable.
+
+```{r gby_nopipe}
+summarize(group_by(gm, continent), mean(pop))
+
+group_by(gm, continent, year)
+summarize(group_by(gm, continent, year), mean(pop))
+```
+
+## The almighty pipe: **%>%**
+
+This is where things get awesome. The dplyr package imports functionality from the [magrittr](https://github.com/smbache/magrittr) package that lets you _pipe_ the output of one function to the input of another, so you can avoid nesting functions. It looks like this: `%>%`. You don't have to load the magrittr package to use it since dplyr imports its functionality when you load the dplyr package.
+
+Here's the simplest way to use it. Remember of the `tail()` function. It expects a data frame as input, and the next argument is the number of lines to print. These two commands are identical:
+
+```{r, results='markup'}
+tail(gm, 5)
+gm %>% tail(5)
+```
+
+So what? 
+
+Now, think about this for a minute. What if we wanted to get the life expectancy and GDP averaged across all Asian countries for each year? (See top of image). Mentally we would do something like this:
+
+0. Take the `gm` dataset
+0. `mutate()` it to add raw GDP
+0. `filter()` it to restrict to Asian countries only
+0. `group_by()` year
+0. and `summarize()` it to get the mean life expectancy and mean GDP.
+
+But in code, it gets ugly. First, `mutate` the data to add GDP.
+
+```{r}
+mutate(gm, gdp=gdpPercap*pop)
+```
+
+Wrap that whole command with `filter()`.
+
+```{r}
+filter(mutate(gm, gdp=gdpPercap*pop), continent=="Asia")
+```
+
+Wrap that again with `group_by()`:
+
+```{r}
+group_by(filter(mutate(gm, gdp=gdpPercap*pop), continent=="Asia"), year)
+```
+
+Finally, wrap everything with `summarize()`:
+
+```{r nopipemess}
+summarize(
+  group_by(
+    filter(
+      mutate(gm, gdp=gdpPercap*pop), 
+    continent=="Asia"), 
+  year), 
+mean(lifeExp), mean(gdp))
+```
+
+Now compare that with the mental process of what you're actually trying to accomplish. The way you would do this without pipes is completely inside-out and backwards from the way you express in words and in thought what you want to do. The pipe operator `%>%` allows you to pass data frame or tbl objects from one function to another, so long as those functions expect data frames or tables as input.
+
+<img src="{{site.baseurl}}/assets/gmdplyr.png", width=750>
+
+This is how we would do that in code. It's as simple as replacing the word "then" in words to the symbol `%>%` in code.
+
+```{r pipe}
+gm %>%
+  mutate(gdp=gdpPercap*pop) %>%
+  filter(continent=="Asia") %>%
+  group_by(year) %>%
+  summarize(mean(lifeExp), mean(gdp))
+```
+
+---
+
+**EXERCISE `r .ex``r .ex=.ex+1`**
+
+Here's a warm-up round. Try the following.
+
+What was the population of Peru in 1992? Show only the population variable. Answer should be 22430449. _Hint:_ 2 pipes; use `filter()` and `select()`.
+
+```{r, echo=FALSE, results='markup'}
+gm %>% filter(country=="Peru" & year==1992) %>% select(pop)
+```
+
+Which countries and which years had the worst five GDP per capita measurements? _Hint:_ 2 pipes; use `arrange()` and `head()`.
+
+```{r, echo=FALSE, results='markup'}
+gm %>%
+  arrange(gdpPercap) %>%
+  head(5)
+```
+
+What was the average life expectancy across all contries for each year in the dataset? _Hint:_ 2 pipes; `group_by()` and `summarize()`.
+
+```{r, echo=FALSE, results='markup'}
+gm %>% 
+  group_by(year) %>% 
+  summarize(mean(lifeExp))
+```
+
+---
+
+
+---
+
+**EXERCISE `r .ex``r .ex=.ex+1`**
+
+That was easy, right? How about some tougher ones.
+
+Which five Asian countries had the highest life expectancy in 2007? _Hint:_ 3 pipes; `filter`, `arrange`, and `head`.
+
+```{r, echo=FALSE, results='markup'}
+gm %>%
+  filter(continent=="Asia", year==2007) %>%
+  arrange(desc(lifeExp)) %>%
+  head(5)
+```
+
+How many countries are on each continent? _Hint:_ 2 pipes; `group_by`, `summarize(n_distinct(...))`
+
+```{r, echo=FALSE, results='markup'}
+gm %>%
+  group_by(continent) %>%
+  summarize(n_distinct(country))
+```
+
+Separately for each year, compute the correlation coefficients (e.g., `cor(x,y)`) for life expectancy (y) against both log<sub>10</sub> of the population size and log<sub>10</sub> of the per capita GDP. What do these trends mean? _Hint:_ 2 pipes; `group_by` and `summarize`.
+
+```{r, echo=FALSE, results='markup'}
+gm %>%
+  group_by(year) %>%
+  summarize(cor(log10(pop), lifeExp), cor(log10(gdpPercap), lifeExp))
+```
+
+_Really tough one_: Compute the average GDP (not per-capita) in billions averaged across all contries separately for each continent separately for each year. What continents/years had the top 5 overall GDP? _Hint: 6 pipes. If you want to arrange a dataset by a value computed on grouped data, you first have to pass that resulting dataset to a funcion called `ungroup()` before continuing to operate._ 
+
+```{r, echo=FALSE, results='markup'}
+gm %>%
+  mutate(gdp=pop*gdpPercap/1e9) %>%
+  group_by(continent, year) %>%
+  summarize(meangdp=mean(gdp)) %>%
+  ungroup() %>%
+  arrange(desc(meangdp)) %>%
+  head(5)
+```
+
+---
+
+## Writing out data
+
+Remember, running functions on data frames doesn't actually change the data frame. We have to reassign it back to an object first. First, lets create a small dataset that only has the data for 1997 in it.
+
+```{r}
+filter(gm, year==1997)
+gm
+gm97 <- filter(gm, year==1997)
+```
+
+Next, check what your working directory is with `getwd()` with no arguments, and look up some help for `write.table()` and `write.csv()`.
+
+```{r, eval=FALSE}
+getwd()
+help(write.table)
+help(write.csv)
+```
+
+Now you can save the new reduced data frame to a comma-separated file called `gm97.csv` using the `write.csv()` function.
+
+```{r, eval=FALSE}
+write.csv(gm97, file="gm97.csv")
+```
+
+Later on you can load this particular dataset again either using the menus (Tools -- Import Dataset) or using `read.csv()`.
+
+
+
+
+
+
+
+
+
+<a name="ggplot2"></a>
+
+# Data visualization with ggplot2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- This begins a comment
+
+---
+
+**EXERCISE `r .ex``r .ex=.ex+1`**
+
+```{r, echo=FALSE}
+
+```
+
+---
+
+comment ends here -->
+
+
+## Further resources
+
+### Basic R resources
+
+- <http://tryr.codeschool.com/>: TryR - an interactive, browser-based R tutor.
+- <https://www.datacamp.com/courses/free-introduction-to-r>: DataCamp's free introduction to R.
+- <http://swirlstats.com/>: An R package that teaches you R (and statistics!) from within R.
+- <https://cran.r-project.org/doc/contrib/Short-refcard.pdf>: Printable R command reference card.
+- <https://www.rstudio.com/resources/cheatsheets/>: Printable cheat sheets for many different tasks within R.
+
+### dplyr resources
+
+- <https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html>: The dplyr vignette - offers a great introduction.
+- <http://www.dataschool.io/dplyr-tutorial-for-faster-data-manipulation-in-r/>: A longer dplyr tutorial with video and code.
+- <http://genomicsclass.github.io/book/pages/dplyr_tutorial.html>: The dplyr tutorial from the HarvardX Biomedical Data Science MOOC.
+- <https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf>: A dplyr cheat sheet from RStudio.
+
+### ggplot2 resources
+
+- <http://docs.ggplot2.org/>: The official ggplot2 documentation.
+- <http://amzn.to/1akjqsR>: Edition 1 of the ggplot2 book, by the developer, Hadley Wickham.
+- <https://github.com/hadley/ggplot2-book>: New version of the ggplot2 book, freely available on GitHub.
+- <https://groups.google.com/d/forum/ggplot2>: The ggplot2 Google Group (mailing list, discussion forum).
+- <http://learnr.wordpress.com/>: A blog with a good number of posts describing how to reproduce various kind of plots using ggplot2.
+- <http://stackoverflow.com/questions/tagged/ggplot2>: Thousands of questions and answers tagged with "ggplot2" on Stack Overflow, a programming Q&A site.
+- <http://stat545-ubc.github.io/>: Jenny Bryan's stat 545 class at UBC -- a great resource for learning about data manipulation and visualization in R. Much of this course material was modified from the stat 545 lesson material.
+- <http://shinyapps.stat.ubc.ca/r-graph-catalog/>: A catalog of graphs made with ggplot2, complete with accompanying R code.
+- <https://www.rstudio.com/wp-content/uploads/2015/05/ggplot2-cheatsheet.pdf>: RStudio's ggplot2 cheat sheet.
