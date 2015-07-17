@@ -14,11 +14,22 @@ options(digits=3)
 ```
 
 
+
+
+
+<a name="top"></a>
+
 # R for Data Carpentry
 
 fixme Description
 
 _Attribution:_ This course material is in part modified from lesson material from Jenny Bryan's [Stat 545 course at UBC](http://stat545-ubc.github.io/), [Software Carpentry](http://software-carpentry.org/), and [Data Carpentry](http://datacarpentry.org/).
+
+**Jump to section:**:
+
+- [Introduction to R and our dataset](#intro)
+- [Data manipulation with dplyr](#dplyr)
+- [Data visualization with ggplot2](#ggplot2)
 
 ## Before coming
 
@@ -30,9 +41,16 @@ You'll need to bring a laptop to the course with the software installed as detai
 
 
 
+
+
+
+
+
 <a name="intro"></a>
 
 # Quick introduction to R and our dataset
+
+[_(Jump back to top...)_](#top)
 
 ## RStudio
 
@@ -265,15 +283,19 @@ Now that's not too interesting. This is the average life expectancy across all c
 
 ----
 
-**BONUS: Preview to advanced class**
+**BONUS: Preview to advanced data manipulation section**
 
 What if we wanted to compute the mean population size and median GDP for each country for each year? We have 12 different years, times 5 continents is 60, times 2 calculations (mean population size and median GDP), gives us 120 operations total. 
 
-```{r advanced, echo=FALSE, eval=FALSE}
+```{r advanced, echo=TRUE, eval=FALSE}
 gm %>% group_by(continent,year) %>% summarize(mean(pop), median(gdpPercap)) %>% View
 ```
 
----
+----
+
+
+
+
 
 
 
@@ -283,6 +305,8 @@ gm %>% group_by(continent,year) %>% summarize(mean(pop), median(gdpPercap)) %>% 
 <a name="dplyr"></a>
 
 # Data manipulation with dplyr
+
+[_(Jump back to top...)_](#top)
 
 ## The dplyr package
 
@@ -484,7 +508,7 @@ gm %>%
   summarize(mean(lifeExp), mean(gdp))
 ```
 
----
+----
 
 **EXERCISE `r .ex``r .ex=.ex+1`**
 
@@ -512,10 +536,9 @@ gm %>%
   summarize(mean(lifeExp))
 ```
 
----
+----
 
-
----
+----
 
 **EXERCISE `r .ex``r .ex=.ex+1`**
 
@@ -558,7 +581,7 @@ gm %>%
   head(5)
 ```
 
----
+----
 
 ## Writing out data
 
@@ -594,9 +617,12 @@ Later on you can load this particular dataset again either using the menus (Tool
 
 
 
+
 <a name="ggplot2"></a>
 
 # Data visualization with ggplot2
+
+[_(Jump back to top...)_](#top)
 
 
 
@@ -640,7 +666,7 @@ Later on you can load this particular dataset again either using the menus (Tool
 
 <!-- This begins a comment
 
----
+----
 
 **EXERCISE `r .ex``r .ex=.ex+1`**
 
@@ -648,7 +674,7 @@ Later on you can load this particular dataset again either using the menus (Tool
 
 ```
 
----
+----
 
 comment ends here -->
 
