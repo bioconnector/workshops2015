@@ -4,17 +4,7 @@ layout: page
 
 
 
-<!-- This begins a comment
 
-----
-
-**EXERCISE 1**
-
-
-
-----
-
-comment ends here -->
 
 
 
@@ -145,7 +135,7 @@ weight_lb # oops! you should get an error because weight_lb no longer exists!
 
 ----
 
-**EXERCISE 2**
+**EXERCISE 1**
 
 What are the values after each statement in the following?
 
@@ -191,7 +181,7 @@ sqrt(log(1000, base=10))
 
 ----
 
-**EXERCISE 3**
+**EXERCISE 2**
 
 See `?abs` and calculate the square root of the log-base-10 of the absolute value of `-4*(2550-50)`. Answer should be `2`.
 
@@ -293,7 +283,7 @@ Now that's not too interesting. This is the average life expectancy across all c
 
 ----
 
-**EXERCISE 4**
+**EXERCISE 3**
 
 1. What's the standard deviation of the life expectancy (hint: get help on the `sd` function with `?sd`).
 1. What's the mean population size in millions? (hint: divide by 1000000, or alternatively, `1e6`).
@@ -394,7 +384,7 @@ mean(filter(gm, continent=="Oceania" & year==2002)$gdpPercap)
 
 ----
 
-**EXERCISE 5**
+**EXERCISE 4**
 
 1. What country and what years had a low GDP (<500) but high life expectancy (>50)?
 2. What's the average GDP for Asian countries in 2002?
@@ -569,7 +559,7 @@ gm %>%
 
 ----
 
-**EXERCISE 6**
+**EXERCISE 5**
 
 Here's a warm-up round. Try the following.
 
@@ -622,7 +612,7 @@ What was the average life expectancy across all contries for each year in the da
 
 ----
 
-**EXERCISE 7**
+**EXERCISE 6**
 
 That was easy, right? How about some tougher ones.
 
@@ -781,7 +771,7 @@ Look at that, we get an error, and it's pretty clear from the message what the p
 ggplot(gm, aes(x = gdpPercap, y = lifeExp)) + geom_point()
 ```
 
-Here, we've built our plot in layers. First, we create a canvas for plotting layers to come using the `ggplot` function, specifying which **data** to use (here, the *gm* data frame), and an **aesthetic mapping** of `gdpPercap` to the x-axis and `lifeExp` to the y-axis. We next add a layer to the plot, specifying a **geom**, or a way of visually representing the aesthetic mapping. 
+Here, we've built our plot in layers. First, we create a canvas for plotting layers to come using the `ggplot` function, specifying which **data** to use (here, the **gm** data frame), and an **aesthetic mapping** of `gdpPercap` to the x-axis and `lifeExp` to the y-axis. We next add a layer to the plot, specifying a **geom**, or a way of visually representing the aesthetic mapping. 
 
 Now, the typical workflow for building up a ggplot2 plot is to first construct the figure and save that to a variable (for example, `p`), and as you're experimenting, you can continue to re-define the `p` object as you develop "keeper commands".
 
@@ -847,9 +837,9 @@ Now, this isn't a great plot because there are several aesthetic mappings that a
 p + geom_point(aes(col=continent), size=4)
 ```
 
----
+----
 
-**EXERCISE ????**
+**EXERCISE 7**
 
 Re-create this same plot from scratch without saving anything to a variable. That is, start from the `ggplot` call. 
 
@@ -863,7 +853,7 @@ Re-create this same plot from scratch without saving anything to a variable. Tha
 
 
 
----
+----
 
 ### Adding layers to the plot
 
@@ -926,9 +916,9 @@ pfinal <- p + geom_point() + geom_smooth() + facet_wrap(~continent, ncol=1)
 ggsave(pfinal, file="myplot.pdf", width=5, height=15)
 ```
 
----
+----
 
-**EXERCISE ????**
+**EXERCISE 8**
 
 0. Make a scatter plot of `lifeExp` on the y-axis against `year` on the x.
 0. Make a series of small multiples faceting on continent.
@@ -937,7 +927,7 @@ ggsave(pfinal, file="myplot.pdf", width=5, height=15)
 
 
 
----
+----
 
 ## Plotting bivariate data: continuous Y by categorical X
 
@@ -1027,9 +1017,9 @@ p <- ggplot(gm, aes(x=reorder(continent, lifeExp), y=lifeExp))
 p + geom_boxplot()
 ```
 
----
+----
 
-**EXERCISE ????**
+**EXERCISE 9**
 
 0. Make a jittered strip plot of GDP per capita against continent.
 0. Make a box plot of GDP per capita against continent.
@@ -1038,7 +1028,7 @@ p + geom_boxplot()
 
 
 
----
+----
 
 ## Plotting univariate continuous data
 
@@ -1109,9 +1099,9 @@ p + geom_density(aes(fill=continent), alpha=1/4)
 ```
 
 
----
+----
 
-**EXERCISE ????**
+**EXERCISE 10**
 
 0. Plot a histogram of GDP Per Capita.
 0. Do the same but use a log<sub>10</sub> x-axis.
@@ -1121,7 +1111,7 @@ p + geom_density(aes(fill=continent), alpha=1/4)
 
 
 
----
+----
 
 ## Themes
 
@@ -1235,4 +1225,16 @@ p + theme_tufte()
 - <https://www.rstudio.com/wp-content/uploads/2015/05/ggplot2-cheatsheet.pdf>: RStudio's ggplot2 cheat sheet.
 
 [_(Jump back to top...)_](#top)
+
+<!-- This begins a comment
+
+----
+
+**EXERCISE 11**
+
+
+
+----
+
+comment ends here -->
 

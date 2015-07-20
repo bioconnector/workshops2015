@@ -13,19 +13,7 @@ options(digits=3)
 .ex <- 1
 ```
 
-<!-- This begins a comment
 
-----
-
-**EXERCISE `r .ex``r .ex=.ex+1`**
-
-```{r, echo=FALSE}
-
-```
-
-----
-
-comment ends here -->
 
 
 
@@ -639,8 +627,8 @@ Later on you can load this particular dataset again either using the menus (Tool
 
 ```{r, echo=FALSE}
 # Set to FALSE to no longer run the code chunks below. 
-# This helps when building ggplot2 lesson, but turn off for final to make sure everything works as written.
-opts_chunk$set(eval=FALSE)
+# This helps when building ggplot2 lesson, but turn off for final to make sure everything works as written and to increment exercise counter.
+opts_chunk$set(eval=TRUE)
 ```
 
 <a name="ggplot2"></a>
@@ -688,7 +676,7 @@ Look at that, we get an error, and it's pretty clear from the message what the p
 ggplot(gm, aes(x = gdpPercap, y = lifeExp)) + geom_point()
 ```
 
-Here, we've built our plot in layers. First, we create a canvas for plotting layers to come using the `ggplot` function, specifying which **data** to use (here, the *gm* data frame), and an **aesthetic mapping** of `gdpPercap` to the x-axis and `lifeExp` to the y-axis. We next add a layer to the plot, specifying a **geom**, or a way of visually representing the aesthetic mapping. 
+Here, we've built our plot in layers. First, we create a canvas for plotting layers to come using the `ggplot` function, specifying which **data** to use (here, the **gm** data frame), and an **aesthetic mapping** of `gdpPercap` to the x-axis and `lifeExp` to the y-axis. We next add a layer to the plot, specifying a **geom**, or a way of visually representing the aesthetic mapping. 
 
 Now, the typical workflow for building up a ggplot2 plot is to first construct the figure and save that to a variable (for example, `p`), and as you're experimenting, you can continue to re-define the `p` object as you develop "keeper commands".
 
@@ -746,7 +734,7 @@ Now, this isn't a great plot because there are several aesthetic mappings that a
 p + geom_point(aes(col=continent), size=4)
 ```
 
----
+----
 
 **EXERCISE `r .ex``r .ex=.ex+1`**
 
@@ -766,7 +754,7 @@ ggplot(gm, aes(gdpPercap, lifeExp)) +
   scale_x_log10()
 ```
 
----
+----
 
 ### Adding layers to the plot
 
@@ -822,7 +810,7 @@ pfinal <- p + geom_point() + geom_smooth() + facet_wrap(~continent, ncol=1)
 ggsave(pfinal, file="myplot.pdf", width=5, height=15)
 ```
 
----
+----
 
 **EXERCISE `r .ex``r .ex=.ex+1`**
 
@@ -842,7 +830,7 @@ p + facet_wrap(~continent) + geom_line(aes(group=country))
 p + facet_wrap(~continent) + geom_line(aes(group=country), alpha=.5) + geom_smooth(lwd=3, se=FALSE)
 ```
 
----
+----
 
 ## Plotting bivariate data: continuous Y by categorical X
 
@@ -920,7 +908,7 @@ p <- ggplot(gm, aes(x=reorder(continent, lifeExp), y=lifeExp))
 p + geom_boxplot()
 ```
 
----
+----
 
 **EXERCISE `r .ex``r .ex=.ex+1`**
 
@@ -946,7 +934,7 @@ p <- p + scale_y_log10()
 p + geom_boxplot(outlier.colour="red") + geom_jitter(alpha=1/2)
 ```
 
----
+----
 
 ## Plotting univariate continuous data
 
@@ -1008,7 +996,7 @@ p + geom_density(aes(fill=continent), alpha=1/4)
 ```
 
 
----
+----
 
 **EXERCISE `r .ex``r .ex=.ex+1`**
 
@@ -1029,7 +1017,7 @@ p + geom_histogram(aes(fill=continent)) + facet_wrap(~continent, ncol=1)
 ggsave("myplot.pdf", width=6, height=10)
 ```
 
----
+----
 
 ## Themes
 
@@ -1136,4 +1124,18 @@ p + theme_tufte()
 - <https://www.rstudio.com/wp-content/uploads/2015/05/ggplot2-cheatsheet.pdf>: RStudio's ggplot2 cheat sheet.
 
 [_(Jump back to top...)_](#top)
+
+<!-- This begins a comment
+
+----
+
+**EXERCISE `r .ex``r .ex=.ex+1`**
+
+```{r, echo=FALSE}
+
+```
+
+----
+
+comment ends here -->
 
