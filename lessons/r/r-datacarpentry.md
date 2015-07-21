@@ -300,7 +300,10 @@ What if we wanted to compute the mean population size and median GDP for each co
 
 
 ```r
-gm %>% group_by(continent,year) %>% summarize(mean(pop), median(gdpPercap)) %>% View
+gm %>% 
+  group_by(continent,year) %>% 
+  summarize(mean(pop), median(gdpPercap)) %>% 
+  View
 ```
 
 ----
@@ -369,7 +372,8 @@ filter(gm, country=="United States")
 # Show only stats for American contries in 1997
 filter(gm, continent=="Americas" & year==1997)
 
-# Show only stats for countries with per-capita GDP of less than 300 OR a life expectancy of less than 30. What happened those years? 
+# Show only stats for countries with per-capita GDP of less than 300 OR a life
+# expectancy of less than 30. What happened those years?
 filter(gm, gdpPercap<300 | lifeExp<30)
 ```
 
