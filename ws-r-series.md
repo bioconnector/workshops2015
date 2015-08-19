@@ -1,6 +1,5 @@
 ---
 layout: page
-eventbrite: 15761896256
 ---
 
 # Workshop Series: Data Analysis, Manipulation, and Visualization with R
@@ -16,9 +15,7 @@ This is a three-part series. The first session will introduce participants to th
     - [Advanced Data Wrangling Cheat Sheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
     - [Advanced Data Visualization Cheat Sheet](http://www.rstudio.com/wp-content/uploads/2015/04/ggplot2-cheatsheet.pdf)
 
-**Registration**: Registration opens Friday, February 20, 2015 at 9:00am. [See below](#registration) for registration instructions. The workshop is free[^free], but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation.
-
-[^free]: The workshop is free, but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation. We do this to protect _you_, the person who's truly interested in taking this workshop, from those who would otherwise sign up to hold their spot. You will receive a refund for your registration after attending all parts of the workshop and after you submit an evaluation.
+**Registration**: [See below](#registration) for registration instructions.
 
 **Instructor / Technical contact**: Stephen Turner  (<a href="http://www.google.com/recaptcha/mailhide/d?k=01uXi4zl-bIdygzSeXF4649A==&amp;c=_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501uXi4zl-bIdygzSeXF4649A\75\75\46c\75_81hv-sTQvJ9rjELjZNDJeAXTvLvkpfD9KEuItpEHTE\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">s...</a>@virginia.edu)  
 **Logistics / registration contact**: Bart Ragon (<a href="http://www.google.com/recaptcha/mailhide/d?k=01uXi4zl-bIdygzSeXF4649A==&amp;c=Vsnuy3VwvY13wVeE0K2DFU5Cf-2n-YnO3260iwqa1RA=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501uXi4zl-bIdygzSeXF4649A\75\75\46c\75Vsnuy3VwvY13wVeE0K2DFU5Cf-2n-YnO3260iwqa1RA\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">b...</a>@virginia.edu)
@@ -27,13 +24,13 @@ This is a three-part series. The first session will introduce participants to th
 
 This workshop is a three-part series. Each subsequent workshop builds on the material covered in earlier sessions.
 
-**Part I:** Monday, April 6 2015, 2:00pm - 4:30pm  
-**Part II:** Thursday, April 9 2015, 2:00pm - 4:30pm  
-**Part II:** Monday, April 13 2015, 2:00pm - 4:30pm
+**Part I:** TBA, 1:00pm - 5:00pm  
+**Part II:** TBA, 1:00pm - 5:00pm  
+**Part II:** TBA, 1:00pm - 5:00pm
 
 **Location**: Carter classroom, first floor Health Sciences Library (down the stairs and to the right).
 
-***Instruction will start promptly at 2:00pm on the first day***. If you have any trouble with setup, please contact Stephen Turner prior to the course.
+***Instruction will start promptly at 1:00pm on the first day***. If you have any trouble with setup, please contact Stephen Turner prior to the course.
 
 ### Part I: Introduction to R
 
@@ -50,15 +47,9 @@ This workshop will cover fundamental concepts for creating effective data visual
 
 ## Course Material
 
-_Check back after course_.
-
-<!--
-* [Introduction to Unix](../lessons/shell/shell-intro/)
-* [NGS data analysis: QC, Alignment, Quantitation](../lessons/rnaseq/rnaseq-align-count/)
-* [R Slides](https://speakerdeck.com/stephenturner/introduction-to-r-for-life-scientists)
-* [Introduction to R](../lessons/r/r-intro/)
-* [RNA-seq data analysis with DESeq2](../lessons/rnaseq/rnaseq-diff-expr/)
- -->
+1. [Introduction to R](../lessons/r/r-intro/)
+1. [Advanced Data Manipulation](../lessons/r/r-manipulation/)
+1. [Advanced Data Visualization](../lessons/r/r-viz/)
 
 <a name="setup"></a>
 
@@ -72,11 +63,10 @@ You must bring a laptop with the necessary software installed to the course. Ple
 
 ## Registration
 
-[Register here](https://www.eventbrite.com/e/workshop-series-data-analysis-manipulation-and-visualization-with-r-tickets-15761896256) or use the form below. The workshop is free[^free], but requires a $10 registration fee that is refunded after attending the course and submitting a course evaluation.
-
-Registration opens Friday, February 20, 2015 at 9:00am.
+Registration information coming soon.
 
 <!--
+
     This block includes the Eventbrite registration widget if 'eventbrite' has been set in the header.
 
     Maybe you need to change height value:
@@ -86,6 +76,7 @@ Registration opens Friday, February 20, 2015 at 9:00am.
     - for two room use 254px,
     - for one waitlist room and one room use 253px,
     - for two waitlist room use 197px.
+
 -->
 
 {% if page.eventbrite %}
