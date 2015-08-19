@@ -10,6 +10,8 @@
 install.packages("dplyr")
 install.packages("ggplot2")
 install.packages("tidyr")
+install.packages("knitr")
+install.packages("rmarkdown")
 
 # Install Bioconductor packages
 source("http://bioconductor.org/biocLite.R")
