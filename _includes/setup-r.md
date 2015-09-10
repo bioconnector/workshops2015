@@ -12,11 +12,6 @@ install.packages("ggplot2")
 install.packages("tidyr")
 install.packages("knitr")
 install.packages("rmarkdown")
-
-# Install Bioconductor packages
-source("http://bioconductor.org/biocLite.R")
-biocLite()
-biocLite("DESeq2")
 ```
 
 You can check that you've installed everything correctly by closing and reopening RStudio and entering the following commands at the console window:
@@ -25,7 +20,8 @@ You can check that you've installed everything correctly by closing and reopenin
 library(dplyr)
 library(ggplot2)
 library(tidyr)
-library(DESeq2)
+library(knitr)
+library(rmarkdown)
 ```
 
 These commands may produce some notes or other output, but as long as they work without an error message, you're good to go. If you get a message that says something like: `Error in library(packageName) : there is no package called 'packageName'`, then the required packages did not install correctly. Please do not hesitate to email me _prior to the course_ if you are still having difficulty.
