@@ -83,6 +83,8 @@ Setup checklist:
 
 {% include setup-r.md %}
 
+{% include setup-r-bioconductor.md %}
+
 <a name="registration"></a>
 
 ## Registration
