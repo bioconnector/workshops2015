@@ -24,9 +24,9 @@ This is a three-part series. The first session will introduce participants to th
 
 This workshop is a three-part series. Each subsequent workshop builds on the material covered in earlier sessions.
 
-**Part I:** TBA, 1:00pm - 5:00pm  
-**Part II:** TBA, 1:00pm - 5:00pm  
-**Part II:** TBA, 1:00pm - 5:00pm
+**Part I:** Sepbember 21, 1:00pm - 5:00pm  
+**Part II:** Sepbember 22, 1:00pm - 5:00pm  
+**Part II:** Sepbember 23, 1:00pm - 5:00pm
 
 **Location**: Carter classroom, first floor Health Sciences Library (down the stairs and to the right).
 
@@ -44,12 +44,15 @@ Data analysis involves a large amount of [janitor work](http://www.nytimes.com/2
 
 This workshop will cover fundamental concepts for creating effective data visualization and will introduce tools and techniques for visualizing large, high-dimensional data using R. We will review fundamental concepts for visually displaying quantitative information, such as using series of small multiples, avoiding "chart-junk," and maximizing the data-ink ratio. After briefly covering data visualization using base R graphics, we will introduce the ggplot2 package for advanced high-dimensional visualization. We will cover the grammar of graphics (geoms, aesthetics, stats, and faceting), and using ggplot2 to create plots layer-by-layer. Upon completing this lesson, learners will be able to use ggplot2 to explore a high-dimensional dataset by faceting and scaling scatter plots in small multiples.
 
-
 ## Course Material
 
+_Check back after course_.
+
+<!--
 1. [Introduction to R](../lessons/r/r-intro/)
 1. [Advanced Data Manipulation](../lessons/r/r-manipulation/)
 1. [Advanced Data Visualization](../lessons/r/r-viz/)
+-->
 
 <a name="setup"></a>
 
@@ -63,7 +66,7 @@ You must bring a laptop with the necessary software installed to the course. Ple
 
 ## Registration
 
-Registration information coming soon.
+**[Click here to register](https://www.bioconnector.virginia.edu/workshops/workshop-series-data-analysis-manipulation-and-visualization-r).**
 
 <!--
 
