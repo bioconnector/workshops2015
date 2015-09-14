@@ -1,7 +1,8 @@
-**There are a few additional setup steps required for the reproducible research / dynamic documents workshop. These installations allow you to render Markdown documents to PDF, Word, or HTML.**
+**_Additional setup steps required for the reproducible research / dynamic documents workshop:_**
 
 1. First, launch RStudio (not R). Click File, New File, R Markdown. This will tell you that you need to install additional packages (knitr, yaml, htmltools, caTools, bitops, and rmarkdown). Click "Yes" to install these.
-1. If you want to convert to PDF or Word, you will need to install a **LaTeX** typesetting engine. This differs on Mac and Windows. **Note that this part of the installation may take up to several hours**, depending on your network speed.
+1. Sign up for a free account at **[RPubs.com](http://rpubs.com/)**.
+1. If you want to convert to PDF, you will need to install a **LaTeX** typesetting engine. This differs on Mac and Windows. **Note that this part of the installation may take up to several hours, and isn't strictly required for the workshop.**
     - **Windows LaTeX instructions**:
         1. Download the installer [using this link](http://mirrors.ctan.org/systems/win32/miktex/setup/setup-2.9.5721.exe). It is important to use the full installer, not the basic installer. Run the installer .exe that you downloaded.
         1. Run the installer _twice_, making sure to use the Complete, not Basic, installation:
