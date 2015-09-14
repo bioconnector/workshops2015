@@ -2,16 +2,9 @@
 layout: page
 ---
 
-```{r, echo=FALSE, message=FALSE, eval=TRUE}
-library(knitr)
-opts_chunk$set(results="hide", message=FALSE, warning=FALSE, fig.show="hide", fig.keep="none")
-options(digits=3)
-.ex <- 1
-```
 
-```{r, include=FALSE, eval=FALSE}
-system("make")
-```
+
+
 
 
 # Reproducible Reporting: Generating Dynamic Documents with R+RStudio
@@ -178,9 +171,9 @@ gm <- read.csv("data/gapminder.csv")
 head(gm)
 ```
 
-The mean life expectancy is `r ''` `mean(gm$lifeExp)` years.
+The mean life expectancy is  `mean(gm$lifeExp)` years.
 
-The years surveyed in this data include: `r ''` `unique(gm$year)`.
+The years surveyed in this data include:  `unique(gm$year)`.
 
 # Session Information
 
@@ -195,7 +188,8 @@ So let's break that down to see exactly what happened there. Recall the [RMarkdo
 
 Try this. Instead of using the button, load the knitr package and just knit the document to markdown format. Run this in the console.
 
-```{r, eval=FALSE}
+
+```r
 library(knitr)
 knit("fromscratch.Rmd")
 ```
