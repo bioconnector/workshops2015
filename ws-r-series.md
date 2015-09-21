@@ -48,6 +48,8 @@ This workshop will cover fundamental concepts for creating effective data visual
 
 _Check back after course_.
 
+1. [Introduction to R](../lessons/r/r-intro/)
+
 <!--
 1. [Introduction to R](../lessons/r/r-intro/)
 1. [Advanced Data Manipulation](../lessons/r/r-manipulation/)
