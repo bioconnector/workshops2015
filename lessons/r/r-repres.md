@@ -171,9 +171,9 @@ gm <- read.csv("data/gapminder.csv")
 head(gm)
 ```
 
-The mean life expectancy is  `mean(gm$lifeExp)` years.
+The mean life expectancy is  `r mean(gm$lifeExp)` years.
 
-The years surveyed in this data include:  `unique(gm$year)`.
+The years surveyed in this data include:  `r unique(gm$year)`.
 
 # Session Information
 
