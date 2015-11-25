@@ -3,3 +3,4 @@ _drafts
 .Rhistory
 .Rproj.user
 *.Rproj
+*.key
